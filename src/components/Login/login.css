@@ -1,0 +1,161 @@
+
+.background{
+    background-color: #e7e7e6;
+    contain:size;
+}
+.position{
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 20px;
+}
+
+
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+.contain {
+    font-family: 'Open Sans', sans-serif;
+    max-width: 500px;
+    /* padding: 20px; */
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: left;
+    font-size: 35px;
+    font-weight: bold;
+    padding-bottom:10px ;
+    color: #00396b;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+
+    label {
+        text-align: left;
+        font-size: 16px;
+
+        font-weight: bold;
+        color: #00396b;
+
+    }
+
+    input {
+        
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        transition: border-color 0.15s ease-in-out;
+    }
+
+    input:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 13px;
+
+    }
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #f08700 !important ;
+    border-color:  #f08700 !important;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #e29530;
+    border-color: #e29530;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    background-color: #e4d7c7;
+    border-color: #dacab5;
+}
+select{
+    width: 100%;
+        padding: 8px;
+        font-size: 20px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        transition: border-color 0.15s ease-in-out;
+
+}
+
+p{
+    font-size: 18px;
+}
+.pos{
+    display: flex;
+    justify-content: center;
+}
+
+.image{
+    width: 250px; 
+    height: auto; 
+    padding-bottom: 80px;
+    
+}
+
+
+.line{
+    border-bottom: 1px solid #f08700;
+    width: 100%;
+}
+
+.input-group{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+    width:100%;
+    flex-direction: column;
+}
+
+
+.account-link{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.register-link{
+    color:#f08700;
+}
+
+
+@media screen and (max-width: 800px) {
+
+    .contain {
+        max-width: 400px;
+
+    }
+    }

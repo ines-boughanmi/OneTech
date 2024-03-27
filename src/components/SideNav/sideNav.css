@@ -1,0 +1,52 @@
+.logo{  
+    margin-top: 60px;
+    padding-top: 30px;
+    padding-bottom: 120px;
+    height: 100px;
+    width: 100px;
+   }
+ 
+   nz-layout {
+     display: flex;
+     min-height: 100vh;
+   }
+   
+   nz-sider {
+     position: fixed;
+     top: 0;
+     bottom: 0;
+     left: 0;
+     z-index: 1000; /* Adjust the z-index as needed */
+     overflow-y: auto; /* Enable vertical scrolling */
+   }
+   
+   
+   nz-layout nz-layout {
+     transition: margin-left 0.3s ease; /* Add transition for smooth animation */
+   }
+   
+   
+ 
+ 
+   nz-header {
+     background: #fff;
+     padding: 0;
+   }
+ 
+  nz-menu-item:hover {
+     background-color: #cf4708;
+   }
+ 
+
+ 
+   span{
+       font-family: 'Open Sans', sans-serif;
+   }
+ 
+   .inner-content {
+     padding: 24px;
+     background: #fff;
+     min-height: 360px;
+   }
+ 
+ 
