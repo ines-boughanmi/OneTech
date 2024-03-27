@@ -12,7 +12,6 @@
 .contain {
     font-family: 'Open Sans', sans-serif;
     max-width: 500px;
-    /* padding: 20px; */
     border-radius: 5px;
     width: 100%;
 }
@@ -25,37 +24,7 @@ h2 {
     color: #00396b;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
 
-    label {
-
-        font-size: 16px;
-        font-weight: bold;
-        color: #00396b;
-    }
-
-    input {
-        width: 100%;
-        padding: 8px;
-        font-size: 16px;
-        border: 1px solid #ced4da;
-        border-radius: 10px;
-        transition: border-color 0.15s ease-in-out;
-    }
-
-    input:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    .text-danger {
-        color: #dc3545;
-        font-size: 13px;
-    }
-}
 
 button {
     width: 100%;
@@ -95,13 +64,6 @@ p{
 .pos{
     display: flex;
     justify-content: center;
-}
-
-.image{
-    width: 250px; /* Set the desired width */
-    height: auto; /* Maintain aspect ratio */
-    padding-bottom: 10px;
-    
 }
 
 

@@ -3,7 +3,7 @@ const {Sequelize,DataTypes} = require("sequelize")
 const connection = new Sequelize (
     "onetech",
     "root",
-    "iljsmfe123",
+    "root",
     {
         host:'localhost',
         dialect :'mysql'
