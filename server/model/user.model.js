@@ -4,9 +4,16 @@ module.exports =(connection,DataTypes)=>{
         lastname:DataTypes.STRING,
         email:DataTypes.STRING,
         password:DataTypes.STRING,
-        role:DataTypes.STRING,
+        role:{
+            type:DataTypes.ENUM,
+            values:["CONSULTANT","PROJECT_MANAGER","PARKING_MANAGER"],
+            defaultValue:"CONSULTANT"
+        },
         phone:DataTypes.STRING,
-        validity:DataTypes.BOOLEAN,
+        validity:{
+            type:DataTypes.BOOLEAN,
+            defaultValue:false
+        },
         image:DataTypes.STRING,
         location:DataTypes.STRING,
     })

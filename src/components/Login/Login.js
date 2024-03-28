@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye , faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import oneTech from "../../assets/onetechb.png";
 import "./login.css";
 import React, { useState } from "react";
@@ -13,19 +13,23 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show,setShow] = useState(true);
+  const naviagte = useNavigate()
 
 
   const notify = () => {
-    toast.error("Welcome", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    
+    
+      toast.error("Check Info", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    
   }
 
 
@@ -34,9 +38,11 @@ function Login() {
     try {
       const data = await axios.post("http://localhost:3001/api/user/login",body)
       localStorage.setItem("token",data.data.token)
+
+      naviagte("/dash")
     } catch (error) {
       console.log(error)
-      
+      notify()
     }
   } 
 
@@ -79,10 +85,10 @@ function Login() {
         </div>
         <button type="submit" className="btn btn-primary" onClick={(e)=>{
             e.preventDefault()
-            notify()
             handleLogin({
                email,password
             })
+            
         }}>
           Login
         </button>

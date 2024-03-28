@@ -18,14 +18,14 @@ const authProtection = async (req, res, next) => {
       req.user = await User.findByPk(decoded.UserId);
       next();
     } catch (error) {
-      res.status(401);
-      res.send("Not authorized");
+      res.status(401).
+      send("Not authorized");
     }
   }
 
   if (!token) {
-    res.status(401);
-    res.send("Not authorized,no token ");
+    res.status(401).
+    send("Not authorized,no token ");
   }
 };
 module.exports = authProtection;

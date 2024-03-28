@@ -44,26 +44,28 @@ module.exports = {
                 bcrypt
                     .compare(req.body.password, User.password)
                     .then((passCheck) => {
-                        console.log(passCheck);
                         if (!passCheck) {
                             res.status(400).send({
-                                message: "Passwords does not match",
+                                message: "Passwords does not match", 
                             
                             });
                         }
-                        const Token = jwt.sign(
-                            {
+                        else {
+                            const Token = jwt.sign(
+                                {
+                                    UserId: User.id,
+                                    email: User.email,
+                                },
+                                "secretKeyForJWT@2024",
+                                {expiresIn : "24h"}
+                            );
+                            res.status(200).json({
+                                message: "Login Successfull",
                                 UserId: User.id,
-                                email: User.email,
-                            },
-                            "secretKeyForJWT@2024",
-                            {expiresIn : "24h"}
-                        );
-                        res.status(200).json({
-                            message: "Login Successfull",
-                            UserId: User.id,
-                            token: Token
-                        });
+                                token: Token
+                            });
+                        }
+                        
                     })
                     .catch((error) => {
                         res.status(400).send({
