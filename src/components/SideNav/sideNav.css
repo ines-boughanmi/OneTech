@@ -1,52 +1,44 @@
-.logo{  
-    margin-top: 60px;
-    padding-top: 30px;
-    padding-bottom: 120px;
-    height: 100px;
-    width: 100px;
-   }
- 
-   nz-layout {
-     display: flex;
-     min-height: 100vh;
-   }
-   
-   nz-sider {
-     position: fixed;
-     top: 0;
-     bottom: 0;
-     left: 0;
-     z-index: 1000; /* Adjust the z-index as needed */
-     overflow-y: auto; /* Enable vertical scrolling */
-   }
-   
-   
-   nz-layout nz-layout {
-     transition: margin-left 0.3s ease; /* Add transition for smooth animation */
-   }
-   
-   
- 
- 
-   nz-header {
-     background: #fff;
-     padding: 0;
-   }
- 
-  nz-menu-item:hover {
-     background-color: #cf4708;
-   }
- 
+.side-navigation-panel-select-option-selected {
+    --tw-border-opacity: 1;
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    border-right-width: 2px;
+    background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+    border-color: #f08700 !important;
+    color:  #00396b !important;
+}
 
- 
-   span{
-       font-family: 'Open Sans', sans-serif;
-   }
- 
-   .inner-content {
-     padding: 24px;
-     background: #fff;
-     min-height: 360px;
-   }
- 
+.side-navigation-panel-select-option {
+    color:  #00396b !important;
+}
+
+
+.side-navigation-panel :hover {
+    border-color: #f08700 !important;
+
+}
+
+.image-pos{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding-top: 10px ;
+    padding-bottom: 100px;
+
+}
+.sideNav-image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 90px;
+
+}
+.bottom-sideNav{
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%; 
+
+}
  

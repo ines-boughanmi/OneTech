@@ -48,7 +48,7 @@ const DashBoard = () => {
   return (
     <div>
         {
-            user.role === "CONSULTANT" ? <ConsultantDashBoard/> : user.role === "PROJECT_MANAGER" ? <ProjectDashBoard/> : <ParkingDashBoard/>
+            user.role === "CONSULTANT" ? <ConsultantDashBoard user={user}/> : user.role === "PROJECT_MANAGER" ? <ProjectDashBoard user={user}/> : <ParkingDashBoard user={user}/>
         }
 
         <ToastContainer  bodyClassName="toast-container" progressClassName="progress-toast" />

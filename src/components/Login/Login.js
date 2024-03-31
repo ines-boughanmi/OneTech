@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [show,setShow] = useState(true);
+  const [show,setShow] = useState(false);
   const naviagte = useNavigate()
 
 
@@ -52,7 +52,7 @@ function Login() {
 
   return (
     <div className="contain">
-      <Link to="/home">
+      <Link to="/">
         <div className="pos">
           <img className="image" src={oneTech} alt="OneTech" />
         </div>

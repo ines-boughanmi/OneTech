@@ -162,7 +162,7 @@ function Register() {
 
   return (
     <div className="contain">
-      <Link to="/home">
+      <Link to="/">
         <div className="pos">
           <img className="image" src={oneTech} alt="OneTech" />
         </div>

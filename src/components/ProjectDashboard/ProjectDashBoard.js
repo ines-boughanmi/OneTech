@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import SideNav from "../SideNav/SideNav";
+import "./projectDashboard.css"
 
-const ProjectDashBoard = () => {
+const ProjectDashBoard = ({ user }) => {
   return (
-    <div>ProjectDashBoard</div>
+      <div className="side-nav">
+        <SideNav user={user}/>
+      </div>
   )
 }
 
-export default ProjectDashBoard
+export default ProjectDashBoard;

@@ -1,0 +1,84 @@
+.card-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+    gap: 4rem;
+}
+
+.card {
+    width: 150px;
+    height: 150px;
+    border-radius: 40px;
+    background: #00396b;
+    box-shadow: 20px 20px 60px #bebebe,
+                  -20px -20px 60px #ffffff;
+    
+   }
+
+.card-body{
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 1.6rem;
+    padding-top: 30px;
+}
+
+.car-indicator{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.container-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+  }
+  
+  .input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    caret-color: #f7f7f8;
+    color: #fff;
+    padding: 7px 10px;
+    border: 2px solid transparent;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    transition: all .2s ease;
+  }
+  
+  .input:hover {
+    border: 2px solid rgba(255, 255, 255, 0.16);
+  }
+  
+  .input:focus {
+    border: 2px solid #f08700;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  
+  .search__btn {
+    border: none;
+    cursor: pointer;
+    background-color: #f08700;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    height: 100%;
+    width: 60px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .search__btn:hover {
+    background-color: #f08700
+  }
