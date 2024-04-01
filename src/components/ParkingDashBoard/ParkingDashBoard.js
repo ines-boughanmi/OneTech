@@ -4,6 +4,7 @@ import "./parkingDashBoard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
 import OneCar from "./OneCar";
+import AddModal from "./AddModal";
 
 const ParkingDashBoard = ({ user }) => {
   return (
@@ -64,7 +65,7 @@ const ParkingDashBoard = ({ user }) => {
         <div className="content-section">
           <div className="content-container-header">
               <p className="path">Parking</p>
-              <p className="button-add">+ Add</p>
+              <AddModal/>
           </div>
         <div className="car-container">
             <OneCar/>
