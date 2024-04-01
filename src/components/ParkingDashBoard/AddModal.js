@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -23,8 +23,8 @@ const style = {
 
 const AddModal = () => {
 
-    const [open, setOpen] = React.useState(false);
-    const [image, setImage] = React.useState("");
+    const [open, setOpen] = useState(false);
+    const [image, setImage] = useState("");
 
     const handleOpen = () =>{
         setOpen(true);
