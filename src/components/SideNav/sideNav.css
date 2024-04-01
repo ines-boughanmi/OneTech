@@ -6,10 +6,12 @@
     background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
     border-color: #f08700 !important;
     color:  #00396b !important;
+    width: 100%  !important;
 }
 
 .side-navigation-panel-select-option {
     color:  #00396b !important;
+    width: 100% !important;
 }
 
 
@@ -23,7 +25,7 @@
     justify-content: center;
     align-content: center;
     padding-top: 10px ;
-    padding-bottom: 100px;
+    width: 100%;
 
 }
 .sideNav-image{
@@ -34,11 +36,36 @@
     height: 90px;
 
 }
+.SideNav{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+}
 .bottom-sideNav{
-    position: absolute;
-    bottom: 50px;
-    left: 0;
+
     width: 100%; 
 
 }
  
+.side-nav{
+    background-color: #f0f0f0;
+    width: 15%;
+    height: 100%;
+    min-width: 15%;
+}
+
+.sidenav-options{
+    width: 100%;
+    height: 70%;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+}
+.side-navigation-panel{
+    width: 100% !important;
+   
+}

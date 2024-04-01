@@ -29,7 +29,7 @@ export const SideNav = ({ user }) => {
         <div className="image-pos">
           <img className="sideNav-image" src={oneTech} alt="oneTech" />
         </div>
-        <div>
+        <div className="sidenav-options">
           {user.role === "CONSULTANT" ? (
             <Navigation
               activeItemId={location.pathname}
@@ -130,6 +130,7 @@ export const SideNav = ({ user }) => {
 
         <div className="bottom-sideNav">
           <Navigation
+
             activeItemId={location.pathname}
             items={[
               {
@@ -142,6 +143,7 @@ export const SideNav = ({ user }) => {
             ]}
             onSelect={({ itemId }) => {
               navigate(itemId);
+              localStorage.removeItem("token");
             }}
           />
         </div>

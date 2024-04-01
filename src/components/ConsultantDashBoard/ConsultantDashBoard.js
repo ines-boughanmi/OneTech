@@ -4,9 +4,7 @@ import "./consultantDashBoard.css"
 
 const ConsultantDashBoard = ({user}) => {
   return (
-    <div className="side-nav">
-    <SideNav user={user}/>
-  </div>
+    <div></div>
   )
 }
 

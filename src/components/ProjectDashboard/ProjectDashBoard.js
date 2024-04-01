@@ -4,9 +4,7 @@ import "./projectDashboard.css"
 
 const ProjectDashBoard = ({ user }) => {
   return (
-      <div className="side-nav">
-        <SideNav user={user}/>
-      </div>
+      <div></div>
   )
 }
 

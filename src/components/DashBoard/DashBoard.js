@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ConsultantDashBoard from "../ConsultantDashBoard/ConsultantDashBoard";
 import ProjectDashBoard from "../ProjectDashboard/ProjectDashBoard";
 import ParkingDashBoard from "../ParkingDashBoard/ParkingDashBoard";
+import SideNav from "../SideNav/SideNav";
+import "./dashboard.css"
 
 const DashBoard = () => {
   const [user, setUser] = useState({});
@@ -46,8 +48,11 @@ const DashBoard = () => {
   },[])
 
   return (
-    <div>
-        {
+    <div className="dash">
+      <div className="side-nav">
+        <SideNav user={user}/>
+      </div>
+        { 
             user.role === "CONSULTANT" ? <ConsultantDashBoard user={user}/> : user.role === "PROJECT_MANAGER" ? <ProjectDashBoard user={user}/> : <ParkingDashBoard user={user}/>
         }
 
