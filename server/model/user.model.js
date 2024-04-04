@@ -14,7 +14,10 @@ module.exports =(connection,DataTypes)=>{
             type:DataTypes.BOOLEAN,
             defaultValue:false
         },
-        image:DataTypes.STRING,
+        image:{
+            type:DataTypes.STRING,
+            defaultValue:"https://static.thenounproject.com/png/1876981-200.png"
+        },
         location:DataTypes.STRING,
     })
 

@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import "./AddModal.css";
-import add from "../../assets/4211763.png";
+import "./AddModal.css"
+import add from "../../assets/4211763.png"
 
 const style = {
   position: "absolute",
