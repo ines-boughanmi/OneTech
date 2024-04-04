@@ -13,21 +13,48 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid black",
   boxShadow: 24,
   p: 4,
   borderRadius: "10px",
 };
 
-const AddModal = () => {
+const AddModal = ({reload , setReload}) => {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("");
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [license, setLicense] = useState("");
+  const [color, setColor] = useState("");
+  const [category , setCategory] = useState("");
+  const [seats , setSeats] = useState(0)
 
   const handleOpen = () => {
     setOpen(true);
     setImage("");
+    setBrand("")
+    setModel("")
+    setLicense("")
+    setColor("")
+    setCategory("")
+    setSeats(0)
   };
   const handleClose = () => setOpen(false);
+
+  const handleAdd = async (body) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+          await axios.post(
+          "http://localhost:3001/api/car/create",
+          body
+        );
+        setReload(!reload)
+        handleClose()
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const profileUpload = async (e) => {
     const formData = new FormData();
@@ -73,7 +100,9 @@ const AddModal = () => {
             {/* End of custom file upload label */}
 
             <div className="custom-select">
-              <select>
+              <select value={brand} onChange={(e)=>{
+                setBrand(e.target.value)
+              }}>
                 <option disabled selected value="">
                   Car Brand
                 </option>
@@ -87,15 +116,27 @@ const AddModal = () => {
               type="text"
               placeholder="Car Model Name"
               className="textInputs"
+              onChange={(e)=>{
+                setModel(e.target.value)
+              }}
+              value={model}
             />
             <input
               type="text"
               placeholder="license plate Number"
               className="textInputs"
+              onChange={(e)=>{
+                setLicense(e.target.value)
+              }}
+              value={license}
             />
 
             <div className="custom-select">
-              <select>
+              <select onChange={(e)=>{
+                setCategory(e.target.value)
+              }}
+              value={category}
+              >
                 <option disabled selected value="">
                   Car Category
                 </option>
@@ -106,16 +147,20 @@ const AddModal = () => {
             </div>
 
             <div className="custom-select">
-              <select placeholder="Color">
+              <select placeholder="Color" 
+              value={color}
+               onChange={(e)=>{
+                setColor(e.target.value)
+              }}>
                 <option disabled selected value="">
                   Car color
                 </option>
                 <option value="White">White</option>
                 <option value="Black">Black</option>
-                <option value="gray">gray</option>
-                <option value="silver">silver</option>
-                <option value="orange">orange</option>
-                <option value="blue">blue</option>
+                <option value="Gray">Gray</option>
+                <option value="Silver">Silver</option>
+                <option value="Orange">Orange</option>
+                <option value="Blue">Blue</option>
               </select>
             </div>
             <input
@@ -124,13 +169,20 @@ const AddModal = () => {
               placeholder="Available Seats"
               min="0"
               max="10"
+              value={seats}
+              onChange={(e)=>{
+                setSeats(e.target.value)
+              }}
             ></input>
 
             <div className="modalButtons">
               <Button className="modalBtn" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button className="modalBtn">Add</Button>
+              <Button className="modalBtn" onClick={(e)=>{
+                  e.preventDefault();
+                  handleAdd({brand,car_model:model,license_plate:license,image,car_category:category,seat_availability:seats,color})
+              }}>Add</Button>
             </div>
           </div>
         </Box>

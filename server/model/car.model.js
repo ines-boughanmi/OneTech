@@ -5,8 +5,15 @@ module.exports =(connection,DataTypes)=>{
         license_plate:DataTypes.STRING,
         image:DataTypes.STRING,
         car_category:DataTypes.STRING,
-        car_availability:DataTypes.BOOLEAN,
-        car_condition:DataTypes.STRING,
+        car_availability:{
+            type:DataTypes.BOOLEAN,
+            defaultValue:true
+        },
+        car_condition:{
+            type:DataTypes.ENUM,
+            values:["Maintenance","In service","Out Of service"],
+            defaultValue:"In service"
+        },
         color:DataTypes.STRING,
         seat_availability:DataTypes.INTEGER,
         

@@ -1,12 +1,32 @@
-import React from "react";
-import SideNav from "../SideNav/SideNav";
+import React, { useEffect, useState } from "react";
 import "./parkingDashBoard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
 import OneCar from "./OneCar";
 import AddModal from "./AddModal";
+import axios from "axios";
 
 const ParkingDashBoard = ({ user }) => {
+  const [carsList,setCarsList] = useState([])
+  const [reload,setReload] = useState(true)
+
+
+  const fetchCars = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if(token){
+        const data = await axios.get("http://localhost:3001/api/car/getAll");
+        setCarsList(data.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    fetchCars()
+  },[carsList.length,reload])
+
   return (
     <div className="content-container">
       <div className="search-section">
@@ -65,14 +85,21 @@ const ParkingDashBoard = ({ user }) => {
         <div className="content-section">
           <div className="content-container-header">
               <p className="path">Parking</p>
-              <AddModal/>
+              <AddModal   reload={reload} setReload={setReload}/>
           </div>
-        <div className="car-container">
-            <OneCar/>
-            <OneCar/>
-            <OneCar/>
-            <OneCar/>
-        </div>
+
+          {
+            carsList.length ? <div className="car-container">
+            {
+              carsList.map((car) => (
+                <OneCar key={car.id} car={car} reload={reload} setReload={setReload} />
+              ))
+            }
+        </div> :
+         <div className="noCar-container">
+         <p className="noCars">No Cars Available</p>
+     </div>
+          }
         </div>
     </div>
   );
