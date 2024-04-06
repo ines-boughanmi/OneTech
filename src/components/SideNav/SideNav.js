@@ -22,7 +22,7 @@ export const SideNav = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <React.Fragment className="sidenav">
+    <React.Fragment >
       {/* Sidebar */}
 
       <div className="SideNav">

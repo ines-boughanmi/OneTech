@@ -1,18 +1,18 @@
-import { useLocation,Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./profile.css";
-import React, {useEffect,useState } from "react";
-import add from "../../assets/4211763.png";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SideNav from "../SideNav/SideNav";
 
 const Profile = () => {
-  useEffect(()=>{
-    getUser()
-  },[])
+  useEffect(() => {
+    getUser();
+  }, []);
   const [user, setUser] = useState({});
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -20,35 +20,104 @@ const Profile = () => {
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [image, setImage] = useState("");
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
+  const [show1, setShow1] = useState(false);
+  const [show2, setShow2] = useState(false);
   const navigate = useNavigate();
 
-  const getUser = async () => {
+  const notifyError = () => {
+    toast.error("check your Credentials", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const notify = () => {
+    toast.success("Profile Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const notifyPassError = () => {
+    toast.error("check your Password", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const checkPass = async (body) => {
     try {
-      const token = localStorage.getItem("token");
-      const data = await axios.get("http://localhost:3001/api/user/getOne", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        }, 
-      });
-      console.log(data.data);
-      setUser(data.data);
-      console.log(data.data);
-      setUser(data.data);
-      setName(data.data.name);
-      setLastName(data.data.lastname);
-      setEmail(data.data.email);
-      setLocation(data.data.location);
-      setPhone(data.data.phone);
-      setPassword(data.data.password);
-      setImage(data.data.image);
+      if(password){
+        const data = await axios.post(
+          "http://localhost:3001/api/user/passCheck",
+          body
+        );
+        if (data.data.message) {
+          setErrors({
+            ...errors,
+            passwordError: "Password is incorrect",
+          });
+        } else {
+          setErrors({
+            ...errors,
+            passwordError: "",
+          });
+        }
+      }else{
+        setErrors({
+          ...errors,
+          passwordError: "",
+        });
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  
+
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const data = await axios.get("http://localhost:3001/api/user/getOne", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(data.data);
+        console.log(data.data);
+        setName(data.data.name);
+        setLastName(data.data.lastname);
+        setEmail(data.data.email);
+        setLocation(data.data.location);
+        setPhone(data.data.phone);
+        setImage(data.data.image);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleEmailError = () => {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     console.log(regex.test(email));
@@ -124,44 +193,56 @@ const Profile = () => {
       });
     }
   };
-
-  const handlePasswordError = () => {
-    if (!password.length) {
+  const handlePasswordConfirm = () => {
+    if (newPassword !== confirmPassword) {
       setErrors({
         ...errors,
-        passwordError: "Password is required",
-      });
-    } else if (password.length < 6) {
-      setErrors({
-        ...errors,
-        passwordError: "Password should be at least 6 charachters",
+        confirmPasswordError: "Password doesn't match",
       });
     } else {
       setErrors({
         ...errors,
-        passwordError: "",
+        confirmPasswordError: "",
       });
     }
   };
-  const notify = () => {
-    toast.error("Check Info", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+
+  const handleNewPasswordError = () => {
+    if (newPassword.length !== 0 && newPassword.length < 6) {
+      setErrors({
+        ...errors,
+        newPasswordError: "Password should be at least 6 charachters",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        newPasswordError: "",
+      });
+    }
   };
 
   const handleEdit = async (body) => {
     try {
-      await axios.post("http://localhost:3001/api/user/update", body);
+      if (newPassword.length) {
+        if (newPassword !== confirmPassword) {
+          notifyPassError();
+        } else {
+          await axios.put(`http://localhost:3001/api/user/update/${user.id}`, {
+            ...body,
+            password: newPassword,
+          });
+          notify();
+        }
+      } else {
+        await axios.put(
+          `http://localhost:3001/api/user/update/${user.id}`,
+          body
+        );
+        notify();
+      }
     } catch (error) {
       console.log(error);
-      notify();
+      notifyError();
     }
   };
 
@@ -180,139 +261,145 @@ const Profile = () => {
   };
 
   return (
-    <div className="container1">
-      <form className="input-group">
-        <label className="custum-file-upload" htmlFor="file">
-          <div className="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
-              {/* SVG code */}
-            </svg>
+    <div className="profile">
+      <SideNav user={user} />
+      <div className="profileContainer">
+        <div className=" imageLeft">
+          <div className="imageCircle">
+            <img src={image} alt="" />
           </div>
-          <div className="text">
-            <img src={image || add} alt="" className="addImage" />
+          <div className="changeImage">
+            <p style={{ color: "#00396b", fontWeight: "bold" }}>{user.role}</p>
+            <label for="file-upload" class="custom-file-upload">
+              <i class="fas fa-cloud-upload-alt"></i> Choose File
+              <input id="file-upload" type="file"  onChange={(e) => profileUpload(e)}  />
+            </label>
           </div>
-          <input type="file" id="file" onChange={(e) => profileUpload(e)} />
-        </label>
-        {/* End of custom file upload label */}
+        </div>
+        <div className="inputSection">
+          <div className="inputLine">
+            <div className="inputItem">
+              <p>First Name</p>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                onBlur={(e) => {
+                  handleNameError();
+                }}
+              />
+              {errors.nameError ? (
+                <small className="text-danger">{errors.nameError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="inputItem">
+              <p>Last Name</p>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                onBlur={(e) => {
+                  handleLastNameError();
+                }}
+              />
+              {errors.lastNameError ? (
+                <small className="text-danger">{errors.lastNameError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+          <div className="inputLine">
+            <div className="inputItem">
+              <p>Email</p>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                onBlur={(e) => {
+                  handleEmailError();
+                }}
+              />
+              {errors.emailError ? (
+                <small className="text-danger">{errors.emailError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="inputItem">
+              <p>Phone Number</p>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+                onBlur={(e) => {
+                  handlePhoneError();
+                }}
+              />
+              {errors.phoneError ? (
+                <small className="text-danger">{errors.phoneError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
 
-        <div className="form-group">
-          <label for="name">Name</label>
-          <div className="input-section">
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              placeholder="example"
-              onChange={(e) => setName(e.target.value)}
-              onBlur={(e) => handleNameError()}
-              value={name}
-            />
+          <div className="inputLineLocation">
+            <div className="inputItemLocation">
+              <p>Location</p>
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                }}
+                onBlur={(e) => {
+                  handleLocationError();
+                }}
+              />
+              {errors.locationError ? (
+                <small className="text-danger">{errors.locationError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-          {errors.nameError ? (
-            <small className="text-danger">{errors.nameError}</small>
-          ) : (
-            <></>
-          )}
         </div>
 
-        <div className="form-group">
-          <label for="lastname">LastName</label>
-          <div className="input-section">
-            <input
-              type="text"
-              className="form-control"
-              id="lastname"
-              placeholder="example"
-              onChange={(e) => setLastName(e.target.value)}
-              onBlur={(e) => handleLastNameError()}
-              value={lastName}
-            />
-          </div>
-          {errors.lastNameError ? (
-            <small className="text-danger">{errors.lastNameError}</small>
-          ) : (
-            <></>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label for="email">Email</label>
-          <div className="input-section">
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="example@gmail.com"
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={(e) => handleEmailError()}
-              value={email}
-            />
-          </div>
-          {errors.emailError ? (
-            <small className="text-danger">{errors.emailError}</small>
-          ) : (
-            <></>
-          )}
-        </div>
-        <div className="form-group">
-          <label for="location">Location</label>
-          <div className="input-section">
-            <input
-              type="text"
-              className="form-control"
-              id="location"
-              placeholder="state,city"
-              onChange={(e) => setLocation(e.target.value)}
-              onBlur={(e) => handleLocationError()}
-              value={location}
-            />
-          </div>
-          {errors.locationError ? (
-            <small className="text-danger">{errors.locationError}</small>
-          ) : (
-            <></>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label for="phone">Phone</label>
-          <div className="input-section">
-            <input
-              type="text"
-              className="form-control"
-              id="phone"
-              placeholder="+216 ********"
-              onChange={(e) => setPhone(e.target.value)}
-              onBlur={(e) => handlePhoneError()}
-              value={phone}
-            />
-          </div>
-          {errors.phoneError ? (
-            <small className="text-danger">{errors.phoneError}</small>
-          ) : (
-            <></>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label for="password">Password</label>
-          <div className="input-section">
+        <div className="passwordChange">
+          <p>Change Password</p>
+          <p className="passwordLabel">Current Password</p>
+          <div className="inputPassword">
             <input
               type={show ? "text" : "password"}
               className="form-control"
               id="password"
-              onBlur={(e) => {
-                handlePasswordError();
-              }}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
+              onBlur={(e) => {
+                checkPass({ email: user.email, password });
+              }}
             />
+
             {show ? (
-              <FontAwesomeIcon icon={faEye} onClick={(e) => setShow(!show)} />
+              <FontAwesomeIcon
+                className="iconPassword"
+                icon={faEye}
+                onClick={(e) => setShow(!show)}
+              />
             ) : (
               <FontAwesomeIcon
+                className="iconPassword"
                 icon={faEyeSlash}
                 onClick={(e) => setShow(!show)}
               />
@@ -323,30 +410,88 @@ const Profile = () => {
           ) : (
             <></>
           )}
-        </div>
+          <p className="passwordLabel">New Password</p>
+          <div className="inputPassword">
+            <input
+              type={show1 ? "text" : "password"}
+              className="form-control"
+              id="password"
+              onChange={(e) => setNewPassword(e.target.value)}
+              value={newPassword}
+              onBlur={(e) => {
+                handleNewPasswordError();
+              }}
+            />
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={(e) => {
-            e.preventDefault();
-            handleEdit({
-              name,
-              lastname: lastName,
-              email,
-              phone,
-              location,
-              password,
-            });
-          }}
-        >
-          Edit
-        </button>
+            {show1 ? (
+              <FontAwesomeIcon
+                className="iconPassword"
+                icon={faEye}
+                onClick={(e) => setShow1(!show1)}
+              />
+            ) : (
+              <FontAwesomeIcon
+                className="iconPassword"
+                icon={faEyeSlash}
+                onClick={(e) => setShow1(!show1)}
+              />
+            )}
+          </div>
+          {errors.newPasswordError ? (
+            <small className="text-danger">{errors.newPasswordError}</small>
+          ) : (
+            <></>
+          )}
+          <p className="passwordLabel">Confirm Password</p>
+          <div className="inputPassword">
+            <input
+              type={show2 ? "text" : "password"}
+              className="form-control"
+              id="password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              onBlur={(e) => {
+                handlePasswordConfirm();
+              }}
+            />
+
+            {show2 ? (
+              <FontAwesomeIcon
+                className="iconPassword"
+                icon={faEye}
+                onClick={(e) => setShow2(!show2)}
+              />
+            ) : (
+              <FontAwesomeIcon
+                className="iconPassword"
+                icon={faEyeSlash}
+                onClick={(e) => setShow2(!show2)}
+              />
+            )}
+          </div>
+          {errors.confirmPasswordError ? (
+            <small className="text-danger">{errors.confirmPasswordError}</small>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="confirm">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              handleEdit({ email, name, lastName, location, phone , image});
+            }}
+          >
+            Login
+          </button>
+        </div>
         <ToastContainer
           bodyClassName="toast-container"
           progressClassName="progress-toast"
         />
-      </form>
+      </div>
     </div>
   );
 };

@@ -33,6 +33,29 @@ module.exports = {
     },
 
 
+    passCheck : async (req,res) =>{
+        try {
+            const User = await db.User.findOne({where:{email:req.body.email}})
+            bcrypt.compare(req.body.password, User.password)
+               .then((passCheck) => {
+                    if (!passCheck) {
+                        res.status(200).send({
+                            message: "Password Incorrect", 
+                            
+                        });
+                    }
+                    else {
+                        res.status(200).json({
+                            message: ""
+                        });
+                    }
+                    
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
     login  : async (req, res) => {
         db.User.findOne({
             where: {
@@ -110,8 +133,16 @@ module.exports = {
 
     update:async (req,res)=>{
         try {
-            const user = await db.User.update(req.body,{where:{id:req.params.id}})
-            res.json(user)
+            if(req.body.password){
+                bcrypt.hash(req.body.password , 10).then((hashPass)=>{
+                    const user =  db.User.update({...req.body,password:hashPass},{where:{id:req.params.id}})
+                    res.json(user)  
+                })
+            }
+            else{
+                const user = await db.User.update(req.body,{where:{id:req.params.id}})
+                res.json(user)
+            }
         } catch (error) {
             console.log(error)
         }
