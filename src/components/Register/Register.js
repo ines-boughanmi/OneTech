@@ -137,7 +137,7 @@ function Register() {
   const notify = () => {
     
     
-    toast.error("Check Info", {
+    toast.error("check your Credentials", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,

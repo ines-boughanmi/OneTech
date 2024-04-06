@@ -42,6 +42,7 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
         throw error;
       });
   };
+  
   return (
     <div>
       <Modal
@@ -205,7 +206,7 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                   handleUpdate(car.id,{brand,car_model:model,license_plate:license,image,car_category:category,seat_availability:seats,color,car_condition:condition,car_availability:available})
                 }}
               >
-                Update
+                Edit
               </Button>
             </div>
           </div>
