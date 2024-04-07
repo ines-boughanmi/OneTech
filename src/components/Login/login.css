@@ -45,6 +45,7 @@ h2 {
     align-items: center;
     gap: 0.5rem;
     width: 100%;
+    background-color: white;
     border: 1px solid rgb(196, 193, 193);
     border-radius: 10px;
     padding: 5px;

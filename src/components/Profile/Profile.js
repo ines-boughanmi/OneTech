@@ -1,4 +1,4 @@
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -27,7 +27,6 @@ const Profile = () => {
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
-  const navigate = useNavigate();
 
   const notifyError = () => {
     toast.error("check your Credentials", {
@@ -279,7 +278,7 @@ const Profile = () => {
         <div className="inputSection">
           <div className="inputLine">
             <div className="inputItem">
-              <p>First Name</p>
+              <p>First Name<span >*</span></p>
               <input
                 type="text"
                 value={name}
@@ -297,7 +296,7 @@ const Profile = () => {
               )}
             </div>
             <div className="inputItem">
-              <p>Last Name</p>
+              <p>Last Name<span >*</span></p>
               <input
                 type="text"
                 value={lastName}
@@ -317,7 +316,7 @@ const Profile = () => {
           </div>
           <div className="inputLine">
             <div className="inputItem">
-              <p>Email</p>
+              <p>Email<span >*</span></p>
               <input
                 type="text"
                 value={email}
@@ -335,7 +334,7 @@ const Profile = () => {
               )}
             </div>
             <div className="inputItem">
-              <p>Phone Number</p>
+              <p>Phone Number<span >*</span></p>
               <input
                 type="text"
                 value={phone}
@@ -356,7 +355,7 @@ const Profile = () => {
 
           <div className="inputLineLocation">
             <div className="inputItemLocation">
-              <p>Location</p>
+              <p>Location<span >*</span></p>
               <input
                 type="text"
                 value={location}
@@ -378,7 +377,7 @@ const Profile = () => {
 
         <div className="passwordChange">
           <p>Change Password</p>
-          <p className="passwordLabel">Current Password</p>
+          <p className="passwordLabel">Current Password<span >*</span></p>
           <div className="inputPassword">
             <input
               type={show ? "text" : "password"}
@@ -410,7 +409,7 @@ const Profile = () => {
           ) : (
             <></>
           )}
-          <p className="passwordLabel">New Password</p>
+          <p className="passwordLabel">New Password<span >*</span></p>
           <div className="inputPassword">
             <input
               type={show1 ? "text" : "password"}
@@ -442,7 +441,7 @@ const Profile = () => {
           ) : (
             <></>
           )}
-          <p className="passwordLabel">Confirm Password</p>
+          <p className="passwordLabel">Confirm Password<span >*</span></p>
           <div className="inputPassword">
             <input
               type={show2 ? "text" : "password"}
@@ -484,7 +483,7 @@ const Profile = () => {
               handleEdit({ email, name, lastName, location, phone , image});
             }}
           >
-            Login
+            Edit
           </button>
         </div>
         <ToastContainer

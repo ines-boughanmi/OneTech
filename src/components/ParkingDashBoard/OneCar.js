@@ -60,14 +60,15 @@ const OneCar = ({car, reload , setReload}) => {
             <p className="car-title">{car.brand+" " + car.car_model +" "+car.car_category}</p>
             <p>{car.license_plate}</p>
         </div>
+        <div className="line"></div>
         <p className="card-car__description">
             Car Condition : {car.car_condition}<br/>
             Color : {car.color}<br/>
             Seat Available : {car.seat_availability}
         </p>
         <div className="card-butons">
-            <FontAwesomeIcon icon={faTrash}  onClick={handleOpenDelete} className="icon"/>
-            <FontAwesomeIcon icon={faEdit} onClick={handleOpenUpdate} className="icon"/>
+            <FontAwesomeIcon icon={faEdit} onClick={handleOpenUpdate} className="icon1"/>
+            <FontAwesomeIcon icon={faTrash}  onClick={handleOpenDelete} className="icon2"/>
         </div>
       </div>
       <ModalDelete car={car} open={openDelete} handleClose={handleCloseDelete} handleDelete={handleDelete}  />

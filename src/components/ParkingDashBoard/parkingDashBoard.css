@@ -21,7 +21,7 @@
     caret-color: #f7f7f8;
     color: black;
     padding: 7px 10px;
-    border: 2px solid lightgray;
+    border: 2px solid rgb(236, 236, 236);
     border-top-left-radius: 10px !important;
     border-bottom-left-radius: 10px !important;
     transition: all .2s ease;
@@ -38,7 +38,7 @@
   .content-section{
     width: 100%;
     height: 70%;
-    background-color: #f0f0f0;
+    background-color: #fffe;
     border-radius: 15px;
     display: flex;
     justify-content: flex-start;
@@ -155,7 +155,7 @@
     position: relative;
     width: 450px;
     aspect-ratio: 16/9;
-    background-color: #f2f2f2;
+    background-color: #f4f7ff;
     border-radius: 10px;
 
     overflow: hidden;
@@ -192,7 +192,7 @@
     height: 100%;
     padding: 20px;
     box-sizing: border-box;
-    background-color: white;
+    background-color: #f4f7ff;
     transform: rotateX(-90deg);
     transform-origin: bottom;
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -266,9 +266,15 @@
     height: 70%;
   }
 
-  .icon{
-    width: 1.8rem;
-    height: 1.8rem;
+  .icon1{
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #8e9bb9;
+    cursor: pointer;
+  }
+  .icon2{
+    width: 1.5rem;
+    height: 1.5rem;
     color: #F5A707;
     cursor: pointer;
   }
