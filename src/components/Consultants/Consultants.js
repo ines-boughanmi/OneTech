@@ -102,7 +102,7 @@ const Consultants = () => {
           </div>
         ) : (
           <div className="noCar-container">
-            <p className="noCars">No Cars Available</p>
+            <p className="noCars">No Consultants Available</p>
           </div>
         )}
       </div>

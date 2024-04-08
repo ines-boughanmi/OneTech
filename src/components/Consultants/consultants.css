@@ -121,3 +121,25 @@ gap: 1.5rem;
     font-weight: 500;
   }
 
+  .passwordLayout{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .label-left{
+    width: 100%;
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+  }
+  .label-left p{
+    color: #00396b;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .label-left span{
+    color: #f08700;
+  }
+

@@ -1,6 +1,6 @@
 
 .background{
-    background-color: #e7e7e6;
+    background-color: #e7e7e6 !important;
     contain:size;
 }
 .position{

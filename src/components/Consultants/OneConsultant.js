@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import ConsultantDelete from "./ConsultantDelete";
-import ConsultantUpdate from "./ConsultantUpdate";
+import UpdateConsultant from "./UpdateConsultant";
 
 const OneConsultant = ({ consultant,reload, setReload }) => {
   const [openDelete,setOpenDelete] = useState(false)
@@ -73,7 +73,7 @@ const OneConsultant = ({ consultant,reload, setReload }) => {
             </div>
           </div>
           <ConsultantDelete consultant={consultant} open={openDelete} handleClose={handleCloseDelete} handleDelete={handleDelete}  />
-          <ConsultantUpdate consultant={consultant} open={openUpdate} handleClose={handleCloseUpdate} handleUpdate={handleUpdate} />
+          <UpdateConsultant consultant={consultant} open={openUpdate} handleClose={handleCloseUpdate} handleUpdate={handleUpdate} />
         </div>
       ) : (
         <></>
