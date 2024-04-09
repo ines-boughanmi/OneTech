@@ -74,11 +74,6 @@ export const SideNav = ({ user }) => {
                   elemBefore: () => <FontAwesomeIcon icon={faChartPie} />,
                 },
                 {
-                  title: "Missions",
-                  itemId: "/missions",
-                  elemBefore: () => <FontAwesomeIcon icon={faCalendarDays} />,
-                },
-                {
                   title: "Consultants",
                   itemId: "/consultants",
                   elemBefore: () => <FontAwesomeIcon icon={faUsers} />,

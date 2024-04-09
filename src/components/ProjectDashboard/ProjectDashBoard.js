@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import "./projectDashboard.css"
+import "./projectDashboard.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,7 +23,9 @@ const ProjectDashBoard = () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const data = await axios.get("http://localhost:3001/api/project/getAll");
+        const data = await axios.get(
+          "http://localhost:3001/api/project/getAll"
+        );
         setProjectsList(data.data);
       }
     } catch (error) {
@@ -40,11 +42,14 @@ const ProjectDashBoard = () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const data = await axios.get("http://localhost:3001/api/project/getOne", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const data = await axios.get(
+          "http://localhost:3001/api/project/getOne",
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setProject(data.data);
         console.log(data.data);
       }
@@ -56,8 +61,8 @@ const ProjectDashBoard = () => {
   return (
     <div className="projects">
       <div className="search-group">
-        <div className="search-section2">
-          <div className="container-search2">
+        <div className="search-section3">
+          <div className="container-search3">
             <input
               type="text"
               name="text"
@@ -85,10 +90,13 @@ const ProjectDashBoard = () => {
           <p>Pages / Projects</p>
           <h1>Projects</h1>
         </div>
+        <div className="button-right">
+          <Link to="/add">
+            <button className="button-add">+ Add</button>
+          </Link>
+        </div>
         {projectsList.length ? (
-          <div className="cards-container">
-
-          </div>
+          <div className="cards-container"></div>
         ) : (
           <div className="noCar-container">
             <p className="noCars">No Projects Available</p>
@@ -96,7 +104,7 @@ const ProjectDashBoard = () => {
         )}
       </div>
     </div>
-);
+  );
 };
 
 export default ProjectDashBoard;

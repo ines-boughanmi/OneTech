@@ -1,0 +1,324 @@
+.projectContainer{
+    background-color: #fffe;
+    border-radius: 10px;
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+.addProject{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.budget{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #e1e9f3;
+    border-radius: 5px;
+
+}
+
+.budget h4{
+padding-right: 5px;
+
+}
+
+
+
+
+.inputSection2{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 1.3rem;
+    padding: 1rem;
+}
+
+.inputLine2{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20%;
+}
+.inputLineLocation2{
+    display: flex;
+    width: 100%;
+
+    align-items: center;
+    gap: 20%;
+}
+
+.inputLineLocationBudget{
+    display: flex;
+    width: 100%;
+
+    align-items: center;
+    gap: 20%;
+}
+
+.inputLine2 input{
+    width: 100%;
+    border: 1px solid #e1e9f3;
+    height: 2rem;
+    border-radius:5px;
+    padding: 0.2rem;
+    font-size: 16px;
+}
+.inputLineLocation2 input{
+    width: 100%;
+    border: 1px solid #e1e9f3;
+    outline: none;
+    height: 2.5rem;
+    border-radius:5px;
+    padding: 0.2rem;
+    font-size: 16px;
+}
+.inputLineLocationBudget input{
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 2.5rem;
+    border-radius:5px;
+    padding: 0.2rem;
+    font-size: 16px;
+}
+
+.inputLineLocation2 textarea{
+    width: 100%;
+    min-height: 130px;
+    border: 1px solid #e1e9f3;
+    outline: none;
+    height: 2.5rem;
+    border-radius:5px;
+    padding: 0.2rem;
+    font-size: 16px;
+}
+
+
+.inputItem{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.3rem;
+
+}
+
+.button-addMission{
+    background-color: #f08700 !important;
+    color: white !important;
+    border: none !important;
+    cursor: pointer !important;
+    border-radius: 10px !important;
+    height: 40px !important;
+    width: 100px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-weight: bolder !important;
+    font-size: 17px !important;
+    transition: all 0.5s !important;
+  }
+  .button-addMission:hover{
+    scale: 1.1 !important;
+    transition: all 0.3s !important;
+  }
+
+  .button-addProject{
+    background-color: #f08700 !important;
+    color: white !important;
+    border: none !important;
+    cursor: pointer !important;
+    border-radius: 10px !important;
+    height: 40px !important;
+    width: 200px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-weight: bolder !important;
+    font-size: 17px !important;
+    transition: all 0.5s !important;
+  }
+
+  .button-rightMission{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+  }
+
+.inputItemLocation2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.3rem;
+}
+
+.inputItemLocation2 p{
+    color: #00396b;
+    font-weight:600;
+    font-size: 16px;
+    
+}
+
+.inputItem span{
+    color:#f08700; 
+}
+.inputItemLocation2 span{
+    color:#f08700; 
+}
+.passwordLabel span{
+    color:#f08700;
+}
+
+
+
+.inputItem p{
+    color: #00396b;
+    font-weight:600;
+    font-size: 16px;
+}
+
+.passwordChange{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0.5rem;
+    gap: 1rem;
+}
+
+.passwordChange p{
+    font-size: 26px;
+}
+
+.passwordLabel{
+    color: #00396b;
+    font-weight:600;
+    font-size: 16px !important ;
+}
+
+.inputPassword {
+    border: 1px solid #e1e9f3;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: white ;
+    gap: 0.5rem;
+    height: 2.4rem;
+    padding: 0.2rem;
+    border-radius: 5px;
+}
+
+.inputPassword input{
+    width: 100%;
+    border: none;
+    height: 2rem;
+    border-radius:5px;
+    padding: 0.2rem;
+    font-size: 16px;
+    height: 100%;
+}
+
+.confirm{
+    width: 20%;
+}
+
+.iconPassword{
+    color: #00396b;
+    cursor: pointer;
+}
+
+.text-danger{
+    color: red;
+}
+
+.changeImage{
+    width: 30%;
+    height: 80%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #f0f0f0;
+}
+
+#file-upload {
+    display: none;
+}
+
+.consultantTitle h2{
+    font-size: 26px;
+}
+
+
+.place{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.missionLine{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.missionLine p{
+    color: #00396b;
+    font-weight:600;
+    font-size: 16px;
+}
+.missionLine span{
+    color:#f08700; 
+}
+.textInputArea{
+    height: 100px;
+    padding-left: 15px;
+    width: 100%;
+    outline: none;
+    border: 1px solid rgb(194, 194, 194);
+    font-size: 16px;
+    border-radius: 0.25rem !important;
+}
