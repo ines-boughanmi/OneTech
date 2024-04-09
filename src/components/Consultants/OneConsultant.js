@@ -66,8 +66,11 @@ const OneConsultant = ({ consultant,reload, setReload }) => {
           <div className="consultant-layout">
             <p>{consultant.name+" " + consultant.lastname }</p>
             <div className="icons">
-              <FontAwesomeIcon icon={faHourglass1} className="icon1" />
-              <FontAwesomeIcon icon={faCheck} className="icon1" />
+              { consultant.validity ? <FontAwesomeIcon icon={faCheck} className="check-green"  onClick={(e)=>{
+                handleUpdate(consultant.id,{validity:!consultant.validity})
+              }} /> : <FontAwesomeIcon icon={faHourglass1} className="wait-yellow"  onClick={(e)=>{
+                handleUpdate(consultant.id,{validity:!consultant.validity})
+              }}  />}
               <FontAwesomeIcon icon={faPen} onClick={handleOpenUpdate} className="icon1" />
               <FontAwesomeIcon icon={faTrash} onClick={handleOpenDelete} className="icon2" />
             </div>

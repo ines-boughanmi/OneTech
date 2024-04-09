@@ -121,20 +121,6 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   }}
                   value={phone}
                 />
-                <div className="label-left">
-                <p>
-                  Location<span>*</span>
-                </p>
-                </div>
-                <input
-                  type="text"
-                  placeholder="state,city"
-                  className="textInputs"
-                  onChange={(e) => {
-                    setLocation(e.target.value);
-                  }}
-                  value={location}
-                />
               </div>
 
               <div className="formContainerRight">
@@ -161,7 +147,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   <input
                     type={show ? "text" : "password"}
                     placeholder="Consultant Password"
-                    className="textInputs"
+                    className="textInputs1"
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
@@ -183,24 +169,20 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 </div>
                 <div className="label-left">
                 <p>
-                  Validity<span>*</span>
+                  Location<span>*</span>
                 </p>
                 </div>
-                <div className="custom-select">
-                  <select
-                    placeholder="Validity"
-                    value={validity}
-                    onChange={(e) => {
-                      setValidity(e.target.value);
-                    }}
-                  >
-                    <option disabled selected value="">
-                      Validity
-                    </option>
-                    <option value="true">Valid</option>
-                    <option value="false">Not Valid</option>
-                  </select>
-                </div>
+                <input
+                  type="text"
+                  placeholder="state,city"
+                  className="textInputs"
+                  onChange={(e) => {
+                    setLocation(e.target.value);
+                  }}
+                  value={location}
+                />
+
+
               </div>
             </div>
 
@@ -212,7 +194,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleUpdate(consultant.id, {});
+                  handleUpdate(consultant.id, {name,lastName,password,email,phone,validity,image,location});
                 }}
               >
                 Edit

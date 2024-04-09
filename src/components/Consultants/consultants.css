@@ -74,7 +74,7 @@ gap: 1.5rem;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 
   }
   .imageCircleConsultant{
@@ -126,7 +126,19 @@ gap: 1.5rem;
     align-items: center;
     justify-content: center;
     width: 100%;
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 0.25rem !important;
   }
+  
+  .textInputs1{
+    padding-left: 15px;
+    width: 100%;
+    border:none;
+    height: 2.6rem;
+    outline: none;
+    font-size: 16px;
+  }
+
   .label-left{
     width: 100%;
     display: flex;
@@ -143,3 +155,17 @@ gap: 1.5rem;
     color: #f08700;
   }
 
+  .check-green{
+    width: 1.5rem;
+    height: 1.5rem;
+    color:green;
+    cursor: pointer;
+  }
+
+  .wait-yellow{
+    width: 1.5rem;
+    height: 1.5rem;
+    color:rgb(248, 203, 55);
+    cursor: pointer;
+
+  }
