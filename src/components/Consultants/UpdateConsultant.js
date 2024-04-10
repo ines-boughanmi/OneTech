@@ -194,7 +194,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleUpdate(consultant.id, {name,lastName,password,email,phone,validity,image,location});
+                  handleUpdate(consultant.id, {name,lastName,password,email,phone,image,location});
                 }}
               >
                 Edit

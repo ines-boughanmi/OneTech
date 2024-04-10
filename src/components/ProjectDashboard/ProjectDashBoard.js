@@ -13,6 +13,7 @@ import {
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import OneProject from "./OneProject";
 
 const ProjectDashBoard = () => {
   const [project, setProject] = useState({});
@@ -95,13 +96,12 @@ const ProjectDashBoard = () => {
             <button className="button-add">+ Add</button>
           </Link>
         </div>
-        {projectsList.length ? (
-          <div className="cards-container"></div>
-        ) : (
-          <div className="noCar-container">
-            <p className="noCars">No Projects Available</p>
-          </div>
-        )}
+        {/* {
+          projectsList.slice(projectsList.length-5,projectsList.length).map((project)=>{
+            return <OneProject/>
+          })
+        } */}
+        <OneProject/>
       </div>
     </div>
   );

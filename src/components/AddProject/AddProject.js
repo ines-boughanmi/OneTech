@@ -12,6 +12,28 @@ import AddMission from "./AddMission";
 
 const AddProject = () => {
   const [user, setUser] = useState({});
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [budget, setBudget] = useState("");
+  const [startDate, setStartDate] = useState("");
+
+  const addWeekToDate = (date) => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 7);
+    return newDate;
+  }
+
+  const handleAdd = async (body) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        
+        await axios.post("http://localhost:3001/api/project/create", {...body,finish_date:addWeekToDate(body.start_date)});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getUser = async () => {
     try {
@@ -62,7 +84,7 @@ const AddProject = () => {
   return (
     <div className="addProject">
       <SideNav user={user} />
-      <div className="projectContainer">
+      <div className="projectContainer">  
         <div className="consultantTitle">
           <h1>Add New Project</h1>
         </div>
@@ -72,15 +94,28 @@ const AddProject = () => {
               <p>
                 Title<span>*</span>
               </p>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+              />
             </div>
           </div>
           <div className="inputLineLocation2">
+            
             <div className="inputItemLocation2">
               <p>
                 Start Date<span>*</span>
               </p>
-              <input type="date" />
+              <input
+                type="date"
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                }}
+                value={startDate}
+              />
             </div>
           </div>
           <div className="inputLineLocationBudget">
@@ -89,7 +124,13 @@ const AddProject = () => {
                 Budget<span>*</span>
               </p>
               <div className="budget">
-                <input type="text" />
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setBudget(e.target.value);
+                  }}
+                  value={budget}
+                />
                 <h4>TND</h4>
               </div>
             </div>
@@ -102,15 +143,18 @@ const AddProject = () => {
               <textarea
                 className="textarea"
                 placeholder="Enter Description here..."
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
+                value={description}
               />
             </div>
           </div>
-          <AddMission/>
-
+          <AddMission />
 
           <div className="consultantTitle">
-          <h2>Planning</h2>
-        </div>
+            <h2>Planning</h2>
+          </div>
         </div>
 
         <div className="confirm">
@@ -119,6 +163,7 @@ const AddProject = () => {
             className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
+              handleAdd({project_title:title,description,budget,start_date:startDate,});
             }}
           >
             Add

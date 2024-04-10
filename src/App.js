@@ -7,6 +7,7 @@ import DashBoard from './components/DashBoard/DashBoard';
 import Profile from './components/Profile/Profile';
 import Consultants from './components/Consultants/Consultants';
 import AddProject from './components/AddProject/AddProject';
+import Contact from './components/Contact/Contact';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path='/profile' Component={Profile}/>
         <Route path='/consultants' Component={Consultants}/>
         <Route path='/add' Component={AddProject}/>
+        <Route path='/contact' Component={Contact}/>
+
       </Routes>
         
     </div>

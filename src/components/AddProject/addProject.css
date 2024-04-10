@@ -16,6 +16,10 @@
     align-items: center;
     justify-content: center;
 }
+.radio{
+    display: block !important;
+    background-color: red;
+}
 
 .budget{
     width: 100%;
@@ -218,7 +222,23 @@ padding-right: 5px;
     font-weight:600;
     font-size: 16px !important ;
 }
-
+.radio{
+    display: block !important;
+    opacity: 1 !important;
+    position:  relative !important;
+}
+.radioButtons{
+    display: flex;
+    width: 100%;
+    gap: 2rem;
+}
+.radioHolder{
+    display: flex ;
+    justify-content: center ;
+    align-items: center;
+    gap: 1rem;
+    width: 25%;
+}
 .inputPassword {
     border: 1px solid #e1e9f3;
     width: 40%;

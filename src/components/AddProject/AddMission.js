@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect,  useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -23,6 +23,7 @@ const AddMission = () => {
   const [endDate, setEndDate] = useState("");
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
+  const [disable, setDisable] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -63,6 +64,8 @@ const AddMission = () => {
         <Box sx={style}>
           <div className="form">
             <div className="missionLine">
+            <div>
+            </div>
             <p>
               Title<span>*</span>
             </p>
@@ -76,15 +79,23 @@ const AddMission = () => {
               value={title}
             />
 
-            {/* <input
-              type="text"
-              placeholder="Car Model Name"
-              className="textInputs"
-              onChange={(e)=>{
-                setModel(e.target.value)
-              }}
-              value={model}
-            /> */}
+              <div className="radioButtons">
+                <div className="radioHolder">
+                <input type="radio" className="radio" name="type" value="normal" onChange={(e)=>{
+                  setDisable(false)
+                  setType(e.target.value);
+                }} />
+                  <p>Normal</p>
+                </div>
+                <div className="radioHolder">
+                <input type="radio" className="radio" name="type" value="urgent" onChange={(e)=>{
+                  setDisable(true)
+                  setType(e.target.value)
+                }} />
+                  <p>Urgent</p>
+                </div>
+
+              </div>
             <div className="missionLine">
             <p>
               Start Date<span>*</span>
@@ -97,6 +108,7 @@ const AddMission = () => {
                 setStartDate(e.target.value);
               }}
               value={startDate}
+              disabled={disable}
             />
             <div className="missionLine">
             <p>
@@ -110,6 +122,7 @@ const AddMission = () => {
                 setEndDate(e.target.value);
               }}
               value={endDate}
+              disabled={disable}
             />
             <div className="missionLine">
             <p>
@@ -146,7 +159,7 @@ const AddMission = () => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleAdd({});
+                  handleAdd({title,description,start_date:startDate,end_date:endDate,location,type});
                 }}
               >
                 Add

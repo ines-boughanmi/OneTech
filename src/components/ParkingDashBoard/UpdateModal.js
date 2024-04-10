@@ -18,7 +18,7 @@ const style = {
   borderRadius: "10px",
 };
 
-const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
+const UpdateModal = ({ handleClose, open, car, handleUpdate }) => {
   const [image, setImage] = useState(car.image);
   const [brand, setBrand] = useState(car.brand);
   const [model, setModel] = useState(car.car_model);
@@ -26,8 +26,8 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
   const [color, setColor] = useState(car.color);
   const [category, setCategory] = useState(car.car_category);
   const [seats, setSeats] = useState(car.seat_availability);
-  const [condition,setCondition] = useState(car.car_condition);
-  const [available,setAvailable] = useState(car.car_availability)
+  const [condition, setCondition] = useState(car.car_condition);
+  const [available, setAvailable] = useState(car.car_availability);
 
   const profileUpload = async (e) => {
     const formData = new FormData();
@@ -42,7 +42,7 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
         throw error;
       });
   };
-  
+
   return (
     <div>
       <Modal
@@ -72,6 +72,11 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
 
             <div className="formContent">
               <div className="formContainerLeft">
+                <div className="label-left">
+                  <p>
+                    Brand<span>*</span>
+                  </p>
+                </div>
                 <div className="custom-select">
                   <select
                     value={brand}
@@ -88,6 +93,12 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                   </select>
                 </div>
 
+                <div className="label-left">
+                  <p>
+                    Model<span>*</span>
+                  </p>
+                </div>
+
                 <input
                   type="text"
                   placeholder="Car Model Name"
@@ -97,6 +108,11 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                   }}
                   value={model}
                 />
+                <div className="label-left">
+                  <p>
+                    License plate<span>*</span>
+                  </p>
+                </div>
                 <input
                   type="text"
                   placeholder="license plate Number"
@@ -107,6 +123,11 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                   value={license}
                 />
 
+                <div className="label-left">
+                  <p>
+                    Car Category<span>*</span>
+                  </p>
+                </div>
                 <div className="custom-select">
                   <select
                     onChange={(e) => {
@@ -125,6 +146,11 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
               </div>
 
               <div className="formContainerRight">
+                <div className="label-left">
+                  <p>
+                    Color<span>*</span>
+                  </p>
+                </div>
                 <div className="custom-select">
                   <select
                     placeholder="Color"
@@ -144,28 +170,32 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                     <option value="Blue">Blue</option>
                   </select>
                 </div>
-
-
-
+                <div className="label-left">
+                  <p>
+                    Condition<span>*</span>
+                  </p>
+                </div>
                 <div className="custom-select">
                   <select
-                    placeholder="Color"
+                    placeholder="Condition"
                     value={condition}
                     onChange={(e) => {
                       setCondition(e.target.value);
                     }}
                   >
                     <option disabled selected value="">
-                      Car color
+                      Condition
                     </option>
                     <option value="In service">In service</option>
                     <option value="Out Of service">Out Of service</option>
                     <option value="Maintenance">Maintenance</option>
                   </select>
                 </div>
-
-
-
+                <div className="label-left">
+                  <p>
+                    Car Availability<span>*</span>
+                  </p>
+                </div>
                 <div className="custom-select">
                   <select
                     placeholder="Color"
@@ -180,6 +210,11 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                     <option value="true">Available</option>
                     <option value="false">Unavailable</option>
                   </select>
+                </div>{" "}
+                <div className="label-left">
+                  <p>
+                  Available Seats<span>*</span>
+                  </p>
                 </div>
                 <input
                   className="numberInputs"
@@ -203,7 +238,17 @@ const UpdateModal = ({ handleClose, open, car ,handleUpdate}) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleUpdate(car.id,{brand,car_model:model,license_plate:license,image,car_category:category,seat_availability:seats,color,car_condition:condition,car_availability:available})
+                  handleUpdate(car.id, {
+                    brand,
+                    car_model: model,
+                    license_plate: license,
+                    image,
+                    car_category: category,
+                    seat_availability: seats,
+                    color,
+                    car_condition: condition,
+                    car_availability: available,
+                  });
                 }}
               >
                 Edit

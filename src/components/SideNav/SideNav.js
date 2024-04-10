@@ -108,6 +108,7 @@ export const SideNav = ({ user }) => {
                   itemId: "/assignment",
                   elemBefore: () => <FontAwesomeIcon icon={faFile} />,
                 },
+                
                 {
                   title: "Tracking",
                   itemId: "/tracking",
