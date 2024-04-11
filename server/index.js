@@ -6,6 +6,7 @@ const userRoute = require("./router/user.router")
 const carRoute = require("./router/car.router")
 const projectRoute = require("./router/project.router")
 const missionRoute = require("./router/mission.router")
+const partitionRoute = require("./router/partition.router")
 
 require("./database")
 
@@ -19,6 +20,7 @@ app.use("/api/user", userRoute)
 app.use("/api/car", carRoute)
 app.use("/api/project", projectRoute)
 app.use("/api/mission", missionRoute)
+app.use("/api/partition", partitionRoute)
 
 
 

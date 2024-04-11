@@ -31,15 +31,35 @@ function Login() {
       });
     
   }
+  const notifyValidity = () => {
+    
+    
+      toast.error("Not Valid Yet", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    
+  }
 
 
 
   const handleLogin = async (body)=>{
     try {
-      const data = await axios.post("http://localhost:3001/api/user/login",body)
-      localStorage.setItem("token",data.data.token)
-
-      naviagte("/dash")
+      const user = await axios.post("http://localhost:3001/api/user/getByEmail",body)
+      if(user.data.validity){
+        const data = await axios.post("http://localhost:3001/api/user/login",body)
+        localStorage.setItem("token",data.data.token)
+        naviagte("/dash")
+      }
+      else{
+        notifyValidity()
+      }
     } catch (error) {
       console.log(error)
       notify()

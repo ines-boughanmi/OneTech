@@ -5,6 +5,10 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
 
 const style = {
   position: "absolute",
@@ -17,7 +21,7 @@ const style = {
   p: 4,
   borderRadius: "10px",
 };
-const AddMission = () => {
+const AddMission = ({users}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,7 +31,8 @@ const AddMission = () => {
   const [location, setLocation] = useState("");
   const [disable, setDisable] = useState(false);
   const [errors, setErrors] = useState({});
-
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState([])
   const handleOpen = () => {
     setOpen(true);
     setTitle("");
@@ -38,13 +43,36 @@ const AddMission = () => {
     setLocation("");
   };
 
+  const handleAddPartition = async (mission) => {
+    selected.map( async (user)=>{
+      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
+    })
+
+  }
+
+  const handleOptions = (users) => {
+
+    const filteredUsers = users.filter((user)=>{
+      return user.role === "CONSULTANT" && user.validity === true
+    }) 
+    const options = filteredUsers.map((user) => {
+      return {
+        value: user.id,
+        label: user.name + " " + user.lastname,
+      };
+    });
+    setOptions(options);
+  }
+
+
   const handleClose = () => setOpen(false);
 
   const handleAdd = async (body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.post("http://localhost:3001/api/mission/create", body);
+        const mission = await axios.post("http://localhost:3001/api/mission/create", body);
+        handleAddPartition(mission.data)
         handleClose();
       }
     } catch (error) {
@@ -97,7 +125,10 @@ const AddMission = () => {
   return (
     <div className="place">
       <div className="button-rightMission">
-        <button className="button-addMission" onClick={handleOpen}>
+        <button className="button-addMission" onClick={(e)=>{
+          handleOpen()
+          handleOptions(users)
+        }}>
           + Mission
         </button>
       </div>
@@ -207,6 +238,18 @@ const AddMission = () => {
               ) : (
                 <></>
               )}
+            </div>
+            <div style={{width : '100%'}}>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                styles={{width: '100%'}}
+                onChange={(e)=>{
+                  setSelected(e);
+                }}
+              />
             </div>
 
             <div className="missionLine">

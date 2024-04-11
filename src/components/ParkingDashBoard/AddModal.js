@@ -154,6 +154,7 @@ const AddModal = ({ reload, setReload }) => {
                   setCategory(e.target.value);
                 }}
                 value={category}
+                isMulti
               >
                 <option disabled selected value="">
                   Car Category
@@ -176,6 +177,7 @@ const AddModal = ({ reload, setReload }) => {
                 onChange={(e) => {
                   setColor(e.target.value);
                 }}
+                
               >
                 <option disabled selected value="">
                   Car color

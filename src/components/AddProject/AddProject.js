@@ -17,6 +17,20 @@ const AddProject = () => {
   const [budget, setBudget] = useState("");
   const [startDate, setStartDate] = useState("");
   const [errors, setErrors] = useState({});
+  const [users, setUsers] = useState([])
+
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios.get("http://localhost:3001/api/user/getAll");
+        setUsers(res.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleTitleError = () => {
     if (!title.length) {
@@ -124,6 +138,7 @@ const AddProject = () => {
 
   useEffect(() => {
     getUser();
+    fetchUsers();
   }, []);
 
   return (
@@ -219,7 +234,7 @@ const AddProject = () => {
               />
             </div>
           </div>
-          <AddMission />
+          <AddMission  users={users} />
 
           <div className="consultantTitle">
             <h2>Planning</h2>

@@ -2,6 +2,15 @@ const db = require("../database")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 module.exports = {
+    getOneByEmail : async (req,res) => {
+        try {
+            const User = await db.User.findOne({where:{email:req.body.email}})
+            res.json(User)
+        }   
+        catch (error) {
+            console.log(error)
+        }
+    },
 
     register : async (req, res) => {
         try {
