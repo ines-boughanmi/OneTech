@@ -16,19 +16,64 @@ const AddProject = () => {
   const [description, setDescription] = useState("");
   const [budget, setBudget] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleTitleError = () => {
+    if (!title.length) {
+      setErrors({
+        ...errors,
+        titleError: "Title is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        titleError: "",
+      });
+    }
+  };
+
+  const handleStartDateError = () => {
+    if (!startDate.length) {
+      setErrors({
+        ...errors,
+        startDateError: "Start Date is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        startDateError: "",
+      });
+    }
+  };
+
+  const handleBudgetError = () =>{
+    if (!budget.length) {
+      setErrors({
+        ...errors,
+         budgetError: "Budget is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+         budgetError: "",
+      });
+    }
+  }
 
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 7);
     return newDate;
-  }
+  };
 
   const handleAdd = async (body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        
-        await axios.post("http://localhost:3001/api/project/create", {...body,finish_date:addWeekToDate(body.start_date)});
+        await axios.post("http://localhost:3001/api/project/create", {
+          ...body,
+          finish_date: addWeekToDate(body.start_date),
+        });
       }
     } catch (error) {
       console.log(error);
@@ -84,7 +129,7 @@ const AddProject = () => {
   return (
     <div className="addProject">
       <SideNav user={user} />
-      <div className="projectContainer">  
+      <div className="projectContainer">
         <div className="consultantTitle">
           <h1>Add New Project</h1>
         </div>
@@ -100,11 +145,19 @@ const AddProject = () => {
                   setTitle(e.target.value);
                 }}
                 value={title}
+                onBlur={(e) => {
+                  handleTitleError();
+                }}
               />
+              {errors.titleError ? (
+                <small className="text-danger">{errors.titleError}</small>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
+
           <div className="inputLineLocation2">
-            
             <div className="inputItemLocation2">
               <p>
                 Start Date<span>*</span>
@@ -115,7 +168,15 @@ const AddProject = () => {
                   setStartDate(e.target.value);
                 }}
                 value={startDate}
+                onBlur={(e) => {
+                  handleStartDateError();
+                }}
               />
+              {errors.startDateError ? (
+                <small className="text-danger">{errors.startDateError}</small>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="inputLineLocationBudget">
@@ -130,9 +191,17 @@ const AddProject = () => {
                     setBudget(e.target.value);
                   }}
                   value={budget}
+                  onBlur={(e) => {
+                    handleBudgetError();
+                  }}
                 />
                 <h4>TND</h4>
               </div>
+              {errors.budgetError ? (
+                <small className="text-danger">{errors.budgetError}</small>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="inputLineLocation2">
@@ -163,7 +232,12 @@ const AddProject = () => {
             className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
-              handleAdd({project_title:title,description,budget,start_date:startDate,});
+              handleAdd({
+                project_title: title,
+                description,
+                budget,
+                start_date: startDate,
+              });
             }}
           >
             Add

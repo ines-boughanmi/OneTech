@@ -1,8 +1,10 @@
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: "absolute",
@@ -24,6 +26,7 @@ const AddMission = () => {
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
   const [disable, setDisable] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleOpen = () => {
     setOpen(true);
@@ -49,6 +52,48 @@ const AddMission = () => {
     }
   };
 
+  const handleTitleError = () => {
+    if (!title.length) {
+      setErrors({
+        ...errors,
+        titleError: "Title is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        titleError: "",
+      });
+    }
+  };
+
+  const handleStartDateError = () => {
+    if (!startDate.length) {
+      setErrors({
+        ...errors,
+        startDateError: "Start Date is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        startDateError: "",
+      });
+    }
+  };
+
+  const handleEndDateError = () => {
+    if (!endDate.length) {
+      setErrors({
+        ...errors,
+        endDateError: "Finish Date is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        endDateError: "",
+      });
+    }
+  };
+
   return (
     <div className="place">
       <div className="button-rightMission">
@@ -64,11 +109,9 @@ const AddMission = () => {
         <Box sx={style}>
           <div className="form">
             <div className="missionLine">
-            <div>
-            </div>
-            <p>
-              Title<span>*</span>
-            </p>
+              <p>
+                Title<span>*</span>
+              </p>
             </div>
             <input
               type="text"
@@ -77,29 +120,50 @@ const AddMission = () => {
                 setTitle(e.target.value);
               }}
               value={title}
+              onBlur={(e) => {
+                handleTitleError();
+              }}
             />
-
-              <div className="radioButtons">
-                <div className="radioHolder">
-                <input type="radio" className="radio" name="type" value="normal" onChange={(e)=>{
-                  setDisable(false)
-                  setType(e.target.value);
-                }} />
-                  <p>Normal</p>
-                </div>
-                <div className="radioHolder">
-                <input type="radio" className="radio" name="type" value="urgent" onChange={(e)=>{
-                  setDisable(true)
-                  setType(e.target.value)
-                }} />
-                  <p>Urgent</p>
-                </div>
-
-              </div>
             <div className="missionLine">
-            <p>
-              Start Date<span>*</span>
-            </p>
+              {errors.titleError ? (
+                <small className="text-danger">{errors.titleError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <div className="radioButtons">
+              <div className="radioHolder">
+                <input
+                  type="radio"
+                  className="radio"
+                  name="type"
+                  value="normal"
+                  onChange={(e) => {
+                    setDisable(false);
+                    setType(e.target.value);
+                  }}
+                />
+                <p>Normal</p>
+              </div>
+              <div className="radioHolder">
+                <input
+                  type="radio"
+                  className="radio"
+                  name="type"
+                  value="urgent"
+                  onChange={(e) => {
+                    setDisable(true);
+                    setType(e.target.value);
+                  }}
+                />
+                <p>Urgent</p>
+              </div>
+            </div>
+            <div className="missionLine">
+              <p>
+                Start Date<span>*</span>
+              </p>
             </div>
             <input
               type="date"
@@ -109,11 +173,21 @@ const AddMission = () => {
               }}
               value={startDate}
               disabled={disable}
+              onBlur={(e) => {
+                handleStartDateError();
+              }}
             />
             <div className="missionLine">
-            <p>
-              Finish Date<span>*</span>
-            </p>
+              {errors.startDateError ? (
+                <small className="text-danger">{errors.startDateError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="missionLine">
+              <p>
+                Finish Date<span>*</span>
+              </p>
             </div>
             <input
               type="date"
@@ -123,11 +197,22 @@ const AddMission = () => {
               }}
               value={endDate}
               disabled={disable}
+              onBlur={(e) => {
+                handleEndDateError();
+              }}
             />
             <div className="missionLine">
-            <p>
-              Description<span>*</span>
-            </p>
+              {errors.endDateError ? (
+                <small className="text-danger">{errors.endDateError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <div className="missionLine">
+              <p>
+                Description<span>*</span>
+              </p>
             </div>
             <textarea
               type="text"
@@ -139,9 +224,9 @@ const AddMission = () => {
               value={description}
             />
             <div className="missionLine">
-            <p>
-              Location<span>*</span>
-            </p>
+              <p>
+                Location<span>*</span>
+              </p>
             </div>
             <input
               type="text"
@@ -159,7 +244,14 @@ const AddMission = () => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleAdd({title,description,start_date:startDate,end_date:endDate,location,type});
+                  handleAdd({
+                    title,
+                    description,
+                    start_date: startDate,
+                    end_date: endDate,
+                    location,
+                    type,
+                  });
                 }}
               >
                 Add

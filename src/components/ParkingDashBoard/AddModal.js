@@ -3,40 +3,40 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import "./AddModal.css"
-import add from "../../assets/4211763.png"
+import "./AddModal.css";
+import add from "../../assets/4211763.png";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 520,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
   borderRadius: "10px",
 };
 
-const AddModal = ({reload , setReload}) => {
+const AddModal = ({ reload, setReload }) => {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [license, setLicense] = useState("");
   const [color, setColor] = useState("");
-  const [category , setCategory] = useState("");
-  const [seats , setSeats] = useState(0)
+  const [category, setCategory] = useState("");
+  const [seats, setSeats] = useState(0);
 
   const handleOpen = () => {
     setOpen(true);
     setImage("");
-    setBrand("")
-    setModel("")
-    setLicense("")
-    setColor("")
-    setCategory("")
-    setSeats(0)
+    setBrand("");
+    setModel("");
+    setLicense("");
+    setColor("");
+    setCategory("");
+    setSeats(0);
   };
   const handleClose = () => setOpen(false);
 
@@ -44,17 +44,14 @@ const AddModal = ({reload , setReload}) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-          await axios.post(
-          "http://localhost:3001/api/car/create",
-          body
-        );
-        setReload(!reload)
-        handleClose()
+        await axios.post("http://localhost:3001/api/car/create", body);
+        setReload(!reload);
+        handleClose();
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const profileUpload = async (e) => {
     const formData = new FormData();
@@ -98,11 +95,18 @@ const AddModal = ({reload , setReload}) => {
               <input type="file" id="file" onChange={(e) => profileUpload(e)} />
             </label>
             {/* End of custom file upload label */}
-
+            <div className="label-left">
+              <p>
+                Brand<span>*</span>
+              </p>
+            </div>
             <div className="custom-select">
-              <select value={brand} onChange={(e)=>{
-                setBrand(e.target.value)
-              }}>
+              <select
+                value={brand}
+                onChange={(e) => {
+                  setBrand(e.target.value);
+                }}
+              >
                 <option disabled selected value="">
                   Car Brand
                 </option>
@@ -111,31 +115,45 @@ const AddModal = ({reload , setReload}) => {
                 <option value="Toyota">Toyota</option>
               </select>
             </div>
-
+            <div className="label-left">
+              <p>
+                Model<span>*</span>
+              </p>
+            </div>
             <input
               type="text"
               placeholder="Car Model Name"
               className="textInputs"
-              onChange={(e)=>{
-                setModel(e.target.value)
+              onChange={(e) => {
+                setModel(e.target.value);
               }}
               value={model}
             />
+            <div className="label-left">
+              <p>
+                License plate<span>*</span>
+              </p>
+            </div>
             <input
               type="text"
               placeholder="license plate Number"
               className="textInputs"
-              onChange={(e)=>{
-                setLicense(e.target.value)
+              onChange={(e) => {
+                setLicense(e.target.value);
               }}
               value={license}
             />
-
+            <div className="label-left">
+              <p>
+                Car Category<span>*</span>
+              </p>
+            </div>
             <div className="custom-select">
-              <select onChange={(e)=>{
-                setCategory(e.target.value)
-              }}
-              value={category}
+              <select
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+                value={category}
               >
                 <option disabled selected value="">
                   Car Category
@@ -146,12 +164,19 @@ const AddModal = ({reload , setReload}) => {
               </select>
             </div>
 
+            <div className="label-left">
+              <p>
+                Color<span>*</span>
+              </p>
+            </div>
             <div className="custom-select">
-              <select placeholder="Color" 
-              value={color}
-               onChange={(e)=>{
-                setColor(e.target.value)
-              }}>
+              <select
+                placeholder="Color"
+                value={color}
+                onChange={(e) => {
+                  setColor(e.target.value);
+                }}
+              >
                 <option disabled selected value="">
                   Car color
                 </option>
@@ -163,15 +188,20 @@ const AddModal = ({reload , setReload}) => {
                 <option value="Blue">Blue</option>
               </select>
             </div>
+            <div className="label-left">
+              <p>
+                Available Seats<span>*</span>
+              </p>
+            </div>
             <input
-            className="numberInputs"
+              className="numberInputs"
               type="number"
               placeholder="Available Seats"
               min="0"
               max="10"
               value={seats}
-              onChange={(e)=>{
-                setSeats(e.target.value)
+              onChange={(e) => {
+                setSeats(e.target.value);
               }}
             ></input>
 
@@ -179,10 +209,23 @@ const AddModal = ({reload , setReload}) => {
               <Button className="modalBtn" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button className="modalBtn" onClick={(e)=>{
+              <Button
+                className="modalBtn"
+                onClick={(e) => {
                   e.preventDefault();
-                  handleAdd({brand,car_model:model,license_plate:license,image,car_category:category,seat_availability:seats,color})
-              }}>Add</Button>
+                  handleAdd({
+                    brand,
+                    car_model: model,
+                    license_plate: license,
+                    image,
+                    car_category: category,
+                    seat_availability: seats,
+                    color,
+                  });
+                }}
+              >
+                Add
+              </Button>
             </div>
           </div>
         </Box>
