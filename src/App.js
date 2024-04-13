@@ -8,6 +8,7 @@ import Profile from './components/Profile/Profile';
 import Consultants from './components/Consultants/Consultants';
 import AddProject from './components/AddProject/AddProject';
 import Contact from './components/Contact/Contact';
+import UpdateProject from './components/UpdateProject/UpdateProject';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path='/consultants' Component={Consultants}/>
         <Route path='/add' Component={AddProject}/>
         <Route path='/contact' Component={Contact}/>
+        <Route path='/update/:id' Component={UpdateProject}/>
+        
 
       </Routes>
         

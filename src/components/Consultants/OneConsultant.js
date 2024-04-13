@@ -71,6 +71,7 @@ const OneConsultant = ({ consultant,reload, setReload }) => {
               }} /> : <FontAwesomeIcon icon={faHourglass1} className="wait-yellow"  onClick={(e)=>{
                 handleUpdate(consultant.id,{validity:!consultant.validity})
               }}  />}
+              
               <FontAwesomeIcon icon={faPen} onClick={handleOpenUpdate} className="icon1" />
               <FontAwesomeIcon icon={faTrash} onClick={handleOpenDelete} className="icon2" />
             </div>

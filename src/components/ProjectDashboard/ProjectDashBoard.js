@@ -4,6 +4,7 @@ import "./projectDashboard.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faEdit,
   faEye,
   faEyeSlash,
   faPen,
@@ -86,7 +87,7 @@ const ProjectDashBoard = () => {
           </div>
         </div>
       </div>
-      <div className="consultantsContainer">
+      <div className="projectsContainer">
         <div className="consultantTitle">
           <p>Pages / Projects</p>
           <h1>Projects</h1>
@@ -95,13 +96,23 @@ const ProjectDashBoard = () => {
           <Link to="/add">
             <button className="button-add">+ Add</button>
           </Link>
+          
         </div>
-        {/* {
+        <div className="projectContent"> 
+          {/* {
           projectsList.slice(projectsList.length-5,projectsList.length).map((project)=>{
             return <OneProject/>
           })
         } */}
-        <OneProject/>
+            {projectsList.map((project) => (
+              <OneProject
+                key={project.id}
+                project={project}
+                reload={reload}
+                setReload={setReload}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );

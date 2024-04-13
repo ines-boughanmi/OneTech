@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import "./addProject.css";
+import { useNavigate, useLocation  } from "react-router-dom";
+import "./updateProject.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,30 +8,24 @@ import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SideNav from "../SideNav/SideNav";
-import AddMission from "./AddMission";
+import AddMission from "../AddProject/AddMission";
 
-const AddProject = () => {
+const UpdateProject = () => {
   const [user, setUser] = useState({});
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [budget, setBudget] = useState("");
-  const [startDate, setStartDate] = useState("");
+
+  const location = useLocation();
+  const project = location.state.project;
+  const [title, setTitle] = useState(project.project_title);
+  const [description, setDescription] = useState(project.description);
+  const [budget, setBudget] = useState(project.budget);
+  const [startDate, setStartDate] = useState(project.start_date);
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
-
-  const fetchUsers = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const res = await axios.get("http://localhost:3001/api/user/getAll");
-        setUsers(res.data)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const handleTitleError = () => {
     if (!title.length) {
@@ -61,19 +55,19 @@ const AddProject = () => {
     }
   };
 
-  const handleBudgetError = () =>{
+  const handleBudgetError = () => {
     if (!budget.length) {
       setErrors({
         ...errors,
-         budgetError: "Budget is required",
+        budgetError: "Budget is required",
       });
     } else {
       setErrors({
         ...errors,
-         budgetError: "",
+        budgetError: "",
       });
     }
-  }
+  };
 
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
@@ -81,33 +75,18 @@ const AddProject = () => {
     return newDate;
   };
 
-  const handleAdd = async (body) => {
+  const handleUpdate = async (body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.post("http://localhost:3001/api/project/create", {
-          ...body,
-          finish_date: addWeekToDate(body.start_date),
-        });
-        notify();
-        navigate("/dash");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        await axios.put(
+            `http://localhost:3001/api/project/update/${project.id}`,{
+                ...body,
+                finish_date: addWeekToDate(body.start_date),
+              });
+              notify();
+              navigate("/dash");
 
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const data = await axios.get("http://localhost:3001/api/user/getOne", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);
@@ -127,7 +106,7 @@ const AddProject = () => {
     });
   };
   const notify = () => {
-    toast.success("Project Created Successfully", {
+    toast.success("Project Updated", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -138,11 +117,22 @@ const AddProject = () => {
       theme: "light",
     });
   };
-
-  useEffect(() => {
-    getUser();
-    fetchUsers();
-  }, []);
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const data = await axios.get("http://localhost:3001/api/user/getOne", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(data.data);
+        console.log(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="addProject">
@@ -237,7 +227,7 @@ const AddProject = () => {
               />
             </div>
           </div>
-          <AddMission  users={users} />
+          <AddMission users={users} />
 
           <div className="consultantTitle">
             <h2>Planning</h2>
@@ -250,7 +240,7 @@ const AddProject = () => {
             className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
-              handleAdd({
+              handleUpdate({
                 project_title: title,
                 description,
                 budget,
@@ -258,7 +248,7 @@ const AddProject = () => {
               });
             }}
           >
-            Add
+        Update
           </button>
         </div>
         <ToastContainer
@@ -270,4 +260,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default UpdateProject;

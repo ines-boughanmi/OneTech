@@ -9,7 +9,7 @@
     }
     
     
-    .consultantsContainer{
+    .projectsContainer{
         width: 100%;
         height: 80%;
         border-radius: 15px;
@@ -17,7 +17,8 @@
         justify-content: flex-start;
         align-items: center;
         flex-direction: column;
-        padding: 1rem;  
+        padding: 1rem; 
+
     }
     
     .container-search2{
@@ -62,4 +63,47 @@
         justify-content: flex-end;
         align-items: center;
         padding-right: 50px;
+      }
+      .OneProject{
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 15px;
+        background-color: #fffe;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .projectContent{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .projectTitle{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .projectTitle h2{
+        font-size: 26px;
+      }
+      .ProjectLayout{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        gap: 1rem;
+        padding: 1rem;
       }
