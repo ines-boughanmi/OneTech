@@ -182,13 +182,13 @@ const AddMission = ({users}) => {
                   type="radio"
                   className="radio"
                   name="type"
-                  value="urgent"
+                  value="support"
                   onChange={(e) => {
                     setDisable(true);
                     setType(e.target.value);
                   }}
                 />
-                <p>Urgent</p>
+                <p>Support</p>
               </div>
             </div>
             <div className="missionLine">
@@ -295,8 +295,8 @@ const AddMission = ({users}) => {
                   handleAdd({
                     title,
                     description,
-                    start_date: startDate,
-                    end_date: endDate,
+                    start_date: disable ? null : startDate,
+                    end_date: disable ? null : endDate,
                     location,
                     type,
                   });

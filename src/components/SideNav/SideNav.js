@@ -104,7 +104,7 @@ export const SideNav = ({ user }) => {
                   elemBefore: () => <FontAwesomeIcon icon={faSquareParking} />,
                 },
                 {
-                  title: "Assignment",
+                  title: "Assignments",
                   itemId: "/assignment",
                   elemBefore: () => <FontAwesomeIcon icon={faFile} />,
                 },

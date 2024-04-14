@@ -9,6 +9,7 @@ import Consultants from './components/Consultants/Consultants';
 import AddProject from './components/AddProject/AddProject';
 import Contact from './components/Contact/Contact';
 import UpdateProject from './components/UpdateProject/UpdateProject';
+import Assignment from './components/Assignment/Assignment';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/add' Component={AddProject}/>
         <Route path='/contact' Component={Contact}/>
         <Route path='/update/:id' Component={UpdateProject}/>
+        <Route path='/assignment' Component={Assignment}/>
         
 
       </Routes>
