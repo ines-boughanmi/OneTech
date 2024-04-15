@@ -11,6 +11,7 @@ import {
   faTrash,
   faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +19,7 @@ import OneProject from "./OneProject";
 
 const ProjectDashBoard = () => {
   const [project, setProject] = useState({});
+  const [user, setUser] = useState({});
   const [projectsList, setProjectsList] = useState([]);
   const [reload, setReload] = useState(true);
 
@@ -37,10 +39,11 @@ const ProjectDashBoard = () => {
 
   useEffect(() => {
     getUser();
+    getProject();
     fetchProjects();
   }, [projectsList.length, reload]);
 
-  const getUser = async () => {
+  const getProject = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
@@ -60,9 +63,26 @@ const ProjectDashBoard = () => {
     }
   };
 
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const data = await axios.get("http://localhost:3001/api/user/getOne", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(data.data);
+        console.log(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="projects">
-      <div className="search-group">
+      <div className="searchGroup">
         <div className="search-section3">
           <div className="container-search3">
             <input
@@ -86,6 +106,13 @@ const ProjectDashBoard = () => {
             </button>
           </div>
         </div>
+        
+        <div className="userLayout">
+            <FontAwesomeIcon className="iconBell" icon={faBell} />
+            <div className="imageCircleUser">
+              <img src={user.image} alt="" />
+            </div>
+          </div>
       </div>
       <div className="projectsContainer">
         <div className="consultantTitle">
@@ -96,22 +123,21 @@ const ProjectDashBoard = () => {
           <Link to="/add">
             <button className="button-add">+ Add</button>
           </Link>
-          
         </div>
-        <div className="projectContent"> 
+        <div className="projectContent">
           {/* {
           projectsList.slice(projectsList.length-5,projectsList.length).map((project)=>{
             return <OneProject/>
           })
         } */}
-            {projectsList.map((project) => (
-              <OneProject
-                key={project.id}
-                project={project}
-                reload={reload}
-                setReload={setReload}
-              />
-            ))}
+          {projectsList.map((project) => (
+            <OneProject
+              key={project.id}
+              project={project}
+              reload={reload}
+              setReload={setReload}
+            />
+          ))}
         </div>
       </div>
     </div>

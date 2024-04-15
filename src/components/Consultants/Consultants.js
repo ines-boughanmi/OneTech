@@ -10,6 +10,7 @@ import {
   faTrash,
   faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,7 +60,7 @@ const Consultants = () => {
   return (
     <div className="consultants">
       <SideNav user={user} />
-      <div className="search-group">
+      <div className="searchGroup1">
         <div className="search-section2">
           <div className="container-search2">
             <input
@@ -83,6 +84,12 @@ const Consultants = () => {
             </button>
           </div>
         </div>
+        <div className="userLayout">
+            <FontAwesomeIcon className="iconBell" icon={faBell} />
+            <div className="imageCircleUser">
+              <img src={user.image} alt="" />
+            </div>
+          </div>
       </div>
       <div className="consultantsContainer">
         <div className="consultantTitle">

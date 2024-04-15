@@ -3,6 +3,7 @@ import "./assignment.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -62,7 +63,7 @@ const Assignment = () => {
   return (
     <div div className="assignment">
       <SideNav user={user} />
-      <div className="search-group">
+      <div className="searchGroup1">
         <div className="search-section2">
           <div className="container-search2">
             <input
@@ -86,6 +87,12 @@ const Assignment = () => {
             </button>
           </div>
         </div>
+        <div className="userLayout">
+            <FontAwesomeIcon className="iconBell" icon={faBell} />
+            <div className="imageCircleUser">
+              <img src={user.image} alt="" />
+            </div>
+          </div>
       </div>
       <div className="assignmentContainer">
         <div className="consultantTitle">
