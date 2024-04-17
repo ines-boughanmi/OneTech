@@ -17,12 +17,28 @@ import "./sideNav.css";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import oneTech from "../../assets/onetechb.png";
+import "react-inputs-validation/lib/react-inputs-validation.min.css";
+import { ToastContainer, toast } from "react-toastify";
 
 export const SideNav = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const notify = () => {
+    toast.success("Logged Out", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   return (
-    <React.Fragment >
+    <React.Fragment>
       {/* Sidebar */}
 
       <div className="SideNav">
@@ -108,7 +124,7 @@ export const SideNav = ({ user }) => {
                   itemId: "/assignment",
                   elemBefore: () => <FontAwesomeIcon icon={faFile} />,
                 },
-                
+
                 {
                   title: "Tracking",
                   itemId: "/tracking",
@@ -126,19 +142,22 @@ export const SideNav = ({ user }) => {
 
         <div className="bottom-sideNav">
           <Navigation
-
             activeItemId={location.pathname}
             items={[
               {
                 title: "Logout",
-                itemId: "/login",
+                itemId: "/",
                 elemBefore: () => (
                   <FontAwesomeIcon icon={faArrowRightFromBracket} />
                 ),
               },
             ]}
             onSelect={({ itemId }) => {
-              navigate(itemId);
+              notify();
+              setTimeout(() => {
+                navigate(itemId);
+              }, 750);
+
               localStorage.removeItem("token");
             }}
           />

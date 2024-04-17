@@ -142,4 +142,24 @@
         cursor: pointer;
       }
 
+      .button-addProject1{
+        background-color: #f08700 !important;
+        color: white !important;
+        border: none !important;
+        cursor: pointer !important;
+        border-radius: 15px !important;
+        height: 44px !important;
+        width: 120px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        font-weight: bolder !important;
+        font-size: 17px !important;
+        transition: all 0.5s !important;
+      }
+      .button-addProject1:hover{
+        scale: 1.1 !important;
+        transition: all 0.3s !important;
+      }
+
     

@@ -134,9 +134,21 @@ function Register() {
       });
     }
   };
+
   const notify = () => {
-    
-    
+    toast.success("You Registred Successfully", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const notifyError = () => { 
     toast.error("check your Credentials", {
       position: "top-center",
       autoClose: 3000,
@@ -153,10 +165,13 @@ function Register() {
   const handleRegister = async (body) => {
     try {
       await axios.post("http://localhost:3001/api/user/register", body);
-      navigate("/login");
+      notify()
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
     } catch (error) {
       console.log(error);
-      notify()
+      notifyError()
     }
   };
 
@@ -351,7 +366,7 @@ function Register() {
         <ToastContainer  bodyClassName="toast-container" progressClassName="progress-toast" />
         <div className="account-link">
           <p>you have an account? try logging in</p>
-          <Link to="/login">
+          <Link to="/">
             <p className="register-link"> here</p>
           </Link>
         </div>

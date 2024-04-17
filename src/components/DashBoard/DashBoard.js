@@ -26,26 +26,10 @@ const DashBoard = () => {
       console.log(error);
     }
   };
-  const notify = () => {
-    
-    
-    toast.success("Welcome", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  
-}
 
 
   useEffect(()=>{
     getUser()
-    notify()
   },[])
 
   return (

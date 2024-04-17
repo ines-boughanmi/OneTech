@@ -10,6 +10,8 @@ import {
 import axios from "axios";
 import "../ParkingDashBoard/AddModal.css";
 import add from "../../assets/4211763.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: "absolute",
@@ -47,6 +49,19 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
       .catch((error) => {
         throw error;
       });
+  };
+
+  const notifyConsultantUpdate = () => {
+    toast.success("Consultant Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (
@@ -194,6 +209,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
+
                   handleUpdate(consultant.id, {name,lastName,password,email,phone,image,location});
                 }}
               >

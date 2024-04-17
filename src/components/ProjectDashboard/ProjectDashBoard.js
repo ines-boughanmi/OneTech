@@ -16,12 +16,15 @@ import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OneProject from "./OneProject";
+import AddMission from "../AddProject/AddMission";
+import AddSupportMission from "../AddProject/AddSupportMission";
 
 const ProjectDashBoard = () => {
   const [project, setProject] = useState({});
   const [user, setUser] = useState({});
   const [projectsList, setProjectsList] = useState([]);
   const [reload, setReload] = useState(true);
+  const [users, setUsers] = useState([]);
 
   const fetchProjects = async () => {
     try {
@@ -41,6 +44,7 @@ const ProjectDashBoard = () => {
     getUser();
     getProject();
     fetchProjects();
+    fetchUsers();
   }, [projectsList.length, reload]);
 
   const getProject = async () => {
@@ -79,6 +83,17 @@ const ProjectDashBoard = () => {
       console.log(error);
     }
   };
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios.get("http://localhost:3001/api/user/getAll");
+        setUsers(res.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="projects">
@@ -120,8 +135,9 @@ const ProjectDashBoard = () => {
           <h1>Projects</h1>
         </div>
         <div className="button-right">
+        <AddSupportMission  users={users} />
           <Link to="/add">
-            <button className="button-add">+ Add</button>
+            <button className="button-addProject1">+ Project</button>
           </Link>
         </div>
         <div className="projectContent">

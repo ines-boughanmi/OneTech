@@ -10,6 +10,8 @@ import {
   faTrash,
   faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import ConsultantDelete from "./ConsultantDelete";
 import UpdateConsultant from "./UpdateConsultant";
@@ -46,6 +48,7 @@ const OneConsultant = ({ consultant,reload, setReload }) => {
           `http://localhost:3001/api/user/update/${id}`,
           body
         );
+        notifyConsultantUpdate();
         setReload(!reload)
         handleCloseUpdate()
       }
@@ -53,6 +56,19 @@ const OneConsultant = ({ consultant,reload, setReload }) => {
       console.log(error)
     }
   }
+
+  const notifyConsultantUpdate = () => {
+    toast.success("Consultant Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
 
 

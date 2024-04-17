@@ -7,27 +7,26 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-
 const animatedComponents = makeAnimated();
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "10px",
-};
-const AddMission = ({users}) => {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: "10px",
+  };
+
+const AddSupportMission = ({users}) => {
+    
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [type, setType] = useState("normal");
+  const [type, setType] = useState("support");
   const [location, setLocation] = useState("");
   const [errors, setErrors] = useState({});
   const [options, setOptions] = useState([]);
@@ -36,13 +35,18 @@ const AddMission = ({users}) => {
     setOpen(true);
     setTitle("");
     setDescription("");
-    setStartDate("");
-    setEndDate("");
     setLocation("");
   };
 
-  const notifyMissionAdd = () => {
-    toast.success("Mission Added", {
+  const handleAddPartition = async (mission) => {
+    selected.map( async (user)=>{
+      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
+    })
+
+  }
+
+  const notifySupportMissionAdd = () => {
+    toast.success("Support Mission Added", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -53,13 +57,6 @@ const AddMission = ({users}) => {
       theme: "light",
     });
   };
-
-  const handleAddPartition = async (mission) => {
-    selected.map( async (user)=>{
-      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
-    })
-
-  }
 
   const handleOptions = (users) => {
 
@@ -84,7 +81,7 @@ const AddMission = ({users}) => {
       if (token) {
         const mission = await axios.post("http://localhost:3001/api/mission/create", body);
         handleAddPartition(mission.data);
-        notifyMissionAdd();
+        notifySupportMissionAdd();
         handleClose();
       }
     } catch (error) {
@@ -106,42 +103,15 @@ const AddMission = ({users}) => {
     }
   };
 
-  const handleStartDateError = () => {
-    if (!startDate.length) {
-      setErrors({
-        ...errors,
-        startDateError: "Start Date is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        startDateError: "",
-      });
-    }
-  };
-
-  const handleEndDateError = () => {
-    if (!endDate.length) {
-      setErrors({
-        ...errors,
-        endDateError: "Finish Date is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        endDateError: "",
-      });
-    }
-  };
-
+ 
   return (
-    <div className="place">
+<div className="place">
       <div className="button-rightMission">
-        <button className="button-addMission" onClick={(e)=>{
+        <button className="button-addSupportMission" onClick={(e)=>{
           handleOpen()
           handleOptions(users)
         }}>
-          + Mission
+          + Support Mission
         </button>
       </div>
       <Modal
@@ -175,53 +145,6 @@ const AddMission = ({users}) => {
               )}
             </div>
 
-
-            <div className="missionLine">
-              <p>
-                Start Date<span>*</span>
-              </p>
-            </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-              value={startDate}
-              onBlur={(e) => {
-                handleStartDateError();
-              }}
-            />
-            <div className="missionLine">
-              {errors.startDateError ? (
-                <small className="text-danger">{errors.startDateError}</small>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="missionLine">
-              <p>
-                Finish Date<span>*</span>
-              </p>
-            </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-              value={endDate}
-              onBlur={(e) => {
-                handleEndDateError();
-              }}
-            />
-            <div className="missionLine">
-              {errors.endDateError ? (
-                <small className="text-danger">{errors.endDateError}</small>
-              ) : (
-                <></>
-              )}
-            </div>
             <div className="missionLine">
               <p>
                 Consultants<span>*</span>
@@ -278,8 +201,6 @@ const AddMission = ({users}) => {
                   handleAdd({
                     title,
                     description,
-                    start_date:startDate,
-                    end_date:endDate,
                     location,
                     type,
                   });
@@ -292,7 +213,7 @@ const AddMission = ({users}) => {
         </Box>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default AddMission;
+export default AddSupportMission

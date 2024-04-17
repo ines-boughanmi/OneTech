@@ -1,74 +1,82 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye , faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import oneTech from "../../assets/onetechb.png";
 import "./login.css";
 import React, { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [show,setShow] = useState(false);
-  const naviagte = useNavigate()
-
+  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   const notify = () => {
-    
-    
-      toast.error("Check Info", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    
-  }
+    toast.success("Welcome", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const notifyError = () => {
+    toast.error("Email or Password are Wrong", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const notifyValidity = () => {
-    
-    
-      toast.error("Not Valid Yet", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    
-  }
+    toast.error("Your Account is Still Not Valid", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
-
-
-  const handleLogin = async (body)=>{
+  const handleLogin = async (body) => {
     try {
-      const user = await axios.post("http://localhost:3001/api/user/getByEmail",body)
-      if(user.data.validity){
-        const data = await axios.post("http://localhost:3001/api/user/login",body)
-        localStorage.setItem("token",data.data.token)
-        naviagte("/dash")
-      }
-      else{
-        notifyValidity()
+      const user = await axios.post(
+        "http://localhost:3001/api/user/getByEmail",
+        body
+      );
+      if (user.data.validity) {
+        const data = await axios.post(
+          "http://localhost:3001/api/user/login",
+          body
+        );
+        localStorage.setItem("token", data.data.token);
+        notify();
+        setTimeout(() => {
+          navigate("/dash");
+        }, 800);
+      } else {
+        notifyValidity();
       }
     } catch (error) {
-      console.log(error)
-      notify()
+      console.log(error);
+      notifyError();
     }
-  } 
-
-
-
-
+  };
 
   return (
     <div className="contain">
@@ -85,34 +93,54 @@ function Login() {
         <div className="form-group">
           <label for="email">Email</label>
           <div className="input-section">
-          <input type="email" className="form-control" id="email" 
-              onChange={(e)=> setEmail(e.target.value)}
-              value={email}/>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
           </div>
         </div>
 
         <div className="form-group">
           <label for="password">Password</label>
-         <div className="input-section">
-         <input type={show ? "text" : "password"} className="form-control" id="password"      
-          onChange={(e)=> setPassword(e.target.value)}
-          value={password}/>
+          <div className="input-section">
+            <input
+              type={show ? "text" : "password"}
+              className="form-control"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
 
-          {
-            show ? <FontAwesomeIcon icon={faEye} onClick={(e)=>setShow(!show)} /> : <FontAwesomeIcon icon={faEyeSlash} onClick={(e)=>setShow(!show)} /> 
-          }
-         </div>
+            {show ? (
+              <FontAwesomeIcon icon={faEye} onClick={(e) => setShow(!show)} />
+            ) : (
+              <FontAwesomeIcon
+                icon={faEyeSlash}
+                onClick={(e) => setShow(!show)}
+              />
+            )}
+          </div>
         </div>
-        <button type="submit" className="btn btn-primary" onClick={(e)=>{
-            e.preventDefault()
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={(e) => {
+            e.preventDefault();
             handleLogin({
-               email,password
-            })
-            
-        }}>
+              email,
+              password,
+            });
+          }}
+        >
           Login
         </button>
-        <ToastContainer  bodyClassName="toast-container" progressClassName="progress-toast" />
+        <ToastContainer
+          bodyClassName="toast-container"
+          progressClassName="progress-toast"
+        />
         <div className="account-link">
           <p>you don't have an account? sign up</p>
           <Link to="/register">

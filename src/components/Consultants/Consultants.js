@@ -34,7 +34,9 @@ const Consultants = () => {
       console.log(error);
     }
   };
+  
 
+  
   useEffect(() => {
     getUser();
     fetchConsultants();
