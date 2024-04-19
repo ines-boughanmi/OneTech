@@ -15,6 +15,7 @@ const UpdateProject = () => {
 
   const location = useLocation();
   const project = location.state.project;
+  const[id,setId] = useState(project.projectId);
   const [title, setTitle] = useState(project.project_title);
   const [description, setDescription] = useState(project.description);
   const [budget, setBudget] = useState(project.budget);
@@ -25,6 +26,8 @@ const UpdateProject = () => {
 
   useEffect(() => {
     getUser();
+    fetchUsers();
+    console.log(project.id);
   }, []);
 
   const handleTitleError = () => {
@@ -40,6 +43,18 @@ const UpdateProject = () => {
       });
     }
   };
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios.get("http://localhost:3001/api/user/getAll");
+        setUsers(res.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleStartDateError = () => {
     if (!startDate.length) {
@@ -139,7 +154,7 @@ const UpdateProject = () => {
       <SideNav user={user} />
       <div className="projectContainer">
         <div className="consultantTitle">
-          <h1>Add New Project</h1>
+          <h1>Update Project</h1>
         </div>
         <div className="inputSection2">
           <div className="inputLineLocation2">
@@ -227,7 +242,7 @@ const UpdateProject = () => {
               />
             </div>
           </div>
-          <AddMission users={users} />
+          <AddMission projectId={project.id} users={users} />
 
           <div className="consultantTitle">
             <h2>Planning</h2>
