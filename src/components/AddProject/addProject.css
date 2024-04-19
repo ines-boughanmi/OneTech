@@ -2,7 +2,7 @@
     background-color: #fffe;
     border-radius: 10px;
     width: 100%;
-    height: 95%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -361,4 +361,16 @@ padding-right: 5px;
     border: 1px solid rgb(194, 194, 194);
     font-size: 16px;
     border-radius: 0.25rem !important;
+}
+
+.planningContainer{
+    background-color: #fffe;
+    border-radius: 10px;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
 }

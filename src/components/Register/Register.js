@@ -162,8 +162,26 @@ function Register() {
   
 }
 
+const notifyRequired = () => { 
+  toast.error("please fill all required fields", {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
+}
+
   const handleRegister = async (body) => {
     try {
+      if (!body.name || !body.lastname || !body.email || !body.location || !body.phone || !body.password || !body.confirmPassword) {
+        notifyRequired();
+        return; 
+      }
       await axios.post("http://localhost:3001/api/user/register", body);
       notify()
       setTimeout(() => {

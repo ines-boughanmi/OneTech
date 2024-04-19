@@ -12,6 +12,7 @@ import AddMission from "./AddMission";
 
 const AddProject = () => {
   const [user, setUser] = useState({});
+  const [projectId, setId] = useState(generateRandomInteger());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [budget, setBudget] = useState("");
@@ -20,7 +21,9 @@ const AddProject = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
-
+  function generateRandomInteger() {
+    return Math.floor(Math.random() * 1000000000);
+  };
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -90,7 +93,7 @@ const AddProject = () => {
           finish_date: addWeekToDate(body.start_date),
         });
         notify();
-        navigate("/dash");
+        navigate(`/planning/${projectId}`);
       }
     } catch (error) {
       console.log(error);
@@ -237,11 +240,6 @@ const AddProject = () => {
               />
             </div>
           </div>
-          <AddMission  users={users} />
-
-          <div className="consultantTitle">
-            <h2>Planning</h2>
-          </div>
         </div>
 
         <div className="confirm">
@@ -251,6 +249,7 @@ const AddProject = () => {
             onClick={(e) => {
               e.preventDefault();
               handleAdd({
+                id:projectId,
                 project_title: title,
                 description,
                 budget,

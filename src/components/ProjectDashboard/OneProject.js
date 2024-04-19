@@ -1,41 +1,57 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCar,
+  faEdit,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { Chart, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import DeleteProject from "./DeleteProject";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import OneMissionCard from "./OneMissionCard";
 
 Chart.register(ArcElement, Tooltip, Legend, Title);
 
-const OneProject = ({project, reload , setReload}) => {
-  const [openDelete,setOpenDelete] = useState(false)
-  const [openUpdate,setOpenUpdate] = useState(false)
+const OneProject = ({ project, reload, setReload }) => {
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
 
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
+  const handleOpenUpdate = () => setOpenUpdate(true);
+  const handleCloseUpdate = () => setOpenUpdate(false);
 
-  const handleOpenDelete = ()=> setOpenDelete(true)
-  const handleCloseDelete = ()=> setOpenDelete(false)
-  const handleOpenUpdate = ()=> setOpenUpdate(true)
-  const handleCloseUpdate = ()=> setOpenUpdate(false)
+  const handleDeleteMissionsByProject = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.delete(`http://localhost:3001/api/mission/remove/${id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      if(token){
-        await axios.delete(`http://localhost:3001/api/project/remove/${id}`)
-        handleCloseDelete()
-        setReload(!reload)
-        notify()
+      if (token) {
+        await axios.delete(`http://localhost:3001/api/project/remove/${id}`);
+        handleDeleteMissionsByProject(id);
+        handleCloseDelete();
+        setReload(!reload);
+        notify();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const notify = () => {
     toast.success("Project Deleted", {
@@ -50,21 +66,18 @@ const OneProject = ({project, reload , setReload}) => {
     });
   };
 
-  const handleUpdate = async (id,body) => {
+  const handleUpdate = async (id, body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-          await axios.put(
-          `http://localhost:3001/api/project/update/${id}`,
-          body
-        );
-        setReload(!reload)
-        handleCloseUpdate()
+        await axios.put(`http://localhost:3001/api/project/update/${id}`, body);
+        setReload(!reload);
+        handleCloseUpdate();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const data = {
     labels: ["To Do", "In Progress", "Done"],
@@ -72,7 +85,7 @@ const OneProject = ({project, reload , setReload}) => {
       {
         label: "My First Dataset",
         data: [100, 100, 100],
-        backgroundColor: ["rgb(250, 55, 55)", "#f08700", "green"],
+        backgroundColor: ["#44a5c2", "#f08700", "#014b7a"],
         hoverOffset: 4,
       },
     ],
@@ -82,18 +95,46 @@ const OneProject = ({project, reload , setReload}) => {
       <div className="projectTitle">
         <h2>{project.project_title}</h2>
         <div className="icons">
-        <Link to={`/update/${project.id}`} state={{ project }}>
-        <FontAwesomeIcon className="icon1"icon={faEdit} />
-        </Link>
-        <FontAwesomeIcon className="icon2" onClick={handleOpenDelete} icon={faTrash} />
+          <Link to={`/update/${project.id}`} state={{ project }}>
+            <FontAwesomeIcon className="icon1" icon={faEdit} />
+          </Link>
+          <FontAwesomeIcon
+            className="icon2"
+            onClick={handleOpenDelete}
+            icon={faTrash}
+          />
         </div>
       </div>
       <div className="ProjectLayout">
-      <div className="chart">
-        <Doughnut data={data} />
+        <div className="chart">
+          <Doughnut data={data} />
+        </div>
+        <div className="missionsTable">
+          <div className="ToDoSection">
+            <h2 className="titleMissions">To Do</h2>
+            <div className="missionList">
+            <OneMissionCard/>
+            <OneMissionCard/>
+            <OneMissionCard/>
+            <OneMissionCard/>
+            </div>
+          </div>
+          <div className="InProgressSection">
+            <h2 className="titleMissions">In Progress</h2>
+            <OneMissionCard/>
+          </div>
+          <div className="DoneSection">
+            <h2 className="titleMissions">Done</h2>
+            <OneMissionCard/>
+          </div>
+        </div>
       </div>
-      </div>
-      <DeleteProject project={project} open={openDelete} handleClose={handleCloseDelete} handleDelete={handleDelete}  />
+      <DeleteProject
+        project={project}
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

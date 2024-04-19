@@ -38,6 +38,7 @@
     "react-toastify": "^10.0.5",
     "sass": "^1.72.0",
     "sequelize": "^6.37.1",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

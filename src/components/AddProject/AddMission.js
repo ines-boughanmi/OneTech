@@ -21,9 +21,10 @@ const style = {
   p: 4,
   borderRadius: "10px",
 };
-const AddMission = ({users}) => {
+const AddMission = ({projectId,users}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const[id,setId] = useState(projectId);
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -276,6 +277,7 @@ const AddMission = ({users}) => {
                 onClick={(e) => {
                   e.preventDefault();
                   handleAdd({
+                    projectId:id,
                     title,
                     description,
                     start_date:startDate,

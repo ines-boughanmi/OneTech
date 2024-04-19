@@ -10,6 +10,7 @@ import AddProject from './components/AddProject/AddProject';
 import Contact from './components/Contact/Contact';
 import UpdateProject from './components/UpdateProject/UpdateProject';
 import Assignment from './components/Assignment/Assignment';
+import Planning from './components/AddProject/Planning';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/add' Component={AddProject}/>
         <Route path='/contact' Component={Contact}/>
         <Route path='/update/:id' Component={UpdateProject}/>
+        <Route path='/planning/:id' Component={Planning}/>
         <Route path='/assignment' Component={Assignment}/>
         
 

@@ -44,5 +44,15 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    removeByProject:async (req,res)=>{
+        try {
+            const mission = await db.Mission.destroy({where:{projectId:req.params.id}})
+            res.json(mission)
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    
 }
