@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,25 +25,58 @@ const OneProject = ({ project, reload, setReload }) => {
   const handleCloseDelete = () => setOpenDelete(false);
   const handleOpenUpdate = () => setOpenUpdate(true);
   const handleCloseUpdate = () => setOpenUpdate(false);
+  const [missionsList, setMissionsList] = useState([]);
 
-  const handleDeleteMissionsByProject = async (id) => {
+
+
+
+  const handleDeleteByProject = async (id) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.delete(`http://localhost:3001/api/mission/remove/${id}`);
+        await axios.delete(`http://localhost:3001/api/mission/removeByProject/${id}`);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-
-  const handleDelete = async (id) => {
+  const fetchMissions = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
+        const data = await axios.get(
+          "http://localhost:3001/api/mission/getAll"
+        );
+        setMissionsList(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filtredToDoMissions = missionsList.filter((mission) => {
+    return mission.projectId === project.id && mission.progress === "To Do";
+  });
+  const filtredInProgressMissions = missionsList.filter((mission) => {
+    return (
+      mission.projectId === project.id && mission.progress === "In Progress"
+    );
+  });
+  const filtredDoneMissions = missionsList.filter((mission) => {
+    return mission.projectId === project.id && mission.progress === "Done";
+  });
+
+  useEffect(() => {
+    fetchMissions();
+  }, [missionsList.length, reload]);
+
+  const handleDeleteProject = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await handleDeleteByProject(id);
         await axios.delete(`http://localhost:3001/api/project/remove/${id}`);
-        handleDeleteMissionsByProject(id);
         handleCloseDelete();
         setReload(!reload);
         notify();
@@ -113,19 +146,37 @@ const OneProject = ({ project, reload, setReload }) => {
           <div className="ToDoSection">
             <h2 className="titleMissions">To Do</h2>
             <div className="missionList">
-            <OneMissionCard/>
-            <OneMissionCard/>
-            <OneMissionCard/>
-            <OneMissionCard/>
+              {filtredToDoMissions.map((mission) => (
+                <OneMissionCard
+                  key={mission.id}
+                  mission={mission}
+                  reload={reload}
+                  setReload={setReload}
+                />
+              ))}
             </div>
           </div>
           <div className="InProgressSection">
             <h2 className="titleMissions">In Progress</h2>
-            <OneMissionCard/>
+            {filtredInProgressMissions.map((mission) => (
+              <OneMissionCard
+                key={mission.id}
+                mission={mission}
+                reload={reload}
+                setReload={setReload}
+              />
+            ))}
           </div>
           <div className="DoneSection">
             <h2 className="titleMissions">Done</h2>
-            <OneMissionCard/>
+            {filtredDoneMissions.map((mission) => (
+              <OneMissionCard
+                key={mission.id}
+                mission={mission}
+                reload={reload}
+                setReload={setReload}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -133,8 +184,9 @@ const OneProject = ({ project, reload, setReload }) => {
         project={project}
         open={openDelete}
         handleClose={handleCloseDelete}
-        handleDelete={handleDelete}
+        handleDelete={handleDeleteProject}
       />
+      
     </div>
   );
 };

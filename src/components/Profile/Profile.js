@@ -477,7 +477,7 @@ const Profile = () => {
         <div className="confirm">
           <button
             type="submit"
-            className="btn btn-primary"
+            className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
               handleEdit({ email, name, lastName, location, phone , image});

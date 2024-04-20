@@ -76,11 +76,29 @@ const AddMission = ({projectId,users}) => {
     setOptions(options);
   }
 
+  const notifyRequired = () => { 
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  
+  }
+
 
   const handleClose = () => setOpen(false);
 
   const handleAdd = async (body) => {
     try {
+      if (!body.title || !body.description || !body.location || !body.start_date || !body.end_date) {
+        notifyRequired();
+        return; 
+      }
       const token = localStorage.getItem("token");
       if (token) {
         const mission = await axios.post("http://localhost:3001/api/mission/create", body);

@@ -78,6 +78,20 @@ const AddProject = () => {
     }
   }
 
+  const notifyRequired = () => { 
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  
+  }
+
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 7);
@@ -86,6 +100,10 @@ const AddProject = () => {
 
   const handleAdd = async (body) => {
     try {
+      if (!body.project_title || !body.description || !body.budget || !body.start_date) {
+        notifyRequired();
+        return; 
+      }
       const token = localStorage.getItem("token");
       if (token) {
         await axios.post("http://localhost:3001/api/project/create", {

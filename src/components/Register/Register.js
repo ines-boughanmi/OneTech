@@ -194,6 +194,7 @@ const notifyRequired = () => {
   };
 
   return (
+    <div className="registerContainer">
     <div className="contain">
       <Link to="/">
         <div className="pos">
@@ -389,6 +390,7 @@ const notifyRequired = () => {
           </Link>
         </div>
       </form>
+    </div>
     </div>
   );
 }

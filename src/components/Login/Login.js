@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loginPic from "../../assets/Login.png"
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -79,6 +80,7 @@ function Login() {
   };
 
   return (
+    <div className="loginContainer">
     <div className="contain">
       <Link to="/">
         <div className="pos">
@@ -148,6 +150,11 @@ function Login() {
           </Link>
         </div>
       </form>
+    </div>
+    <div className="loginPic">
+      <img src={loginPic} alt="" />
+
+    </div>
     </div>
   );
 }

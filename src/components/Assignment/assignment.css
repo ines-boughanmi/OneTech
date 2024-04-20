@@ -106,6 +106,7 @@
   .supportCard p{
     color: black;
     font-weight: 500;
+    font-size: 16px;
   }
 
   .Normalcards-container{
@@ -149,6 +150,7 @@
   .normalCard p{
     color: black;
     font-weight: 500;
+    font-size: 16px;
   }
   .noSupport-container{
     width: 100%;

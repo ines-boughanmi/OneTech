@@ -21,117 +21,46 @@ const style = {
     borderRadius: "10px",
   };
 
-const AddSupportMission = ({users}) => {
+
+const UpdateMission = ({ users,handleClose, open, mission, handleUpdateMission}) => {
+    const [title, setTitle] = useState(mission.title);
+    const [description, setDescription] = useState(mission.description);
+    const [startDate, setStartDate] = useState(mission.start_date);
+    const [endDate, setEndDate] = useState(mission.end_date);
+    const [location, setLocation] = useState(mission.location);
+    const [errors, setErrors] = useState({});
+    const [options, setOptions] = useState([]);
+    const [selected, setSelected] = useState([]);
+
+    // const handleUpdatePartition = async (mission) => {
+    //     selected.map( async (user)=>{
+    //       await axios.put(`http://localhost:3001/api/partition/update/${id}`,{userId: user.value,missionId:mission.id})
+    //     })
     
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [type, setType] = useState("support");
-  const [location, setLocation] = useState("");
-  const [errors, setErrors] = useState({});
-  const [options, setOptions] = useState([]);
-  const [selected, setSelected] = useState([])
-  const handleOpen = () => {
-    setOpen(true);
-    setTitle("");
-    setDescription("");
-    setLocation("");
-  };
-
-  const handleAddPartition = async (mission) => {
-    selected.map( async (user)=>{
-      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
-    })
-
-  }
-
-  const notifySupportMissionAdd = () => {
-    toast.success("Support Mission Added", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-
-  const notifyRequired = () => { 
-    toast.error("Please fill all required fields", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  
-  }
-
-  const handleOptions = (users) => {
-
-    const filteredUsers = users.filter((user)=>{
-      return user.role === "CONSULTANT" && user.validity === true
-    }) 
-    const options = filteredUsers.map((user) => {
-      return {
-        value: user.id,
-        label: user.name + " " + user.lastname,
+    //   }
+    
+      const handleOptions = (users) => {
+    
+        const filteredUsers = users.filter((user)=>{
+          return user.role === "CONSULTANT" && user.validity === true
+        }) 
+        const options = filteredUsers.map((user) => {
+          return {
+            value: user.id,
+            label: user.name + " " + user.lastname,
+          };
+        });
+        setOptions(options);
       };
-    });
-    setOptions(options);
-  }
+
+      useEffect(() => {
+        handleOptions(users)
+      }, []);
 
 
-  const handleClose = () => setOpen(false);
 
-  const handleAdd = async (body) => {
-    try {
-      if (!body.title || !body.description || !body.location) {
-        notifyRequired();
-        return; 
-      }
-      const token = localStorage.getItem("token");
-      if (token) {
-        const mission = await axios.post("http://localhost:3001/api/mission/create", body);
-        handleAddPartition(mission.data);
-        notifySupportMissionAdd();
-        handleClose();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleTitleError = () => {
-    if (!title.length) {
-      setErrors({
-        ...errors,
-        titleError: "Title is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        titleError: "",
-      });
-    }
-  };
-
- 
   return (
 <div className="place">
-      <div className="button-rightMission">
-        <button className="button-addSupportMission" onClick={(e)=>{
-          handleOpen()
-          handleOptions(users)
-        }}>
-          + Support Mission
-        </button>
-      </div>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
@@ -152,7 +81,6 @@ const AddSupportMission = ({users}) => {
               }}
               value={title}
               onBlur={(e) => {
-                handleTitleError();
               }}
             />
             <div className="missionLine">
@@ -163,6 +91,51 @@ const AddSupportMission = ({users}) => {
               )}
             </div>
 
+
+            <div className="missionLine">
+              <p>
+                Start Date<span>*</span>
+              </p>
+            </div>
+            <input
+              type="date"
+              className="textInputs"
+              onChange={(e) => {
+                setStartDate(e.target.value);
+              }}
+              value={startDate}
+              onBlur={(e) => {
+              }}
+            />
+            <div className="missionLine">
+              {errors.startDateError ? (
+                <small className="text-danger">{errors.startDateError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="missionLine">
+              <p>
+                Finish Date<span>*</span>
+              </p>
+            </div>
+            <input
+              type="date"
+              className="textInputs"
+              onChange={(e) => {
+                setEndDate(e.target.value);
+              }}
+              value={endDate}
+              onBlur={(e) => {
+              }}
+            />
+            <div className="missionLine">
+              {errors.endDateError ? (
+                <small className="text-danger">{errors.endDateError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
             <div className="missionLine">
               <p>
                 Consultants<span>*</span>
@@ -216,15 +189,16 @@ const AddSupportMission = ({users}) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleAdd({
+                  handleUpdateMission(mission.id,{
                     title,
                     description,
+                    start_date:startDate,
+                    end_date:endDate,
                     location,
-                    type,
                   });
                 }}
               >
-                Add
+                Update
               </Button>
             </div>
           </div>
@@ -234,4 +208,4 @@ const AddSupportMission = ({users}) => {
   )
 }
 
-export default AddSupportMission
+export default UpdateMission
