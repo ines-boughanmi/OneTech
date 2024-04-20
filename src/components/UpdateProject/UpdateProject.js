@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SideNav from "../SideNav/SideNav";
 import AddMission from "../AddProject/AddMission";
+import Planning from "../AddProject/Planning";
+import LowerPlanning from "../AddProject/LowerPlanning";
 
 const UpdateProject = () => {
   const [user, setUser] = useState({});
@@ -107,6 +109,19 @@ const UpdateProject = () => {
       console.log(error);
     }
   };
+  const formatDateValue = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+
+    const formattedDate = year + "-" + formattedMonth + "-" + formattedDay;
+
+    return formattedDate;
+  };
 
   const notifyError = () => {
     toast.error("check your Credentials", {
@@ -190,7 +205,7 @@ const UpdateProject = () => {
                 onChange={(e) => {
                   setStartDate(e.target.value);
                 }}
-                value={startDate}
+                value={formatDateValue(startDate)}
                 onBlur={(e) => {
                   handleStartDateError();
                 }}
@@ -245,7 +260,7 @@ const UpdateProject = () => {
           <AddMission projectId={project.id} users={users} />
 
           <div className="consultantTitle">
-            <h2>Planning</h2>
+            <LowerPlanning start_date={startDate}/>
           </div>
         </div>
 

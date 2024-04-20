@@ -116,8 +116,7 @@ const OneProject = ({ project, reload, setReload }) => {
     labels: ["To Do", "In Progress", "Done"],
     datasets: [
       {
-        label: "My First Dataset",
-        data: [100, 100, 100],
+        data: [filtredToDoMissions.length, filtredInProgressMissions.length, filtredDoneMissions.length],
         backgroundColor: ["#44a5c2", "#f08700", "#014b7a"],
         hoverOffset: 4,
       },

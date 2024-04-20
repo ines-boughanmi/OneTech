@@ -2,7 +2,6 @@
     background-color: #fffe;
     border-radius: 10px;
     width: 100%;
-    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,7 +10,7 @@
 }
 .addProject{
     height: 100%;
-    width: 50%;
+    width: 65%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -374,3 +373,13 @@ padding-right: 5px;
     justify-content: space-between;
     padding: 1rem;
 }
+.table-bordered {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+  }

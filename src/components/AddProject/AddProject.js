@@ -95,6 +95,7 @@ const AddProject = () => {
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 7);
+    console.log(newDate);
     return newDate;
   };
 
@@ -111,7 +112,8 @@ const AddProject = () => {
           finish_date: addWeekToDate(body.start_date),
         });
         notify();
-        navigate(`/planning/${projectId}`);
+        navigate(`/planning/${projectId}`,{state : {start_date : startDate}});
+        
       }
     } catch (error) {
       console.log(error);

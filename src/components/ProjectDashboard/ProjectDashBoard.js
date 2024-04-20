@@ -33,6 +33,7 @@ const ProjectDashBoard = () => {
         const data = await axios.get(
           "http://localhost:3001/api/project/getAll"
         );
+        data.data.reverse()
         setProjectsList(data.data);
       }
     } catch (error) {
@@ -59,8 +60,8 @@ const ProjectDashBoard = () => {
             },
           }
         );
+
         setProject(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);

@@ -44,5 +44,19 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    getUsersByMission: async (req, res) => {
+        try {
+          const partitions = await db.Partition.findAll({ where: { missionId: req.params.id } });
+          const usersPromises = partitions.map(async (partition) => {
+            const user = await db.User.findOne({ where: { id: partition.userId } });
+            return user;
+          });
+          const users = await Promise.all(usersPromises);
+          res.json(users);
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
     }
 }

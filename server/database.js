@@ -39,7 +39,7 @@ db.User = User
 Parking.hasMany(Car)
 Car.belongsTo(Parking)
 
-Car.hasMany(Mission)
+Car.belongsTo(Mission)
 Mission.belongsTo(Car)
 
 Project.hasMany(Mission)

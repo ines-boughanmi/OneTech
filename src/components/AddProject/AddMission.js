@@ -21,7 +21,7 @@ const style = {
   p: 4,
   borderRadius: "10px",
 };
-const AddMission = ({projectId,users}) => {
+const AddMission = ({projectId,users,dates,reload,setReload}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const[id,setId] = useState(projectId);
@@ -105,6 +105,7 @@ const AddMission = ({projectId,users}) => {
         handleAddPartition(mission.data);
         notifyMissionAdd();
         handleClose();
+        setReload(!reload);
       }
     } catch (error) {
       console.log(error);
@@ -200,17 +201,17 @@ const AddMission = ({projectId,users}) => {
                 Start Date<span>*</span>
               </p>
             </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-              value={startDate}
-              onBlur={(e) => {
-                handleStartDateError();
-              }}
-            />
+            <div style={{width : '100%'}}>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                options={dates}
+                styles={{width: '100%'}}
+                onChange={(e)=>{
+                  setStartDate(e.value);
+                }}
+              />
+            </div>
             <div className="missionLine">
               {errors.startDateError ? (
                 <small className="text-danger">{errors.startDateError}</small>
@@ -223,17 +224,17 @@ const AddMission = ({projectId,users}) => {
                 Finish Date<span>*</span>
               </p>
             </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-              value={endDate}
-              onBlur={(e) => {
-                handleEndDateError();
-              }}
-            />
+            <div style={{width : '100%'}}>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                options={dates}
+                styles={{width: '100%'}}
+                onChange={(e)=>{
+                  setEndDate(e.value);
+                }}
+              />
+            </div>
             <div className="missionLine">
               {errors.endDateError ? (
                 <small className="text-danger">{errors.endDateError}</small>

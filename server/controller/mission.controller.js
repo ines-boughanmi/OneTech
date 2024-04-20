@@ -1,5 +1,13 @@
 const db = require("../database");
 module.exports = {
+  getAllByProjectId: async (req, res) => {
+    try {
+      const allMissions = await db.Mission.findAll({where : {projectId: req.params.id}});
+      res.json(allMissions);
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getAll: async (req, res) => {
     try {
       const allMissions = await db.Mission.findAll({});
