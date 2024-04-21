@@ -1,5 +1,5 @@
 const projectRoute = require("express").Router()
-const {getAll,getOne,create,update,remove} = require("../controller/project.controller")
+const {getAll,getOne,create,update,remove, searchRecords} = require("../controller/project.controller")
 
 
 
@@ -8,4 +8,5 @@ projectRoute.get("/getOne/:id",getOne)
 projectRoute.post("/create",create)
 projectRoute.put("/update/:id",update)
 projectRoute.delete("/remove/:id",remove)
+projectRoute.get("/search/:searchTerm",searchRecords)
 module.exports = projectRoute

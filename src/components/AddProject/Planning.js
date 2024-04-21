@@ -141,15 +141,7 @@ const Planning = () => {
     const differenceDays = Math.ceil(differenceMS / (1000 * 60 * 60 * 24)) + 1;
     return differenceDays;
   }
-  function getRandomColor() {
-    const red = Math.floor(Math.random() * 256);
-    const green = Math.floor(Math.random() * 256);
-    const blue = Math.floor(Math.random() * 256);
 
-    const color = `rgb(${red}, ${green}, ${blue})`;
-
-    return color;
-  }
 
   useEffect(() => {
     getUser();
@@ -217,7 +209,7 @@ const Planning = () => {
                         formatDate(addDate(start_date, 6))
                       ? 6
                       : null;
-                  let color = getRandomColor();
+
 
                   return (
                     <OneMission
@@ -225,7 +217,7 @@ const Planning = () => {
                       mission={mission}
                       length={length}
                       start={start}
-                      color={color}
+                      color={"#05316A"}
                     />
                   );
                 })}

@@ -25,6 +25,22 @@ const ProjectDashBoard = () => {
   const [projectsList, setProjectsList] = useState([]);
   const [reload, setReload] = useState(true);
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState('');
+
+
+  const handleSearch = async (searchTerm) => {
+    try {
+      if(searchTerm){
+        const data = await axios.get(`http://localhost:3001/api/project/search/${searchTerm}`)
+        data.data.reverse()
+      setProjectsList(data.data);
+      }else{
+        setReload(!reload)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetchProjects = async () => {
     try {
@@ -33,7 +49,8 @@ const ProjectDashBoard = () => {
         const data = await axios.get(
           "http://localhost:3001/api/project/getAll"
         );
-        data.data.reverse()
+        console.log(data.data);
+        data.data.reverse();
         setProjectsList(data.data);
       }
     } catch (error) {
@@ -43,30 +60,30 @@ const ProjectDashBoard = () => {
 
   useEffect(() => {
     getUser();
-    getProject();
+    // getProject();
     fetchProjects();
     fetchUsers();
-  }, [projectsList.length, reload]);
+  }, [reload]);
 
-  const getProject = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const data = await axios.get(
-          "http://localhost:3001/api/project/getOne",
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  // const getProject = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       const data = await axios.get(
+  //         "http://localhost:3001/api/project/getOne",
+  //         {
+  //           headers: {
+  //             authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
 
-        setProject(data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //       setProject(data.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const getUser = async () => {
     try {
@@ -89,12 +106,12 @@ const ProjectDashBoard = () => {
       const token = localStorage.getItem("token");
       if (token) {
         const res = await axios.get("http://localhost:3001/api/user/getAll");
-        setUsers(res.data)
+        setUsers(res.data);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="projects">
@@ -106,8 +123,14 @@ const ProjectDashBoard = () => {
               name="text"
               className="input"
               placeholder="Search"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
-            <button className="search__btn">
+            <button className="search__btn" onClick={(e)=>{
+              e.preventDefault()
+              handleSearch(search)
+            }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -122,13 +145,13 @@ const ProjectDashBoard = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="userLayout">
-            <FontAwesomeIcon className="iconBell" icon={faBell} />
-            <div className="imageCircleUser">
-              <img src={user.image} alt="" />
-            </div>
+          <FontAwesomeIcon className="iconBell" icon={faBell} />
+          <div className="imageCircleUser">
+            <img src={user.image} alt="" />
           </div>
+        </div>
       </div>
       <div className="projectsContainer">
         <div className="consultantTitle">
@@ -136,18 +159,14 @@ const ProjectDashBoard = () => {
           <h1>Projects</h1>
         </div>
         <div className="button-right">
-        <AddSupportMission  users={users} />
+          <AddSupportMission users={users} />
           <Link to="/add">
             <button className="button-addProject1">+ Project</button>
           </Link>
         </div>
         <div className="projectContent">
-          {/* {
-          projectsList.slice(projectsList.length-5,projectsList.length).map((project)=>{
-            return <OneProject/>
-          })
-        } */}
-          {projectsList.map((project) => (
+
+          {projectsList.slice(0,5).map((project) => (
             <OneProject
               key={project.id}
               project={project}

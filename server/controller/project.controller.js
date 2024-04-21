@@ -1,5 +1,18 @@
+const { Op } = require("sequelize");
 const db = require("../database")
 module.exports = {
+    searchRecords : async (req, res) => {
+        try {   
+          const searchResults = await db.Project.findAll({
+            where: { project_title : { [Op.like] : `%${req.params.searchTerm}%` }},
+          });
+          res.json(searchResults);
+        } catch (error) {
+          console.error('Error searching records:', error);
+          res.status(500).json({ error: 'Internal server error' });
+        }
+      },
+      
     getAll:async (req,res)=>{
         try {
             const allProjects = await db.Project.findAll({})

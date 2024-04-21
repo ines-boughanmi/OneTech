@@ -170,7 +170,7 @@ const AddProject = () => {
   return (
     <div className="addProject">
       <SideNav user={user} />
-      <div className="projectContainer">
+      <div className="AddContainer">
         <div className="consultantTitle">
           <h1>Add New Project</h1>
         </div>

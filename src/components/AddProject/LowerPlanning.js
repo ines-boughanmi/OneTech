@@ -11,13 +11,12 @@ import SideNav from "../SideNav/SideNav";
 import AddMission from "./AddMission";
 import OneMission from "./OneMission";
 
-const LowerPlanning = ({start_date}) => {
+const LowerPlanning = ({start_date , reload , setReload}) => {
     const [user, setUser] = useState({});
     const projectId = useParams();
     const [errors, setErrors] = useState({});
     const [users, setUsers] = useState([]);
     const [missions, setMissions] = useState([]);
-    const [reload, setReload] = useState(false);
     const [dates, setDates] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
@@ -140,15 +139,7 @@ const LowerPlanning = ({start_date}) => {
       const differenceDays = Math.ceil(differenceMS / (1000 * 60 * 60 * 24)) + 1;
       return differenceDays;
     }
-    function getRandomColor() {
-      const red = Math.floor(Math.random() * 256);
-      const green = Math.floor(Math.random() * 256);
-      const blue = Math.floor(Math.random() * 256);
-  
-      const color = `rgb(${red}, ${green}, ${blue})`;
-  
-      return color;
-    }
+
   
     useEffect(() => {
       getUser();
@@ -200,7 +191,7 @@ const LowerPlanning = ({start_date}) => {
                 formatDate(addDate(start_date, 6))
               ? 6
               : null;
-          let color = getRandomColor();
+
 
           return (
             <OneMission
@@ -208,7 +199,7 @@ const LowerPlanning = ({start_date}) => {
               mission={mission}
               length={length}
               start={start}
-              color={color}
+              color={"#05316A"}
             />
           );
         })}

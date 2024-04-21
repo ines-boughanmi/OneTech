@@ -21,7 +21,13 @@ const style = {
   borderRadius: "10px",
 };
 
-const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
+const UpdateMission = ({
+  handleClose,
+  open,
+  mission,
+  handleUpdateMission,
+  dates,
+}) => {
   const [title, setTitle] = useState(mission.title);
   const [description, setDescription] = useState(mission.description);
   const [startDate, setStartDate] = useState(mission.start_date);
@@ -32,12 +38,42 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
 
-  // const handleUpdatePartition = async (mission) => {
-  //     selected.map( async (user)=>{
-  //       await axios.put(`http://localhost:3001/api/partition/update/${id}`,{userId: user.value,missionId:mission.id})
-  //     })
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
 
-  //   }
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+
+    const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
+
+    return { label: formattedDate, value: dateString };
+  };
+  const prepBody = (arr) => {
+    let body = {};
+    arr.forEach((user) => {
+      body[user.label] = user.value;
+    });
+    return body;
+  };
+  const handleUpdateUsers = async () => {
+    try {
+      const body = prepBody(selected);
+      const token = localStorage.getItem("token");
+      if(token){
+        await axios.post(
+          `http://localhost:3001/api/partition/updateUsers/${mission.id}`,
+          body
+        );
+        handleClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -53,15 +89,14 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
 
   const handleSelectedUsers = async () => {
     try {
-      await axios.get(
-        `http://localhost:3001/api/partition/getUsersByMission/${mission.id}`
-      ).then((data)=>{
-        console.log(data.data);
-        const selected = handleSelectedOptions(data.data)
-        console.log(selected);
-        setSelected(selected);
-      })
-
+      await axios
+        .get(
+          `http://localhost:3001/api/partition/getUsersByMission/${mission.id}`
+        )
+        .then((data) => {
+          const selected = handleSelectedOptions(data.data);
+          setSelected(selected);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +111,7 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
         label: user.name + " " + user.lastname,
       };
     });
-    return options
+    return options;
   };
 
   const handleOptions = (users) => {
@@ -133,15 +168,18 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
                 Start Date<span>*</span>
               </p>
             </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-              value={startDate}
-              onBlur={(e) => {}}
-            />
+            <div style={{ width: "100%" }}>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                options={dates}
+                styles={{ width: "100%" }}
+                onChange={(e) => {
+                  setStartDate(e.value);
+                }}
+                value={formatDate(startDate)}
+              />
+            </div>
             <div className="missionLine">
               {errors.startDateError ? (
                 <small className="text-danger">{errors.startDateError}</small>
@@ -154,15 +192,18 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
                 Finish Date<span>*</span>
               </p>
             </div>
-            <input
-              type="date"
-              className="textInputs"
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-              value={endDate}
-              onBlur={(e) => {}}
-            />
+            <div style={{ width: "100%" }}>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                options={dates}
+                styles={{ width: "100%" }}
+                onChange={(e) => {
+                  setEndDate(e.value);
+                }}
+                value={formatDate(endDate)}
+              />
+            </div>
             <div className="missionLine">
               {errors.endDateError ? (
                 <small className="text-danger">{errors.endDateError}</small>
@@ -231,6 +272,7 @@ const UpdateMission = ({ handleClose, open, mission, handleUpdateMission }) => {
                     end_date: endDate,
                     location,
                   });
+                  handleUpdateUsers()
                 }}
               >
                 Update

@@ -11,6 +11,10 @@ import SideNav from "../SideNav/SideNav";
 import AddMission from "../AddProject/AddMission";
 import Planning from "../AddProject/Planning";
 import LowerPlanning from "../AddProject/LowerPlanning";
+import { Chart, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+Chart.register(ArcElement, Tooltip, Legend, Title);
+
 
 const InformationProject = () => {
     const [user, setUser] = useState({});
@@ -24,6 +28,8 @@ const InformationProject = () => {
     const [startDate, setStartDate] = useState(project.start_date);
     const [errors, setErrors] = useState({});
     const [users, setUsers] = useState([]);
+    const [missionsList, setMissionsList] = useState([]);
+
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -43,6 +49,20 @@ const InformationProject = () => {
           ...errors,
           titleError: "",
         });
+      }
+    };
+
+    const fetchMissions = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const data = await axios.get(
+            `http://localhost:3001/api/mission/getByProject/${project.id}`
+          );
+          setMissionsList(data.data);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
   
@@ -163,6 +183,44 @@ const InformationProject = () => {
         console.log(error);
       }
     };
+    const  calculatePercentage = (number, total) => {
+      if (typeof number !== 'number' || typeof total !== 'number') {
+        throw new Error('Both arguments must be numbers');
+      }
+    
+      if (total === 0) {
+        return 0
+      }
+    
+      const percentage = ((number / total) * 100).toFixed(2);
+      return percentage;
+    }
+    const filtredToDoMissions = missionsList.filter((mission) => {
+      return mission.projectId === project.id && mission.progress === "To Do";
+    });
+    const filtredInProgressMissions = missionsList.filter((mission) => {
+      return (
+        mission.projectId === project.id && mission.progress === "In Progress"
+      );
+    });
+    const filtredDoneMissions = missionsList.filter((mission) => {
+      return mission.projectId === project.id && mission.progress === "Done";
+    });
+    const data = {
+      labels: ["To Do", "In Progress", "Done"],
+      datasets: [
+        {
+          data: [calculatePercentage(filtredToDoMissions.length,missionsList.length), calculatePercentage(filtredInProgressMissions.length,missionsList.length), calculatePercentage(filtredDoneMissions.length,missionsList.length)],
+          backgroundColor: ["#44a5c2", "#f08700", "#014b7a"],
+          hoverOffset: 4,
+        },
+      ],
+    };
+
+    useEffect(()=>{
+      fetchMissions()
+    },[])
+
   
     return (
       <div className="addProject">
@@ -170,7 +228,11 @@ const InformationProject = () => {
         <div className="projectContainer">
           <div className="consultantTitle">
             <h1>Project Details</h1>
+            
           </div>
+          <div className="chart">
+          <Doughnut data={data} />
+        </div>
           <div className="inputSection2">
             <div className="inputLineLocation2">
               <div className="inputItemLocation2">

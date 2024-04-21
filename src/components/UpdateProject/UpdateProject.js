@@ -22,15 +22,60 @@ const UpdateProject = () => {
   const [description, setDescription] = useState(project.description);
   const [budget, setBudget] = useState(project.budget);
   const [startDate, setStartDate] = useState(project.start_date);
+  const [dates,setDates] = useState([]);
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const [reload,setReload] = useState(false)
+
+  const formatDateValue = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+
+    const formattedDate = year + "-" + formattedMonth + "-" + formattedDay;
+
+    return formattedDate;
+  };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+    
+    const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
+    
+    return formattedDate;
+  };
+  const addDate = (date, amount) => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + amount);
+    return newDate;
+  };
+
+  const fillDates = () => {
+    let date = new Date(project.start_date);
+    let dates = [];
+    for (let i = 0; i < 7; i++) {
+      dates.push({ label: formatDate(date), value: formatDateValue(date) });
+      date = addDate(date, 1);
+    }
+    setDates(dates);
+  };
+
 
   useEffect(() => {
     getUser();
     fetchUsers();
     console.log(project.id);
-  }, []);
+  }, [reload]);
 
   const handleTitleError = () => {
     if (!title.length) {
@@ -109,19 +154,7 @@ const UpdateProject = () => {
       console.log(error);
     }
   };
-  const formatDateValue = (dateString) => {
-    const date = new Date(dateString);
 
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const formattedDay = day < 10 ? "0" + day : day;
-    const formattedMonth = month < 10 ? "0" + month : month;
-
-    const formattedDate = year + "-" + formattedMonth + "-" + formattedDay;
-
-    return formattedDate;
-  };
 
   const notifyError = () => {
     toast.error("check your Credentials", {
@@ -163,6 +196,11 @@ const UpdateProject = () => {
       console.log(error);
     }
   };
+
+
+  useEffect(()=>{
+    fillDates();
+  },[])
 
   return (
     <div className="addProject">
@@ -257,10 +295,10 @@ const UpdateProject = () => {
               />
             </div>
           </div>
-          <AddMission projectId={project.id} users={users} />
+          <AddMission projectId={project.id} users={users} dates={dates} reload={reload} setReload={setReload}  />
 
           <div className="consultantTitle">
-            <LowerPlanning start_date={startDate}/>
+            <LowerPlanning start_date={startDate} reload={reload} setReload={reload} />
           </div>
         </div>
 

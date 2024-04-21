@@ -12,6 +12,7 @@ import UpdateProject from './components/UpdateProject/UpdateProject';
 import Assignment from './components/Assignment/Assignment';
 import Planning from './components/AddProject/Planning';
 import InformationProject from './components/ProjectDashboard/InformationProject';
+import Schedule from './components/ConsultantDashBoard/Schedule';
 
 function App() {
   return (
@@ -19,7 +20,6 @@ function App() {
       <Routes>
         <Route path='/' Component={Login}/> 
         <Route path='/register' Component={Register}/>
-
         <Route path='/dash' Component={DashBoard}/>
         <Route path='/profile' Component={Profile}/>
         <Route path='/consultants' Component={Consultants}/>
@@ -29,6 +29,7 @@ function App() {
         <Route path='/planning/:id' Component={Planning}/>
         <Route path='/assignment' Component={Assignment}/>
         <Route path='/information/:id' Component={InformationProject}/>
+        <Route path='/schedule' Component={Schedule}/>
       </Routes>
         
     </div>

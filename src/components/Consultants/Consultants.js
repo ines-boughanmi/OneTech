@@ -21,14 +21,33 @@ const Consultants = () => {
   const [user, setUser] = useState({});
   const [consultantsList, setConsultantsList] = useState([]);
   const [reload, setReload] = useState(true);
+  const [search,setSearch] = useState('')
+
+
+
+  const handleSearch = async (searchTerm) => {
+    try {
+      if(searchTerm){
+        const data = await axios.get(`http://localhost:3001/api/user/search/${searchTerm}`)
+        console.log(data.data);
+        data.data.reverse()
+      setConsultantsList(data.data);
+      }else{
+        setReload(!reload)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
 
   const fetchConsultants = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const data = await axios.get("http://localhost:3001/api/user/getAll");
+        console.log(data.data);
         setConsultantsList(data.data);
-
       }
     } catch (error) {
       console.log(error);
@@ -37,11 +56,7 @@ const Consultants = () => {
   
 
   
-  useEffect(() => {
-    getUser();
-    fetchConsultants();
-  }, [consultantsList.length, reload]);
-
+  
   const getUser = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -58,6 +73,10 @@ const Consultants = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    getUser();
+    fetchConsultants();
+  }, [ reload]);
 
   return (
     <div className="consultants">
@@ -70,8 +89,14 @@ const Consultants = () => {
               name="text"
               className="input"
               placeholder="Search"
+              onChange={(e)=>{
+                setSearch(e.target.value)
+              }}
             />
-            <button className="search__btn">
+            <button className="search__btn" onClick={(e)=>{
+              e.preventDefault()
+              handleSearch(search)
+            }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

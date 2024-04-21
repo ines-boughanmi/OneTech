@@ -1,7 +1,24 @@
 const db = require("../database")
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
 module.exports = {
+    searchRecords : async (req, res) => {
+        try {
+          const searchResults = await db.User.findAll({
+            where: {
+                [Op.or]: [
+                  { name: { [Op.like]: `%${req.params.searchTerm}%` } },
+                  { lastname: { [Op.like]: `%${req.params.searchTerm}%` } }
+                ]
+              }
+          });
+          res.json(searchResults);
+        } catch (error) {
+          console.error('Error searching records:', error);
+          res.status(500).json({ error: 'Internal server error' });
+        }
+      },
     getOneByEmail : async (req,res) => {
         try {
             const User = await db.User.findOne({where:{email:req.body.email}})
