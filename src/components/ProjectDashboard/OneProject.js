@@ -3,7 +3,9 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCar,
+  faCircleInfo,
   faEdit,
+  faInfo,
   faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -127,6 +129,9 @@ const OneProject = ({ project, reload, setReload }) => {
       <div className="projectTitle">
         <h2>{project.project_title}</h2>
         <div className="icons">
+        <Link to={`/information/${project.id}`} state={{ project }}>
+            <FontAwesomeIcon className="icon1" icon={faCircleInfo} />
+          </Link>
           <Link to={`/update/${project.id}`} state={{ project }}>
             <FontAwesomeIcon className="icon1" icon={faEdit} />
           </Link>
