@@ -349,3 +349,14 @@
     gap: 1rem;
     flex-direction: column;
   }
+  .searchGroup1{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    flex-direction: row;
+    width: 100%;
+    padding-right: 100px;
+    padding-left: 100px;
+    padding-top: 50px;
+
+  }

@@ -126,8 +126,8 @@ export const SideNav = ({ user }) => {
                 },
 
                 {
-                  title: "Tracking",
-                  itemId: "/tracking",
+                  title: "Contact",
+                  itemId: "/contact",
                   elemBefore: () => <FontAwesomeIcon icon={faLocationDot} />,
                 },
                 {

@@ -284,4 +284,36 @@
         gap: 0.2rem;
       }
 
+      .informationLayout{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction:row;
+      }
+      .consultantProject{
+        width: 99%;
+        height: 50px;
+        background-color: #eef2fb;
+        border-radius: 15px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .imageCircleConsultant{
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: white;
+      }
+    
+      .imageCircleConsultant img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
     

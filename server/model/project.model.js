@@ -5,8 +5,6 @@ module.exports =(connection,DataTypes)=>{
         budget:DataTypes.STRING,
         start_date:DataTypes.DATE,
         finish_date:DataTypes.DATE,
-        material_resources:DataTypes.STRING,
-        human_resources:DataTypes.STRING,
     })
     return Project
 
