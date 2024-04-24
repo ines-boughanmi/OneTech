@@ -11,6 +11,11 @@ module.exports =(connection,DataTypes)=>{
             defaultValue:"To Do",
         },
         location:DataTypes.STRING,
+        transport:{
+            type:DataTypes.ENUM,
+            values:["None","Bolt","Car"],
+            defaultValue:"None",
+        },
     })
     
     return Mission

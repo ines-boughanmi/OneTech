@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import "./AddModal.css";
+import "react-inputs-validation/lib/react-inputs-validation.min.css";
+import { ToastContainer, toast } from 'react-toastify';
 import add from "../../assets/4211763.png";
 
 const style = {
@@ -42,6 +44,10 @@ const AddModal = ({ reload, setReload }) => {
 
   const handleAdd = async (body) => {
     try {
+      if (!body.image || !body.brand|| !body.car_model|| !body.license_plate || !body.car_category || !body.seat_availability || !body.color) {
+        notifyRequired();
+        return; 
+      }
       const token = localStorage.getItem("token");
       if (token) {
         await axios.post("http://localhost:3001/api/car/create", body);
@@ -66,6 +72,21 @@ const AddModal = ({ reload, setReload }) => {
         throw error;
       });
   };
+
+  const notifyRequired = () => { 
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  
+  }
+
   return (
     <div>
       <Button className="button-add" onClick={handleOpen}>

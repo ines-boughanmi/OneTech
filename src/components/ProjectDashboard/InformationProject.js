@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import "../UpdateProject/updateProject.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

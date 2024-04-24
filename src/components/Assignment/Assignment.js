@@ -49,11 +49,11 @@ const Assignment = () => {
   };
 
   const filtredSupportMissions = missionsList.filter((mission) => {
-    return mission.type === "support" && mission.progress === "To Do";
+    return mission.type === "support" && mission.progress === "To Do" && mission.transport === "None" ;
   });
 
   const filtredNormalMissions = missionsList.filter((mission) => {
-    return mission.type === "normal" && mission.progress === "To Do";
+    return mission.type === "normal" && mission.progress === "To Do" && mission.transport === "None" ;
   });
 
   useEffect(() => {

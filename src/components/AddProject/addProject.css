@@ -303,6 +303,7 @@ padding-right: 5px;
     padding: 0.2rem;
     font-size: 16px;
     height: 100%;
+    outline: none;
 }
 
 .confirm{

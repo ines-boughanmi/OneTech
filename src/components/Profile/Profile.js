@@ -41,7 +41,7 @@ const Profile = () => {
     });
   };
   const notify = () => {
-    toast.success("Profile Updated", {
+    toast.success("Profile Edited", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -67,7 +67,7 @@ const Profile = () => {
   };
   const checkPass = async (body) => {
     try {
-      if(password){
+      if (password) {
         const data = await axios.post(
           "http://localhost:3001/api/user/passCheck",
           body
@@ -83,7 +83,7 @@ const Profile = () => {
             passwordError: "",
           });
         }
-      }else{
+      } else {
         setErrors({
           ...errors,
           passwordError: "",
@@ -220,25 +220,49 @@ const Profile = () => {
     }
   };
 
+  const notifyRequired = () => {
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const handleEdit = async (body) => {
-    try {
-      if (newPassword.length) {
-        if (newPassword !== confirmPassword) {
-          notifyPassError();
+    try {      if (
+      !body.name ||
+      !body.lastName ||
+      !body.email ||
+      !body.location
+    ){
+      notifyRequired();
+      return;
+    }
+        if (newPassword.length) {
+          if (newPassword !== confirmPassword) {
+            notifyPassError();
+          } else {
+            await axios.put(
+              `http://localhost:3001/api/user/update/${user.id}`,
+              {
+                ...body,
+                password: newPassword,
+              }
+            );
+            notify();
+          }
         } else {
-          await axios.put(`http://localhost:3001/api/user/update/${user.id}`, {
-            ...body,
-            password: newPassword,
-          });
+          await axios.put(
+            `http://localhost:3001/api/user/update/${user.id}`,
+            body
+          );
           notify();
         }
-      } else {
-        await axios.put(
-          `http://localhost:3001/api/user/update/${user.id}`,
-          body
-        );
-        notify();
-      }
     } catch (error) {
       console.log(error);
       notifyError();
@@ -271,14 +295,20 @@ const Profile = () => {
             <p style={{ color: "#00396b", fontWeight: "bold" }}>{user.role}</p>
             <label for="file-upload" class="custom-file-upload">
               <i class="fas fa-cloud-upload-alt"></i> Choose File
-              <input id="file-upload" type="file"  onChange={(e) => profileUpload(e)}  />
+              <input
+                id="file-upload"
+                type="file"
+                onChange={(e) => profileUpload(e)}
+              />
             </label>
           </div>
         </div>
         <div className="inputSection">
           <div className="inputLine">
             <div className="inputItem">
-              <p>First Name<span >*</span></p>
+              <p>
+                First Name<span>*</span>
+              </p>
               <input
                 type="text"
                 value={name}
@@ -296,7 +326,9 @@ const Profile = () => {
               )}
             </div>
             <div className="inputItem">
-              <p>Last Name<span >*</span></p>
+              <p>
+                Last Name<span>*</span>
+              </p>
               <input
                 type="text"
                 value={lastName}
@@ -316,7 +348,9 @@ const Profile = () => {
           </div>
           <div className="inputLine">
             <div className="inputItem">
-              <p>Email<span >*</span></p>
+              <p>
+                Email<span>*</span>
+              </p>
               <input
                 type="text"
                 value={email}
@@ -334,7 +368,9 @@ const Profile = () => {
               )}
             </div>
             <div className="inputItem">
-              <p>Phone Number<span >*</span></p>
+              <p>
+                Phone Number<span>*</span>
+              </p>
               <input
                 type="text"
                 value={phone}
@@ -355,7 +391,9 @@ const Profile = () => {
 
           <div className="inputLineLocation">
             <div className="inputItemLocation">
-              <p>Location<span >*</span></p>
+              <p>
+                Location<span>*</span>
+              </p>
               <input
                 type="text"
                 value={location}
@@ -377,7 +415,9 @@ const Profile = () => {
 
         <div className="passwordChange">
           <p>Change Password</p>
-          <p className="passwordLabel">Current Password<span >*</span></p>
+          <p className="passwordLabel">
+            Current Password<span>*</span>
+          </p>
           <div className="inputPassword">
             <input
               type={show ? "text" : "password"}
@@ -409,7 +449,9 @@ const Profile = () => {
           ) : (
             <></>
           )}
-          <p className="passwordLabel">New Password<span >*</span></p>
+          <p className="passwordLabel">
+            New Password<span>*</span>
+          </p>
           <div className="inputPassword">
             <input
               type={show1 ? "text" : "password"}
@@ -441,7 +483,9 @@ const Profile = () => {
           ) : (
             <></>
           )}
-          <p className="passwordLabel">Confirm Password<span >*</span></p>
+          <p className="passwordLabel">
+            Confirm Password<span>*</span>
+          </p>
           <div className="inputPassword">
             <input
               type={show2 ? "text" : "password"}
@@ -480,7 +524,7 @@ const Profile = () => {
             className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
-              handleEdit({ email, name, lastName, location, phone , image});
+              handleEdit({ email, name, lastName, location, phone, image });
             }}
           >
             Edit
