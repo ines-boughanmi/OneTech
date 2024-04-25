@@ -74,21 +74,14 @@ const ParkingDashBoard = ({user}) => {
         </div>
       </div>
       <div className="card">
-        <p>Total Cars</p>
+        <p>Available Cars</p>
         <div className="counter">
           <p>100</p>
           <FontAwesomeIcon icon={faCar} />
         </div>
       </div>
       <div className="card">
-        <p>Total Cars</p>
-        <div className="counter">
-          <p>100</p>
-          <FontAwesomeIcon icon={faCar} />
-        </div>
-      </div>
-      <div className="card">
-        <p>Total Cars</p>
+        <p>Unavailable Cars</p>
         <div className="counter">
           <p>100</p>
           <FontAwesomeIcon icon={faCar} />
