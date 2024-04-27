@@ -33,11 +33,7 @@ const InformationProject = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getUser();
-    fetchUsers();
-    console.log(project.id);
-  }, []);
+
 
   const handleTitleError = () => {
     if (!title.length) {
@@ -67,17 +63,7 @@ const InformationProject = () => {
     }
   };
 
-  const fetchUsers = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const res = await axios.get("http://localhost:3001/api/user/getAll");
-        setUsers(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   const handleStartDateError = () => {
     if (!startDate.length) {
@@ -179,7 +165,6 @@ const InformationProject = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);
@@ -225,9 +210,39 @@ const InformationProject = () => {
       },
     ],
   };
+  const prepBodyMission = (arr) => {
+    let body = {};
+    arr?.forEach((mission) => {
+      body[mission.id] = mission.id;
+    });
+    return body;
+  };
+  const prepBodyPartition = (arr) => {
+    let body = {};
+    arr?.forEach((partition) => {
+      body[partition.userId] = partition.userId;
+    });
+    return body;
+  };
+
+  const handleHumanResources = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if(token){
+        const missions = await axios.get(`http://localhost:3001/api/project/getAllMissionsByProject/${project.id}`)
+        const partition = await axios.post('http://localhost:3001/api/mission/getAllPartitionsByMission',prepBodyMission(missions.data))
+        const users = await axios.post('http://localhost:3001/api/partition/getAllUserByPartition',prepBodyPartition(partition.data))
+        setUsers(users.data);        
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     fetchMissions();
+    handleHumanResources();
+    getUser();
   }, []);
 
   return (
@@ -310,7 +325,11 @@ const InformationProject = () => {
                 <p>
                   Human Resources :
                 </p>
-                <OneConsultantProject/>
+                {
+                  users.map((user,index)=>{
+                    return <OneConsultantProject user={user} key={index} />
+                  })
+                }
               </div>
             </div>
 

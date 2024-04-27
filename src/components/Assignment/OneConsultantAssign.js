@@ -15,15 +15,16 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import UpdateConsultant from "../Consultants/UpdateConsultant";
 
-const OneConsultantAssign = () => {
+const OneConsultantAssign = ({consultant}) => {
   return (
     <div className="oneCard">
         <div className="consultantProject">
           <div className="imageCircleConsultant1">
-            <img src="https://static.thenounproject.com/png/1876981-200.png" alt="" />
+            <img src={consultant.image} alt="" />
           </div>
           <div className="consultant-layout">
-            <p>Test test Location</p>
+            <p>{consultant.name + " " + consultant.lastname}</p>
+            <p>{consultant.location}</p>
           </div>
         </div>
     </div>

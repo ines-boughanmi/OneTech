@@ -57,5 +57,13 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    getAllMissionsByProject : async (req,res) => {
+        try {
+            const missions = await db.Mission.findAll({where : {projectId : req.params.id}})
+            res.json(missions);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

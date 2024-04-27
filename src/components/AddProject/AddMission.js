@@ -33,6 +33,8 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
   const [errors, setErrors] = useState({});
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([])
+  const [missions,setMissions] = useState([]);
+
   const handleOpen = () => {
     setOpen(true);
     setTitle("");
@@ -90,12 +92,70 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
   
   }
 
+  const addDate = (date, amount) => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + amount);
+    return newDate;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+
+    const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
+
+    return formattedDate;
+  };
+  const extractRange = (start,end) => {
+    let arr = []
+    let date = start
+    while (formatDate(date) !== formatDate(end)){
+        arr.push(formatDate(date))
+        date = addDate(date,1)
+    }
+    arr.push(formatDate(end))
+    return arr
+    
+}
+
+const checkExistence = async (missions,options) => {
+  if(!missions.length){
+    setOptions(options)
+    return
+  }
+  let datesToCheck = extractRange(missions[0].start_date,missions[0].end_date)
+  let createdDates = extractRange(startDate,endDate)
+  let filteredOptions = []
+  let i =0 
+  while(i<datesToCheck.length){
+    if(createdDates.includes(datesToCheck[i])){
+      const partitions = await axios.get(`http://localhost:3001/api/partition/getPartitionsByMission/${missions[0].id}`).then((partitions)=>{
+        partitions.data.forEach((partition)=>{
+           filteredOptions = options.filter((option)=>{
+            return option.value !== partition.userId
+          })
+        })
+      })
+    }
+    else{
+      setReload(!reload)
+    }
+    i++
+  }
+  checkExistence(missions.slice(1),filteredOptions)
+}
+
 
   const handleClose = () => setOpen(false);
 
   const handleAdd = async (body) => {
     try {
-      if (!body.title || !body.description || !body.location || !body.start_date || !body.end_date) {
+      if (!body.title || !body.description || !body.location || !body.start_date || !body.end_date || !selected.length) {
         notifyRequired();
         return; 
       }
@@ -126,6 +186,10 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
     }
   };
 
+  function extractLabels(arrayOfObjects) {
+    return arrayOfObjects.map(obj => obj.label);
+}
+
   const handleStartDateError = () => {
     if (!startDate.length) {
       setErrors({
@@ -153,6 +217,22 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
       });
     }
   };
+  const handleHumanResources = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if(token){
+        const missions = await axios.get(`http://localhost:3001/api/project/getAllMissionsByProject/${projectId}`)
+        setMissions(missions.data); 
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    handleHumanResources();
+    handleOptions(users)
+  },[reload])
 
   return (
     <div className="place">
@@ -203,7 +283,7 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
             </div>
             <div style={{width : '100%'}}>
               <Select
-                closeMenuOnSelect={false}
+                closeMenuOnSelect={true}
                 components={animatedComponents}
                 options={dates}
                 styles={{width: '100%'}}
@@ -226,12 +306,15 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
             </div>
             <div style={{width : '100%'}}>
               <Select
-                closeMenuOnSelect={false}
+                closeMenuOnSelect={true}
                 components={animatedComponents}
                 options={dates}
                 styles={{width: '100%'}}
                 onChange={(e)=>{
                   setEndDate(e.value);
+                }}
+                onBlur={(e)=>{
+                  checkExistence(missions,options)
                 }}
               />
             </div>

@@ -73,7 +73,6 @@ const UpdateProject = () => {
   useEffect(() => {
     getUser();
     fetchUsers();
-    console.log(project.id);
   }, [reload]);
 
   const handleTitleError = () => {
@@ -189,7 +188,6 @@ const UpdateProject = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);

@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DeleteMission from "./DeleteMission";
 import UpdateMission from "./UpdateMission";
 
-const OneMissionCard = ({ mission, reload, setReload,dates }) => {
+const OneMissionCard = ({ mission, reload, setReload,dates , project }) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -103,6 +103,7 @@ const OneMissionCard = ({ mission, reload, setReload,dates }) => {
     });
   };
 
+
   return (
     <div className="ToDoCard">
       <div className="firstPart1">
@@ -117,13 +118,13 @@ const OneMissionCard = ({ mission, reload, setReload,dates }) => {
           onClick={handleOpenDelete}
           icon={faTrash}
         />
-              <DeleteMission
+      <DeleteMission
         mission={mission}
         open={openDelete}
         handleClose={handleCloseDelete}
         handleDelete={handleDeleteMission}
       />
-              <UpdateMission
+      <UpdateMission
         users={users}
         mission={mission}
         open={openUpdate}

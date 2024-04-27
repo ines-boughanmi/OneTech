@@ -61,7 +61,7 @@ const Assignment = () => {
     fetchMissions();
   }, [missionsList.length, reload]);
   return (
-    <div div className="assignment">
+    <div  className="assignment">
       <SideNav user={user} />
       <div className="searchGroup1">
         <div className="search-section2">

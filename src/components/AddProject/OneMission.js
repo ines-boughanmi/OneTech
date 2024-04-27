@@ -9,7 +9,6 @@ const OneMission = ({mission , length , start,color}) => {
         for(let i = start; i < start+length; i++){
           newCells.push(i)
         }
-        console.log(newCells);
         setCells(newCells)
       }
 

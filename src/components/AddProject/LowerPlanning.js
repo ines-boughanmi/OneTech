@@ -43,7 +43,6 @@ const LowerPlanning = ({start_date , reload , setReload}) => {
             },
           });
           setUser(data.data);
-          console.log(data.data);
         }
       } catch (error) {
         console.log(error);
@@ -95,13 +94,11 @@ const LowerPlanning = ({start_date , reload , setReload}) => {
     };
     const fetchMissions = async () => {
       try {
-        console.log(projectId);
         const token = localStorage.getItem("token");
         if (token) {
           const data = await axios.get(
             `http://localhost:3001/api/mission/getByProject/${projectId.id}`
           );
-          console.log(data.data);
           setMissions(data.data);
         }
       } catch (error) {
@@ -150,7 +147,7 @@ const LowerPlanning = ({start_date , reload , setReload}) => {
   return (
     <div className="consultantTitle">
     <h2>Planning</h2>
-    <table class="table table-bordered">
+    <table className="table table-bordered">
       <thead>
         <tr>
           <th scope="col">Missions</th>

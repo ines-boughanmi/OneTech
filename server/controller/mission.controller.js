@@ -91,4 +91,16 @@ module.exports = {
       console.log(error);
     }
   },
+  getAllPartitionsByMission : async (req,res) => {
+    try {
+      let partitions = []
+      for ( key in req.body) {
+        const data = await db.Partition.findAll({where : {missionId : req.body[key]}})
+        partitions.push(...data)
+      }
+      res.json(partitions)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };

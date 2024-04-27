@@ -229,7 +229,7 @@ const OneProject = ({ project, reload, setReload }) => {
                 reload={reload}
                 setReload={setReload}
                 dates={dates}
-
+                project={project}
               />
             ))}
           </div>

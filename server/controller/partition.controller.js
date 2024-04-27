@@ -59,6 +59,14 @@ module.exports = {
           res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    getPartitionsByMission: async (req, res) => {
+        try {
+          const partitions = await db.Partition.findAll({ where: { missionId: req.params.id } });
+          res.json(partitions);  
+        } catch (error) {
+            console.log(error);
+        }
+    },
     updateUsersByMission : async (req, res) => {
         try {
            await db.Partition.destroy({ where: { missionId: req.params.id } });
@@ -78,6 +86,18 @@ module.exports = {
         } catch (error) {
           console.log(error);
           res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+    getAllUserByPartition : async (req,res) => {
+        try {
+            let users = []
+            for ( key in req.body) {
+                const user = await db.User.findOne({where:{id:req.body[key]}})
+                users.push(user)
+            }
+            res.json(users)
+        } catch (error) {
+            console.log(error);
         }
     }
 
