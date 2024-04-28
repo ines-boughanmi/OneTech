@@ -11,7 +11,7 @@ import SideNav from "../SideNav/SideNav";
 import AddMission from "./AddMission";
 import OneMission from "./OneMission";
 
-const LowerPlanning = ({start_date , reload , setReload}) => {
+const LowerPlanning = ({start_date , reload , setReload , project}) => {
     const [user, setUser] = useState({});
     const projectId = useParams();
     const [errors, setErrors] = useState({});
@@ -95,9 +95,10 @@ const LowerPlanning = ({start_date , reload , setReload}) => {
     const fetchMissions = async () => {
       try {
         const token = localStorage.getItem("token");
+        const projectToFetch = projectId.id || project.id
         if (token) {
           const data = await axios.get(
-            `http://localhost:3001/api/mission/getByProject/${projectId.id}`
+            `http://localhost:3001/api/mission/getByProject/${projectToFetch}`
           );
           setMissions(data.data);
         }
@@ -128,14 +129,14 @@ const LowerPlanning = ({start_date , reload , setReload}) => {
       return formattedDate;
     };
     function dateDiffInDays(date1, date2) {
-      const date1MS = new Date(date1);
+      const date1MS = new Date(date1);           
       const date2MS = new Date(date2);
   
       const differenceMS = Math.abs(date1MS - date2MS);
   
       const differenceDays = Math.ceil(differenceMS / (1000 * 60 * 60 * 24)) + 1;
       return differenceDays;
-    }
+    }              
 
   
     useEffect(() => {

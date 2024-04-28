@@ -8,11 +8,10 @@ module.exports = {
         projects.push(...data)
       }
       res.json(projects)
-    }   
+    }
     catch (error) {
       console.log(error)
     }
-
   },
   getAllByProjectId: async (req, res) => {
     try {
@@ -102,5 +101,18 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
-  }
+  },
+  getAllMissionsByPartiton : async (req, res) => {
+    try {
+      let missions = []
+      for ( key in req.body) {
+        const data = await db.Mission.findOne({where : {id : req.body[key]}})
+        console.log(data);
+        missions.push(data)
+      }
+      res.json(missions)
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

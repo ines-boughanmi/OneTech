@@ -65,5 +65,23 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    getProjectsByUser : async (req, res) => {
+        try {
+            let missions = []
+            let projects = []
+            const partitions = await db.Partition.findAll({where : {userId : req.params.id}})
+            for (const partition of partitions) {
+                const mission = await db.Mission.findOne({where : {id : partition.missionId}})
+                missions.push(mission)
+            }
+            for (const mission of missions) {
+                const project = await db.Project.findOne({where : {id : mission.projectId}})
+                projects.push(project)
+            }
+            res.json(projects);
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }

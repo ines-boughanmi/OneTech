@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./consultantDashBoard.css";
 
 const ConsultantDashBoard = ({ user }) => {
+
   return (
     <div className="Mission">
             <div className="searchGroup2">

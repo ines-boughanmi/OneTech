@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ConsultantDashBoard from "../ConsultantDashBoard/ConsultantDashBoard";
 import ProjectDashBoard from "../ProjectDashboard/ProjectDashBoard";
 
 import SideNav from "../SideNav/SideNav";
-import "./dashboard.css"
+import "./dashboard.css";
 import ParkingDashBoard from "../ParkingDashBoard/ParkingDashBoard";
 
 const DashBoard = () => {
@@ -18,7 +18,7 @@ const DashBoard = () => {
       const data = await axios.get("http://localhost:3001/api/user/getOne", {
         headers: {
           authorization: `Bearer ${token}`,
-        }, 
+        },
       });
       console.log(data.data);
       setUser(data.data);
@@ -26,22 +26,29 @@ const DashBoard = () => {
       console.log(error);
     }
   };
-
-
-  useEffect(()=>{
-    getUser()
-  },[])
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div className="dash">
       <div className="side-nav">
-        <SideNav user={user}/>
+        <SideNav user={user} />
       </div>
-        { 
-            user.role === "CONSULTANT" ? <ConsultantDashBoard user={user}/> : user.role === "PROJECT_MANAGER" ? <ProjectDashBoard user={user}/> : user.role === "PARKING_MANAGER"? <ParkingDashBoard user={user} />: <></>
-        }
+      {user.role === "CONSULTANT" ? (
+        <ConsultantDashBoard user={user} />
+      ) : user.role === "PROJECT_MANAGER" ? (
+        <ProjectDashBoard user={user} />
+      ) : user.role === "PARKING_MANAGER" ? (
+        <ParkingDashBoard user={user} />
+      ) : (
+        <></>
+      )}
 
-        <ToastContainer  bodyClassName="toast-container" progressClassName="progress-toast" />
+      <ToastContainer
+        bodyClassName="toast-container"
+        progressClassName="progress-toast"
+      />
     </div>
   );
 };

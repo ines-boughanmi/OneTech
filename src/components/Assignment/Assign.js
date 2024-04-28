@@ -9,6 +9,7 @@ import "../ParkingDashBoard/AddModal.css";
 import OneConsultantAssign from "./OneConsultantAssign";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { toast } from "react-toastify";
 
 const animatedComponents = makeAnimated();
 
@@ -35,6 +36,7 @@ const Assign = ({ handleClose, open, mission }) => {
   const [options, setOptions] = useState([])
   const [cars,setCars] = useState([])
   const [missions,setMissions] = useState([]);
+  const [carId, setCarId] = useState({})
 
 
   const formatDateValue = (dateString) => {
@@ -111,6 +113,31 @@ const checkExistence = async (missions,options) => {
     checkExistence(missions.slice(1),filteredOptions)
   }
 
+  const notifyRequired = () => { 
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  
+  }
+  const notifyCarAssign = () => {
+    toast.success("Car Assigned", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
 
   const handleOptions = (cars) => {
@@ -165,6 +192,30 @@ const checkExistence = async (missions,options) => {
         setMissions(missions.data.filter((mission)=>{
           return mission.type === 'normal'
         })); 
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleUpdate = async (body) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        if(transport === "bolt"){
+          await axios.put(
+            `http://localhost:3001/api/mission/update/${mission.id}`,
+            body
+          );
+        } else if (carId){
+          await axios.put(
+            `http://localhost:3001/api/mission/update/${mission.id}`,
+            body
+          );
+        }
+        else{
+          notifyRequired()
+        }
       }
     } catch (error) {
       console.log(error);
@@ -280,6 +331,9 @@ const checkExistence = async (missions,options) => {
                   components={animatedComponents}
                   styles={{ width: "100%" }}
                   options={options}
+                  onChange={(e)=>{
+                    setCarId(e.value)
+                  }}
                 />
               </div>
             )}
@@ -292,6 +346,10 @@ const checkExistence = async (missions,options) => {
                 className="modalBtn"
                 onClick={(e) => {
                   e.preventDefault();
+                  handleUpdate({
+                    transport,
+                    carId
+                  });
                 }}
               >
                 Assign

@@ -1,5 +1,5 @@
 const missionRoute = require("express").Router()
-const {getAll,getOne,create,update,remove,removeByProject, getAllByProjectId, getAllProjectsByMissionId, getAllPartitionsByMission} = require("../controller/mission.controller")
+const {getAll,getOne,create,update,remove,removeByProject, getAllByProjectId, getAllProjectsByMissionId, getAllPartitionsByMission, getAllMissionsByPartiton} = require("../controller/mission.controller")
 
 
 
@@ -12,4 +12,5 @@ missionRoute.delete("/removeByProject/:id",removeByProject)
 missionRoute.get("/getByProject/:id",getAllByProjectId)
 missionRoute.post("/getAllProjectByMission",getAllProjectsByMissionId)
 missionRoute.post("/getAllPartitionsByMission",getAllPartitionsByMission)
+missionRoute.post("/getAllMissionsByPartiton",getAllMissionsByPartiton)
 module.exports = missionRoute

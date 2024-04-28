@@ -128,26 +128,31 @@ const checkExistence = async (missions,options) => {
     setOptions(options)
     return
   }
-  let datesToCheck = extractRange(missions[0].start_date,missions[0].end_date)
-  let createdDates = extractRange(startDate,endDate)
-  let filteredOptions = []
-  let i =0 
-  while(i<datesToCheck.length){
-    if(createdDates.includes(datesToCheck[i])){
-      const partitions = await axios.get(`http://localhost:3001/api/partition/getPartitionsByMission/${missions[0].id}`).then((partitions)=>{
-        partitions.data.forEach((partition)=>{
-           filteredOptions = options.filter((option)=>{
-            return option.value !== partition.userId
+  if(startDate && endDate){
+    let datesToCheck = extractRange(missions[0].start_date,missions[0].end_date)
+    let createdDates = extractRange(startDate,endDate)
+    let filteredOptions = []
+    let i =0 
+  
+    while(i<datesToCheck.length){
+      if(createdDates.includes(datesToCheck[i])){
+        const partitions = await axios.get(`http://localhost:3001/api/partition/getPartitionsByMission/${missions[0].id}`).then((partitions)=>{
+          console.log(partitions);
+          partitions.data.forEach((partition)=>{
+             filteredOptions = options.filter((option)=>{
+              return option.value !== partition.userId
+            })
           })
         })
-      })
+      }
+      else{
+        setReload(!reload)
+      }
+    console.log('cross');
+      i++
     }
-    else{
-      setReload(!reload)
-    }
-    i++
+    checkExistence(missions.slice(1),filteredOptions)
   }
-  checkExistence(missions.slice(1),filteredOptions)
 }
 
 
@@ -221,7 +226,7 @@ const checkExistence = async (missions,options) => {
     try {
       const token = localStorage.getItem('token')
       if(token){
-        const missions = await axios.get(`http://localhost:3001/api/project/getAllMissionsByProject/${projectId}`)
+        const missions = await axios.get(`http://localhost:3001/api/mission/getAll`)
         setMissions(missions.data); 
       }
     } catch (error) {

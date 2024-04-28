@@ -50,7 +50,7 @@ export const SideNav = ({ user }) => {
             <Navigation
               activeItemId={location.pathname}
               onSelect={({ itemId }) => {
-                navigate(itemId);
+                navigate(itemId,{state : { user : user}});
               }}
               items={[
                 {
@@ -80,7 +80,7 @@ export const SideNav = ({ user }) => {
             <Navigation
               activeItemId={location.pathname}
               onSelect={({ itemId }) => {
-                navigate(itemId);
+                navigate(itemId,{state : { user : user}});
               }}
               items={[
                 {
