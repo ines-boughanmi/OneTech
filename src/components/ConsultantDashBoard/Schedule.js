@@ -114,15 +114,22 @@ const Schedule = () => {
           <p>Pages / Schedule</p>
           <h1>Schedule</h1>
         </div>
+        {projects.length ? (
         <div className="projectContent">
-            {
-              projects?.map((project,index)=>{
-                return <OneSchedule key={index} project={project} />
-              })
-            }
-            
+        {
+          projects?.map((project,index)=>{
+            return <OneSchedule key={index} project={project} />
+          })
+        }
+        
 
-        </div>
+    </div>
+        ) : (
+          <div className="noCar-container">
+            <p className="noCars">No Projects Available For You</p>
+          </div>
+        )}
+
       </div>
     </div>
     </div>

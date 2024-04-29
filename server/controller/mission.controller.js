@@ -63,9 +63,14 @@ module.exports = {
 
   remove: async (req, res) => {
     try {
+      await db.Partition.destroy({
+        where: { missionId: req.params.id },
+      });
+  
       const mission = await db.Mission.destroy({
         where: { id: req.params.id },
       });
+  
       res.json(mission);
     } catch (error) {
       console.log(error);

@@ -13,6 +13,7 @@ import Assignment from './components/Assignment/Assignment';
 import Planning from './components/AddProject/Planning';
 import InformationProject from './components/ProjectDashboard/InformationProject';
 import Schedule from './components/ConsultantDashBoard/Schedule';
+import OneMissionDetails from './components/ConsultantDashBoard/OneMissionDetails';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path='/assignment' Component={Assignment}/>
         <Route path='/information/:id' Component={InformationProject}/>
         <Route path='/schedule' Component={Schedule}/>
+        <Route path='/mission/:id' Component={OneMissionDetails}/>
       </Routes>
         
     </div>

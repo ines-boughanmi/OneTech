@@ -11,12 +11,12 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./consultantDashBoard.css";
+import OneMissionConsultant from "./OneMissionConsultant";
 
 const ConsultantDashBoard = ({ user }) => {
-
   return (
     <div className="Mission">
-            <div className="searchGroup2">
+      <div className="searchGroup2">
         <div className="search-section3">
           <div className="container-search3">
             <input
@@ -40,58 +40,20 @@ const ConsultantDashBoard = ({ user }) => {
             </button>
           </div>
         </div>
-        
+
         <div className="userLayout">
-            <FontAwesomeIcon className="iconBell" icon={faBell} />
-            <div className="imageCircleUser">
-              <img src={user.image} alt="" />
-            </div>
+          <FontAwesomeIcon className="iconBell" icon={faBell} />
+          <div className="imageCircleUser">
+            <img src={user.image} alt="" />
           </div>
+        </div>
       </div>
       <div className="missionTitle">
         <p>Pages / Mission</p>
         <h1>Mission</h1>
       </div>
-      <div className="containerMission">
-        <div className="oneMission">
-          <div className="oneMissionTitle">
-            <h2>Mission Informations</h2>
-            <FontAwesomeIcon icon={faFileArrowDown} className="iconDownload" />
-          </div>
-          <div className="MissionContent">
-            <p>Title: Mission1</p>
-            <p>description: long Description</p>
-            <p>Start Date: jj/mm/aaaa</p>
-            <p>End Date: jj/mm/aaaa</p>
-            <p>Location: Tunis, zahrouni</p>
-
-            <div className="carMission">
-              <div className="carPos">
-                <div className="imageCircleCar">
-                  <img
-                    src="https://cdn.wheel-size.com/thumbs/bf/a9/bfa92b8d31951e863214ab88599e0ffc.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className="consultant-layout">
-                  <p>
-                    <span>Hyundai i20</span> 198 TUN 5432
-                  </p>
-
-                  <button className="GreenButton">
-                    <FontAwesomeIcon icon={faKey} /> Take Car
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="confirm1">
-            <button type="submit" className="button-addProject">
-              START
-            </button>
-          </div>
-          </div>
-
-        </div>
+      <div className="cards-containerMission">
+        <OneMissionConsultant/>
       </div>
     </div>
   );
