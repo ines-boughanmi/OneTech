@@ -125,11 +125,11 @@ export const SideNav = ({ user }) => {
                   elemBefore: () => <FontAwesomeIcon icon={faFile} />,
                 },
 
-                {
-                  title: "Contact",
-                  itemId: "/contact",
-                  elemBefore: () => <FontAwesomeIcon icon={faMessage} />,
-                },
+                // {
+                //   title: "Contact",
+                //   itemId: "/contact",
+                //   elemBefore: () => <FontAwesomeIcon icon={faMessage} />,
+                // },
                 {
                   title: "Profile",
                   itemId: "/profile",

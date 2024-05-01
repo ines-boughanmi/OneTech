@@ -8,8 +8,14 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../SideNav/SideNav";
+import { useParams } from "react-router-dom";
 const OneMissionDetails = () => {
 const [user, setUser] = useState({});
+const missionId = useParams();
+const [mission,setMission] = useState({});
+const [car,setCar] = useState({});
+
+
   const getUser = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -27,8 +33,42 @@ const [user, setUser] = useState({});
     }
   };
 
+  const getMission = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        console.log(missionId.id);
+        const data = await axios.get(
+          `http://localhost:3001/api/mission/getOne/${missionId.id}`
+        );
+        if(data.data.carId){
+          const car = await axios.get(`http://localhost:3001/api/car/getOne/${data.data.carId}`)
+          setCar(car.data)
+        }
+        setMission(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+
+    const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     getUser();
+    getMission();
   }, []);
   return (
     <div className="addProject">
@@ -40,11 +80,11 @@ const [user, setUser] = useState({});
             <FontAwesomeIcon icon={faFileArrowDown} className="iconDownload" />
           </div>
           <div className="MissionContent">
-            <p>Title: Mission1</p>
-            <p>description: long Description</p>
-            <p>Start Date: jj/mm/aaaa</p>
-            <p>End Date: jj/mm/aaaa</p>
-            <p>Location: Tunis, zahrouni</p>
+            <p>Title: {mission?.title}</p>
+            <p>description: {mission?.description}</p>
+            <p>Start Date: {formatDate(mission?.start_date)}</p>
+            <p>End Date: {formatDate(mission?.end_date)}</p>
+            <p>Location: {mission?.location}</p>
 
             <div className="carMission">
               <div className="carPos">
@@ -56,7 +96,7 @@ const [user, setUser] = useState({});
                 </div>
                 <div className="consultant-layout">
                   <p>
-                    <span>Hyundai i20</span> 198 TUN 5432
+                    <span>{car?.brand + " " + car?.car_model}</span> {car?.license_plate}
                   </p>
 
                   <button className="GreenButton">

@@ -27,7 +27,6 @@ const Assignment = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);
@@ -54,6 +53,9 @@ const Assignment = () => {
 
   const filtredNormalMissions = missionsList.filter((mission) => {
     return mission.type === "normal" && mission.progress === "To Do" && mission.transport === "None" ;
+  });
+  const filtredNormalMissionsToCheck = missionsList.filter((mission) => {
+    return mission.type === "normal"  ;
   });
 
   useEffect(() => {
@@ -112,6 +114,7 @@ const Assignment = () => {
                     mission={mission}
                     reload={reload}
                     setReload={setReload}
+                    missions={missionsList}
                   />
                 ))}
               </div>
@@ -134,6 +137,7 @@ const Assignment = () => {
                     mission={mission}
                     reload={reload}
                     setReload={setReload}
+                    missions={missionsList}
                   />
                 ))}
               </div>

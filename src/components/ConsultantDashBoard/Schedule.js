@@ -23,8 +23,6 @@ const Schedule = () => {
                 authorization: `Bearer ${token}`,
               },
             });
-            // setUser(data.data);
-            console.log(data.data);
           }
         } catch (error) {
           console.log(error);
@@ -54,7 +52,8 @@ const Schedule = () => {
         try {
           const token = localStorage.getItem("token");
           if (token) {
-            const data = await axios.get(`http://localhost:3001/api/project/getProjectsByUser/${user.id}`)
+            const data = await axios.get(`http://localhost:3001/api/project/getProjectsByUser/${user?.id}`)
+            console.log(data.data);
             setProjects(removeDuplicatesByKey(data.data,'id'));
           }
         } catch (error) {

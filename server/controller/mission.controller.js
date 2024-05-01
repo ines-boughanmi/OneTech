@@ -120,4 +120,17 @@ module.exports = {
       console.log(error);
     }
   },
+  getMissionsByUser : async (req,res) =>{
+    try {
+      let missions = []
+      const partitions = await db.Partition.findAll({where : {userId : req.params.id}})
+      for (const partition of partitions) {
+          const mission = await db.Mission.findOne({where : {id : partition.missionId }})
+          missions.push(mission)
+      }
+      res.json(missions);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

@@ -6,16 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const OneMissionConsultant = () => {
+const OneMissionConsultant = ({mission}) => {
   return (
     <div className="ToDoCard">
         <div className="firstPart1">
-          <p>Mission title</p>
-          <p>Mission start_date</p>
-          <p>Mission end_date</p>
+          <p>{mission.title}</p>
+          <p>{mission.start_date.substring(0,10)}</p>
+          <p>{mission.end_date.substring(0,10)}</p>
         </div>
         <div className="icons">
-        <Link to={`/mission/2`}>
+        <Link to={`/mission/${mission.id}`}>
           <FontAwesomeIcon className="iconLittle" icon={faShare} />
           </Link>
         </div>

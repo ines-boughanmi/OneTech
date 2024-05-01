@@ -14,6 +14,34 @@ import "./consultantDashBoard.css";
 import OneMissionConsultant from "./OneMissionConsultant";
 
 const ConsultantDashBoard = ({ user }) => {
+  const [missionsList, setMissionsList] = useState([]);
+
+  const fetchMissions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const data = await axios.get(
+          `http://localhost:3001/api/mission/getMissionsByUser/${user.id}`
+        );
+        setMissionsList(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filtredSupportMissions = missionsList?.filter((mission) => {
+    return mission.type === "support" && mission.progress !== "Done" ;
+  });
+
+  const filtredNormalMissions = missionsList?.filter((mission) => {
+    return mission.type === "normal" && mission.progress !== "Done" ;
+  });
+
+
+  useEffect(()=>{
+    fetchMissions()
+  },[])
   return (
     <div className="Mission">
       <div className="searchGroup2">
@@ -52,8 +80,45 @@ const ConsultantDashBoard = ({ user }) => {
         <p>Pages / Mission</p>
         <h1>Mission</h1>
       </div>
-      <div className="cards-containerMission">
-        <OneMissionConsultant/>
+      <div className="Supportcards-container-consultant">
+            <div className="SupportTitle">
+              <h1>Support Missions</h1>
+            </div>
+            {filtredSupportMissions.length ? (
+              <div className="Missioncards-container">
+                {filtredSupportMissions.map((mission) => (
+                  <OneMissionConsultant
+                    key={mission.id}
+                    mission={mission}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="noSupport-container">
+                <p className="noSupports">No Support Missions Available</p>
+              </div>
+            )}
+          </div>
+
+
+          <div className="Normalcards-container-consultant">
+            <div className="NormalTitle">
+              <h1>Normal Missions</h1>
+            </div>
+            {filtredNormalMissions.length ? (
+              <div className="Missioncards-container">
+                {filtredNormalMissions.map((mission) => (
+                  <OneMissionConsultant
+                    key={mission.id}
+                    mission={mission}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="noSupport-container">
+                <p className="noSupports">No Normal Missions Available</p>
+              </div>
+            )}
       </div>
     </div>
   );

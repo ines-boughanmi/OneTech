@@ -4,6 +4,8 @@ import "./projectDashboard.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleDown,
+  faAngleUp,
   faEdit,
   faEye,
   faEyeSlash,
@@ -25,22 +27,32 @@ const ProjectDashBoard = () => {
   const [projectsList, setProjectsList] = useState([]);
   const [reload, setReload] = useState(true);
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState('');
-
+  const [search, setSearch] = useState("");
+  const [length, setLength] = useState(5);
 
   const handleSearch = async (searchTerm) => {
     try {
-      if(searchTerm){
-        const data = await axios.get(`http://localhost:3001/api/project/search/${searchTerm}`)
-        data.data.reverse()
-      setProjectsList(data.data);
-      }else{
-        setReload(!reload)
+      if (searchTerm) {
+        const data = await axios.get(
+          `http://localhost:3001/api/project/search/${searchTerm}`
+        );
+        data.data.reverse();
+        setProjectsList(data.data);
+      } else {
+        setReload(!reload);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
+
+  function sortByCreatedAtDescending(array) {
+    return array.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return dateB - dateA;
+    });
+  }
 
   const fetchProjects = async () => {
     try {
@@ -51,7 +63,7 @@ const ProjectDashBoard = () => {
         );
         console.log(data.data);
         data.data.reverse();
-        setProjectsList(data.data);
+        setProjectsList(sortByCreatedAtDescending(data.data));
       }
     } catch (error) {
       console.log(error);
@@ -63,7 +75,7 @@ const ProjectDashBoard = () => {
     // getProject();
     fetchProjects();
     fetchUsers();
-  }, [reload]);
+  }, [reload, length]);
 
   // const getProject = async () => {
   //   try {
@@ -127,10 +139,13 @@ const ProjectDashBoard = () => {
                 setSearch(e.target.value);
               }}
             />
-            <button className="search__btn" onClick={(e)=>{
-              e.preventDefault()
-              handleSearch(search)
-            }}>
+            <button
+              className="search__btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSearch(search);
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -165,8 +180,7 @@ const ProjectDashBoard = () => {
           </Link>
         </div>
         <div className="projectContent">
-
-          {projectsList.slice(0,5).map((project) => (
+          {projectsList.slice(0, length).map((project) => (
             <OneProject
               key={project.id}
               project={project}
@@ -174,6 +188,50 @@ const ProjectDashBoard = () => {
               setReload={setReload}
             />
           ))}
+          <div className="showMore">
+            {length >= projectsList.length ? (
+              <h3
+                onClick={(e) => {
+                  setLength(length - 5);
+                  setReload(!reload);
+                }}
+              >
+                Show Less <FontAwesomeIcon icon={faAngleUp} />
+              </h3>
+            ) : length === 5 ? (
+              <h3
+                onClick={(e) => {
+                  setLength(length + 5);
+                  setReload(!reload);
+                }}
+              >
+                Show More <FontAwesomeIcon icon={faAngleDown} />
+              </h3>
+            ) : length < projectsList.length && length != 5 ? (
+              <div style={{display :'flex' , flexDirection:'column' , gap :'1rem' , justifyContent :'center' , alignItems : 'center'}}>
+                             <h3
+                  onClick={(e) => {
+                    setLength(length - 5);
+                    setReload(!reload);
+                  }}
+                >
+                  Show Less <FontAwesomeIcon icon={faAngleUp} />
+                </h3>
+                <h3
+                  onClick={(e) => {
+                    setLength(length + 5);
+                    setReload(!reload);
+                  }}
+                >
+                  Show More <FontAwesomeIcon icon={faAngleDown} />
+                </h3>
+
+   
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     </div>

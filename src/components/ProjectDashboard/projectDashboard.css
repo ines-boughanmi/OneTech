@@ -315,5 +315,21 @@
         height: 100%;
         border-radius: 50%;
     }
+    .showMore{
+       width: 100%;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       padding: 1rem;
+    }
+
+    .showMore h3{
+      color: #828283;
+    }
+    .showMore h3:hover{
+      color: #f08700;
+      cursor: pointer;
+      transition-duration: 350ms;
+    }
 
     

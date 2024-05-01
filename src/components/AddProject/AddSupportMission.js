@@ -37,6 +37,23 @@ const AddSupportMission = ({users}) => {
     setDescription("");
     setLocation("");
   };
+  
+  const formatDateValue = (dateString) => {
+    const date = new Date(dateString);
+    
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedMonth = month < 10 ? "0" + month : month;
+    
+    const formattedDate = year + "-" + formattedMonth + "-" + formattedDay;
+    
+    return formattedDate;
+  };
+  
+  const [startDate, setStartDate] = useState(formatDateValue(new Date()))
+  const [endDate, setEndDate] = useState(formatDateValue(new Date()))
 
   const handleAddPartition = async (mission) => {
     selected.map( async (user)=>{
@@ -221,6 +238,8 @@ const AddSupportMission = ({users}) => {
                     description,
                     location,
                     type,
+                    start_date : startDate ,
+                    end_date : endDate
                   });
                 }}
               >

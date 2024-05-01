@@ -25,7 +25,7 @@ const style = {
   borderRadius: "10px",
 };
 
-const Assign = ({ handleClose, open, mission }) => {
+const Assign = ({ handleClose, open, mission, cars, missions, setOptions }) => {
   const [title, setTitle] = useState(mission.title);
   const [description, setDescription] = useState(mission.description);
   const [startDate, setStartDate] = useState(mission.start_date);
@@ -33,11 +33,7 @@ const Assign = ({ handleClose, open, mission }) => {
   const [transport, setTransport] = useState("bolt");
   const [consultant, setConsultant] = useState([]);
   const [location, setLocation] = useState(mission.location);
-  const [options, setOptions] = useState([])
-  const [cars,setCars] = useState([])
-  const [missions,setMissions] = useState([]);
-  const [carId, setCarId] = useState({})
-
+  const [carId, setCarId] = useState(null);
 
   const formatDateValue = (dateString) => {
     const date = new Date(dateString);
@@ -78,42 +74,49 @@ const Assign = ({ handleClose, open, mission }) => {
 
     return formattedDate;
   };
-  const extractRange = (start,end) => {
-    let arr = []
-    let date = start
-    while (formatDate(date) !== formatDate(end)){
-        arr.push(formatDate(date))
-        date = addDate(date,1)
+  const extractRange = (start, end) => {
+    let arr = [];
+    let date = start;
+    while (formatDate(date) !== formatDate(end)) {
+      arr.push(formatDate(date));
+      date = addDate(date, 1);
     }
-    arr.push(formatDate(end))
-    return arr
-    
-}
+    arr.push(formatDate(end));
+    return arr;
+  };
 
-
-const checkExistence = async (missions,options) => {
-  if(!missions.length){
-    setOptions(options)
-    return
-  }
-  let datesToCheck = extractRange(missions[0].start_date,missions[0].end_date)
-  let createdDates = extractRange(startDate,endDate)
-  let filteredOptions = []
-  let i = 0 
-  
-  while(i<datesToCheck.length){
-    if(createdDates.includes(datesToCheck[i])){
-           filteredOptions = options.filter((option)=>{
-            return option.value !== missions[0].carId
-          }) 
-          console.log(i);
+  const checkExistence =  (missions, options) => {
+    console.log('first line',missions);
+    if (!missions.length) {
+      setOptions(options);
+      return;
+    }
+    let datesToCheck = extractRange(
+      missions[0].start_date,
+      missions[0].end_date
+    );
+    let createdDates = extractRange(startDate, endDate);
+    let filteredOptions = options
+    let i = 0;
+    console.log(datesToCheck);
+    console.log(createdDates);
+    while (i < datesToCheck.length) {
+      console.log('hello');
+      if (createdDates.includes(datesToCheck[i])) {
+        console.log("ahla");
+        // console.log('inside if',missions)
+        filteredOptions = filteredOptions.filter((option) => {
+          // console.log('inside filter',missions, options);
+          return option.value !== missions[0].carId;
+        });
       }
-      i++
+      i++;
     }
-    checkExistence(missions.slice(1),filteredOptions)
-  }
+    console.log('tnekna');
+    checkExistence(missions.slice(1), filteredOptions);
+  };
 
-  const notifyRequired = () => { 
+  const notifyRequired = () => {
     toast.error("Please fill all required fields", {
       position: "top-center",
       autoClose: 3000,
@@ -124,8 +127,7 @@ const checkExistence = async (missions,options) => {
       progress: undefined,
       theme: "light",
     });
-  
-  }
+  };
   const notifyCarAssign = () => {
     toast.success("Car Assigned", {
       position: "top-center",
@@ -138,33 +140,6 @@ const checkExistence = async (missions,options) => {
       theme: "light",
     });
   };
-
-
-  const handleOptions = (cars) => {
-
-    const filteredCars = cars.filter((car)=>{
-      return car.car_availability === true 
-    }) 
-    const options = filteredCars.map((car) => {
-      return {
-        value: car.id,
-        label: car.car_model + " " + car.license_plate,
-      };
-    });
-    setOptions(options);
-  }
-  const fetchCars = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if(token){
-        const data = await axios.get("http://localhost:3001/api/car/getAll");
-        handleOptions(data.data)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
 
   const handleHumanResources = async () => {
     try {
@@ -184,48 +159,35 @@ const checkExistence = async (missions,options) => {
     }
   };
 
-  const fetchMissions = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      if(token){
-        const missions = await axios.get(`http://localhost:3001/api/mission/getAll`)
-        setMissions(missions.data.filter((mission)=>{
-          return mission.type === 'normal'
-        })); 
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   const handleUpdate = async (body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        if(transport === "bolt"){
+        if (transport === "bolt") {
           await axios.put(
             `http://localhost:3001/api/mission/update/${mission.id}`,
             body
           );
-        } else if (carId){
+          handleClose();
+        } else if (carId) {
           await axios.put(
             `http://localhost:3001/api/mission/update/${mission.id}`,
             body
           );
-        }
-        else{
-          notifyRequired()
+          handleClose();
+        } else {
+          notifyRequired();
         }
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     handleHumanResources();
-    fetchCars()
-    fetchMissions()
   }, []);
 
   return (
@@ -312,7 +274,7 @@ const checkExistence = async (missions,options) => {
                   type="radio"
                   onChange={(e) => {
                     setTransport(e.target.value);
-                    checkExistence(missions,options)
+                    checkExistence(missions, cars);
                   }}
                   value="car"
                 />
@@ -330,9 +292,9 @@ const checkExistence = async (missions,options) => {
                   closeMenuOnSelect={true}
                   components={animatedComponents}
                   styles={{ width: "100%" }}
-                  options={options}
-                  onChange={(e)=>{
-                    setCarId(e.value)
+                  options={cars}
+                  onChange={(e) => {
+                    setCarId(e.value);
                   }}
                 />
               </div>
@@ -348,7 +310,7 @@ const checkExistence = async (missions,options) => {
                   e.preventDefault();
                   handleUpdate({
                     transport,
-                    carId
+                    carId,
                   });
                 }}
               >

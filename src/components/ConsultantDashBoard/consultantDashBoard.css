@@ -176,3 +176,28 @@
     padding: 3rem;
     gap: 1rem;
 }
+
+
+.Supportcards-container-consultant{
+  background-color: #e25252;
+  width: 90%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.Normalcards-container-consultant {
+  background-color: #fffe;
+  width: 90%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+}
