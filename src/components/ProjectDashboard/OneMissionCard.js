@@ -1,6 +1,6 @@
 import React, {  useEffect,useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faFile, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./projectDashboard.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -112,6 +112,13 @@ const OneMissionCard = ({ mission, reload, setReload,dates , project }) => {
         <p>{formatDate(mission.end_date)}</p>
       </div>
       <div className="icons">
+          {
+            mission.progress === "Done" ? 
+            <FontAwesomeIcon className="iconLittle"  onClick={(e)=>{
+              window.open(mission.file)
+            }} icon={faFile} />
+            : <></>
+          }
         <FontAwesomeIcon className="iconLittle" onClick={handleOpenUpdate} icon={faPen} />
         <FontAwesomeIcon
           className="iconLittle"
