@@ -7,8 +7,8 @@ module.exports =(connection,DataTypes)=>{
         finish_date:DataTypes.DATE,
         status:{
             type:DataTypes.ENUM,
-            values:["To Do","Done"],
-            defaultValue:"To Do",
+            values:["In Progress","Done"],
+            defaultValue:"In Progress",
         },
     })
     return Project

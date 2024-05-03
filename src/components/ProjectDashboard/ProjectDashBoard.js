@@ -189,7 +189,9 @@ const ProjectDashBoard = () => {
             />
           ))}
           <div className="showMore">
-            {length >= projectsList.length ? (
+            {
+            !projectsList.length || projectsList.length <=5 ? <></> :
+            length >= projectsList.length ? (
               <h3
                 onClick={(e) => {
                   setLength(length - 5);

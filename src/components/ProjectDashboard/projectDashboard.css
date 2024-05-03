@@ -335,7 +335,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: green;
+      background-color: #00396b;
       font-weight: 500;
       width: 80px;
       height: 30px;
@@ -345,4 +345,16 @@
       color: white;
     }
 
+
+    .inProgress{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f08700;
+      font-weight: 500;
+      width: 80px;
+      height: 30px;
+      border-radius: 10px;
+      color: white;
+    }
     

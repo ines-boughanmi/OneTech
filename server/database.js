@@ -55,7 +55,7 @@ Partition.belongsTo(Mission)
 
 
 
-connection.sync({alter:true}).then(()=>{
+connection.sync({force:true}).then(()=>{
     console.log("table created successfully")
 }).catch((error)=>{
     console.log(error)

@@ -85,6 +85,21 @@ const OneProject = ({ project, reload, setReload }) => {
     }
   };
 
+  const handleDone = async (missions)=>{
+    let doneMissions = 0
+    for (let mission of missions) {
+      if(mission.progress === "Done"){
+        doneMissions++
+      }
+    }
+    if(doneMissions === missions.length){
+      await axios.put(`http://localhost:3001/api/project/update/${project.id}`, {
+        status : "Done"
+      })
+    }
+  }
+
+
   const fetchMissions = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -92,6 +107,7 @@ const OneProject = ({ project, reload, setReload }) => {
         const data = await axios.get(
           `http://localhost:3001/api/mission/getByProject/${project.id}`
         );
+        handleDone(data.data)
         setMissionsList(data.data);
       }
     } catch (error) {
@@ -138,6 +154,7 @@ const OneProject = ({ project, reload, setReload }) => {
       theme: "light",
     });
   };
+
 
   const handleUpdate = async (id, body) => {
     try {
@@ -190,9 +207,15 @@ const OneProject = ({ project, reload, setReload }) => {
     <div className="OneProject">
       <div className="projectTitle">
         <h2>{project.project_title}</h2>
-        <div  className="ToDo">
-          <p>To do </p>
-        </div>
+        {project.status ? (
+          <div className="inProgress">
+            <p>In Progress</p>
+          </div>
+        ) : (
+          <div className="ToDo">
+            <p>Done</p>
+          </div>
+        )}
         <div className="icons">
           <Link to={`/information/${project.id}`} state={{ project }}>
             <FontAwesomeIcon className="icon1" icon={faCircleInfo} />
