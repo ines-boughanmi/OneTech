@@ -11,7 +11,6 @@
 .containerMission{
     background-color: #fffe;
     width: 90%;
-    height: 70%;
     border-radius: 15px;
     display: flex;
     justify-content: flex-start;
@@ -43,6 +42,7 @@
     border-radius: 15px;
     width: 99%;
     height: 90%;
+    padding: 1rem;
 }
 .oneMission h2{
     font-size: 26px;
@@ -200,4 +200,83 @@
   flex-direction: column;
   gap: 0.8rem;
   padding: 1rem;
+}
+.missionLabel{
+  color: #00396b;
+  font-size: 18px;
+  font-weight: 500;
+}
+.MissionLine{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MissionDetailsContainer{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width:35%;
+  gap: 0.5rem;
+
+}
+.mission-value{
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.boltMission{
+  border-radius: 40px;
+  width: 100%;
+  background-color: #4ff09f70;
+  height: 110px;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 8rem;
+  color:#279c62;
+  font-weight: 500;
+}
+.boltMission img{
+  width: 35%;
+  border-radius: 40px;
+
+  height: 100%;
+}
+.inputUpload {
+  max-width: 190px;
+  display: none;
+}
+
+.labelFile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  height: 190px;
+  border: 2px dashed #00396b;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  color: #404040;
+  cursor: pointer;
+}
+.DoneContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+ padding: 1rem;
+}
+.iconUpload{
+  color: #00396b;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding-bottom: 10px;
 }

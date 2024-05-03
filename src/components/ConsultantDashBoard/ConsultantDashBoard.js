@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./consultantDashBoard.css";
 import OneMissionConsultant from "./OneMissionConsultant";
+import OneMissionSupport from "./OneMissionSupport";
 
 const ConsultantDashBoard = ({ user }) => {
   const [missionsList, setMissionsList] = useState([]);
@@ -87,7 +88,7 @@ const ConsultantDashBoard = ({ user }) => {
             {filtredSupportMissions.length ? (
               <div className="Missioncards-container">
                 {filtredSupportMissions.map((mission) => (
-                  <OneMissionConsultant
+                  <OneMissionSupport
                     key={mission.id}
                     mission={mission}
                   />

@@ -32,6 +32,7 @@ function App() {
         <Route path='/information/:id' Component={InformationProject}/>
         <Route path='/schedule' Component={Schedule}/>
         <Route path='/mission/:id' Component={OneMissionDetails}/>
+
       </Routes>
         
     </div>

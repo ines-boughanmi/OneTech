@@ -16,6 +16,10 @@ module.exports =(connection,DataTypes)=>{
             values:["None","Bolt","Car"],
             defaultValue:"None",
         },
+        summary : {
+            type:DataTypes.STRING,
+        },
+        file : DataTypes.STRING,
     })
     
     return Mission

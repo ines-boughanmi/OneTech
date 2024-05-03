@@ -30,9 +30,6 @@ const OneProject = ({ project, reload, setReload }) => {
   const [missionsList, setMissionsList] = useState([]);
   const [dates, setDates] = useState([]);
 
-
-
-
   const formatDateValue = (dateString) => {
     const date = new Date(dateString);
 
@@ -48,15 +45,15 @@ const OneProject = ({ project, reload, setReload }) => {
   };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    
+
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const formattedDay = day < 10 ? "0" + day : day;
     const formattedMonth = month < 10 ? "0" + month : month;
-    
+
     const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
-    
+
     return formattedDate;
   };
   const addDate = (date, amount) => {
@@ -75,12 +72,13 @@ const OneProject = ({ project, reload, setReload }) => {
     setDates(dates);
   };
 
-
   const handleDeleteByProject = async (id) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.delete(`http://localhost:3001/api/mission/removeByProject/${id}`);
+        await axios.delete(
+          `http://localhost:3001/api/mission/removeByProject/${id}`
+        );
       }
     } catch (error) {
       console.log(error);
@@ -112,8 +110,6 @@ const OneProject = ({ project, reload, setReload }) => {
   const filtredDoneMissions = missionsList.filter((mission) => {
     return mission.projectId === project.id && mission.progress === "Done";
   });
-
-
 
   const handleDeleteProject = async (id) => {
     try {
@@ -155,24 +151,31 @@ const OneProject = ({ project, reload, setReload }) => {
       console.log(error);
     }
   };
-  const  calculatePercentage = (number, total) => {
-    if (typeof number !== 'number' || typeof total !== 'number') {
-      throw new Error('Both arguments must be numbers');
+  const calculatePercentage = (number, total) => {
+    if (typeof number !== "number" || typeof total !== "number") {
+      throw new Error("Both arguments must be numbers");
     }
-  
+
     if (total === 0) {
-      return 0
+      return 0;
     }
-  
+
     const percentage = ((number / total) * 100).toFixed(2);
     return percentage;
-  }
+  };
 
   const data = {
     labels: ["To Do", "In Progress", "Done"],
     datasets: [
       {
-        data: [calculatePercentage(filtredToDoMissions.length,missionsList?.length), calculatePercentage(filtredInProgressMissions.length,missionsList?.length), calculatePercentage(filtredDoneMissions.length,missionsList?.length)],
+        data: [
+          calculatePercentage(filtredToDoMissions.length, missionsList?.length),
+          calculatePercentage(
+            filtredInProgressMissions.length,
+            missionsList?.length
+          ),
+          calculatePercentage(filtredDoneMissions.length, missionsList?.length),
+        ],
 
         backgroundColor: ["#44a5c2", "#f08700", "#014b7a"],
         hoverOffset: 4,
@@ -187,8 +190,11 @@ const OneProject = ({ project, reload, setReload }) => {
     <div className="OneProject">
       <div className="projectTitle">
         <h2>{project.project_title}</h2>
+        <div  className="ToDo">
+          <p>To do </p>
+        </div>
         <div className="icons">
-        <Link to={`/information/${project.id}`} state={{ project }}>
+          <Link to={`/information/${project.id}`} state={{ project }}>
             <FontAwesomeIcon className="icon1" icon={faCircleInfo} />
           </Link>
           <Link to={`/update/${project.id}`} state={{ project }}>
@@ -253,7 +259,6 @@ const OneProject = ({ project, reload, setReload }) => {
         handleClose={handleCloseDelete}
         handleDelete={handleDeleteProject}
       />
-      
     </div>
   );
 };

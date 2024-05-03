@@ -14,7 +14,7 @@ module.exports =(connection,DataTypes)=>{
         role:{
             type:DataTypes.ENUM,
             values:["CONSULTANT","PROJECT_MANAGER","PARKING_MANAGER"],
-            defaultValue:"CONSULTANT"
+            defaultValue:"PARKING_MANAGER"
         },
         phone:DataTypes.STRING,
         validity:{

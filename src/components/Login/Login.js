@@ -79,12 +79,14 @@ function Login() {
     }
   };
 
+
+
   return (
     <div className="loginContainer">
     <div className="contain">
       <Link to="/">
-        <div className="pos">
-          <img className="image" src={oneTech} alt="OneTech" />
+        <div className="pos" >
+          <img className="image" src={oneTech} alt="OneTech"/>
         </div>
       </Link>
       <div className="title">

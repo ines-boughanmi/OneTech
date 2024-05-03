@@ -331,5 +331,18 @@
       cursor: pointer;
       transition-duration: 350ms;
     }
+    .ToDo{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: green;
+      font-weight: 500;
+      width: 80px;
+      height: 30px;
+      border-radius: 10px;
+    }
+    .ToDo p{
+      color: white;
+    }
 
     
