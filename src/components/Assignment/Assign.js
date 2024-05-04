@@ -25,7 +25,7 @@ const style = {
   borderRadius: "10px",
 };
 
-const Assign = ({ handleClose, open, mission, cars, missions, setOptions }) => {
+const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reload ,setReload }) => {
   const [title, setTitle] = useState(mission.title);
   const [description, setDescription] = useState(mission.description);
   const [startDate, setStartDate] = useState(mission.start_date);
@@ -170,12 +170,14 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions }) => {
             `http://localhost:3001/api/mission/update/${mission.id}`,
             body
           );
+          setReload(!reload);
           handleClose();
         } else if (carId) {
           await axios.put(
             `http://localhost:3001/api/mission/update/${mission.id}`,
             body
           );
+          setReload(!reload);
           handleClose();
         } else {
           notifyRequired();

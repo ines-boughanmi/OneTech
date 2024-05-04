@@ -11,6 +11,7 @@ const Schedule = () => {
     const [reload, setReload] = useState(true);
     const [partitions,setPartitions] = useState([])
     const [projects,setProjects] = useState([])
+    const [search, setSearch] = useState("")
     const location = useLocation()
     const user = location.state.user
 
@@ -48,6 +49,28 @@ const Schedule = () => {
           ))
         );
       }
+
+      const handleSearch = async (searchTerm) => {
+        try {
+          const token = localStorage.getItem('token')
+          if(token){
+            if(searchTerm){
+              const data = await axios.post(`http://localhost:3001/api/project/searchProjectsUser/${searchTerm}`,{
+                userId : user.id
+              })
+              data.data.reverse();
+              console.log(removeDuplicatesByKey(data.data[0],'id'));
+              setProjects(removeDuplicatesByKey(data.data[0],'id'))
+            }
+            else{
+              setReload(!reload)
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
       const getProjects = async () => {
         try {
           const token = localStorage.getItem("token");
@@ -66,7 +89,7 @@ const Schedule = () => {
 
       useEffect(()=>{
         getProjects()
-      },[])
+      },[reload])
 
   return (
     <div className='dash'>
@@ -80,11 +103,11 @@ const Schedule = () => {
               name="text"
               className="input"
               placeholder="Search"
-
+              onChange={(e)=>setSearch(e.target.value)}
             />
             <button className="search__btn" onClick={(e)=>{
               e.preventDefault()
-              
+              handleSearch(search)
             }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

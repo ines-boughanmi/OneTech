@@ -9,7 +9,25 @@ import axios from "axios";
 
 const ParkingDashBoard = ({user}) => {
   const [carsList,setCarsList] = useState([])
+  const [search,setSearch] = useState('')
   const [reload,setReload] = useState(true)
+
+
+
+  const handleSearch = async (searchTerm) => {
+    try {
+      if(searchTerm){
+        const data = await axios.get(`http://localhost:3001/api/car/search/${searchTerm}`)
+        console.log(data.data);
+        data.data.reverse()
+      setCarsList(data.data);
+      }else{
+        setReload(!reload)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
 
   const fetchCars = async () => {
@@ -26,7 +44,7 @@ const ParkingDashBoard = ({user}) => {
 
   useEffect(()=>{
     fetchCars()
-  },[carsList.length,reload])
+  },[reload])
 
   return (
     <div className="content-container">
@@ -38,10 +56,11 @@ const ParkingDashBoard = ({user}) => {
               name="text"
               className="input"
               placeholder="Search"
-
+              onChange={(e)=>setSearch(e.target.value)}
             />
             <button className="search__btn" onClick={(e)=>{
               e.preventDefault()
+              handleSearch(search)
             }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

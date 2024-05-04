@@ -8,7 +8,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../SideNav/SideNav";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import bolt from "../../assets/bolt.gif";
 import { ToastContainer, toast } from "react-toastify";
 import DoneModal from "./DoneModal";
@@ -21,6 +21,7 @@ const OneMissionDetails = () => {
   const [reload, setReload] = useState(false);
   const [file, setFile] = useState("");
   const [description, setDescription] = useState('')
+  const navigate = useNavigate()
 
   const [openUpdate, setOpenUpdate] = useState(false);
   const handleOpenUpdate = () => {
@@ -272,7 +273,9 @@ const OneMissionDetails = () => {
         <div className="oneMission">
           <div className="oneMissionTitle">
             <h2>Mission Informations</h2>
-            <FontAwesomeIcon icon={faFileArrowDown} className="iconDownload" />
+            <FontAwesomeIcon icon={faFileArrowDown} className="iconDownload"  onClick={(e)=>{
+              navigate('/printPage', {state : {mission : mission , car : car} })
+            }}  />
           </div>
           <div className="MissionContent">
             <div className="MissionDetailsContainer">

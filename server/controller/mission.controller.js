@@ -1,5 +1,17 @@
 const db = require("../database");
+const { Op } = require("sequelize");
 module.exports = {
+  searchRecords : async (req, res) => {
+    try {   
+      const searchResults = await db.Mission.findAll({
+        where: { title : { [Op.like] : `%${req.params.searchTerm}%` }},
+      });
+      res.json(searchResults);
+    } catch (error) {
+      console.error('Error searching records:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  },
   getAllProjectsByMissionId : async (req,res) =>{
     try {
       let projects = []
@@ -129,6 +141,19 @@ module.exports = {
           missions.push(mission)
       }
       res.json(missions);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getUsersByMission : async (req,res) => {
+    try {
+      let users = []
+      const partitions = await db.Partition.findAll({where : {missionId : req.params.id}})
+      for (const partition of partitions) {
+          const user = await db.User.findOne({where : {id : partition.userId }})
+          users.push(user)
+      }
+      res.json(users)
     } catch (error) {
       console.log(error);
     }

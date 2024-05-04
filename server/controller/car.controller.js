@@ -1,5 +1,24 @@
 const db = require("../database")
+const { Op } = require("sequelize");
+
 module.exports = {
+    searchRecords : async (req, res) => {
+        try {
+          const searchResults = await db.Car.findAll({
+            where: {
+                [Op.or]: [
+                  { car_model: { [Op.like]: `%${req.params.searchTerm}%` } },
+                  { brand: { [Op.like]: `%${req.params.searchTerm}%` } },
+                  { license_plate: { [Op.like]: `%${req.params.searchTerm}%` } }
+                ]
+              }
+          });
+          res.json(searchResults);
+        } catch (error) {
+          console.error('Error searching records:', error);
+          res.status(500).json({ error: 'Internal server error' });
+        }
+      },
     getAll:async (req,res)=>{
         try {
             const allCars = await db.Car.findAll({})
