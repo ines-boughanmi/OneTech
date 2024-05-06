@@ -92,7 +92,7 @@ const OneProject = ({ project, reload, setReload }) => {
         doneMissions++
       }
     }
-    if(doneMissions === missions.length){
+    if(doneMissions === missions.length  && doneMissions !== 0){
       await axios.put(`http://localhost:3001/api/project/update/${project.id}`, {
         status : "Done"
       })
@@ -207,7 +207,7 @@ const OneProject = ({ project, reload, setReload }) => {
     <div className="OneProject">
       <div className="projectTitle">
         <h2>{project.project_title}</h2>
-        {project.status ? (
+        {project.status !== "Done" ? (
           <div className="inProgress">
             <p>In Progress</p>
           </div>

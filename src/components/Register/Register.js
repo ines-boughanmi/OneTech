@@ -24,7 +24,6 @@ function Register() {
 
   const handleEmailError = () => {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    console.log(regex.test(email));
     if (!email.length) {
       setErrors({
         ...errors,

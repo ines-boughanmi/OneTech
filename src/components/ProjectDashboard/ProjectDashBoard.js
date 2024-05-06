@@ -61,7 +61,6 @@ const ProjectDashBoard = () => {
         const data = await axios.get(
           "http://localhost:3001/api/project/getAll"
         );
-        console.log(data.data);
         data.data.reverse();
         setProjectsList(sortByCreatedAtDescending(data.data));
       }
@@ -77,25 +76,6 @@ const ProjectDashBoard = () => {
     fetchUsers();
   }, [reload, length]);
 
-  // const getProject = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       const data = await axios.get(
-  //         "http://localhost:3001/api/project/getOne",
-  //         {
-  //           headers: {
-  //             authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-
-  //       setProject(data.data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const getUser = async () => {
     try {
@@ -107,7 +87,6 @@ const ProjectDashBoard = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);

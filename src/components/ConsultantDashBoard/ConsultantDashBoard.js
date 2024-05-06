@@ -52,11 +52,11 @@ const ConsultantDashBoard = ({ user }) => {
   };
 
   const filtredSupportMissions = missionsList?.filter((mission) => {
-    return mission.type === "support" && mission.progress !== "Done" ;
+    return mission.type === "support" && mission.progress !== "Done" && (mission.transport === "Bolt" || mission.transport === "Car") ;
   });
 
   const filtredNormalMissions = missionsList?.filter((mission) => {
-    return mission.type === "normal" && mission.progress !== "Done" ;
+    return mission.type === "normal" && mission.progress !== "Done" && (mission.transport === "Bolt" || mission.transport === "Car") ;
   });
 
 

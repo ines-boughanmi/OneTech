@@ -20,7 +20,6 @@ const DashBoard = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(data.data);
       setUser(data.data);
     } catch (error) {
       console.log(error);

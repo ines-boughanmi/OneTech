@@ -86,7 +86,6 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
   };
 
   const checkExistence =  (missions, options) => {
-    console.log('first line',missions);
     if (!missions.length) {
       setOptions(options);
       return;
@@ -98,21 +97,14 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
     let createdDates = extractRange(startDate, endDate);
     let filteredOptions = options
     let i = 0;
-    console.log(datesToCheck);
-    console.log(createdDates);
     while (i < datesToCheck.length) {
-      console.log('hello');
       if (createdDates.includes(datesToCheck[i])) {
-        console.log("ahla");
-        // console.log('inside if',missions)
         filteredOptions = filteredOptions.filter((option) => {
-          // console.log('inside filter',missions, options);
           return option.value !== missions[0].carId;
         });
       }
       i++;
     }
-    console.log('tnekna');
     checkExistence(missions.slice(1), filteredOptions);
   };
 

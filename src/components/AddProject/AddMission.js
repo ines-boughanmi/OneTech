@@ -59,7 +59,7 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
 
   const handleAddPartition = async (mission) => {
     selected.map( async (user)=>{
-      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
+      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id , end_date : mission.end_date})
     })
 
   }
@@ -138,7 +138,6 @@ const checkExistence = async (missions,options) => {
       if(createdDates.includes(datesToCheck[i])){
         const partitions = await axios.get(`http://localhost:3001/api/partition/getPartitionsByMission/${missions[0].id}`).then((partitions)=>{
           partitions.data.forEach((partition)=>{
-            console.log(options); 
              filteredOptions = options.filter((option)=>{
               return option.value !== partition.userId
             })
@@ -148,7 +147,6 @@ const checkExistence = async (missions,options) => {
       else{
         setReload(!reload)
       }
-    console.log('cross');
       i++
     }
     checkExistence(missions.slice(1),filteredOptions)

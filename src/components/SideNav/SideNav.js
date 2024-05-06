@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
   faCalendarDays,
+  faChartColumn,
   faChartPie,
   faFile,
   faListCheck,
@@ -65,11 +66,6 @@ export const SideNav = ({ user }) => {
                   elemBefore: () => <FontAwesomeIcon icon={faCalendarDays} />,
                 },
                 {
-                  title: "Contact",
-                  itemId: "/contact",
-                  elemBefore: () => <FontAwesomeIcon icon={faMessage} />,
-                },
-                {
                   title: "Profile",
                   itemId: "/profile",
                   elemBefore: () => <FontAwesomeIcon icon={faUser} />,
@@ -95,9 +91,9 @@ export const SideNav = ({ user }) => {
                   elemBefore: () => <FontAwesomeIcon icon={faUsers} />,
                 },
                 {
-                  title: "Contact",
-                  itemId: "/contact",
-                  elemBefore: () => <FontAwesomeIcon icon={faMessage} />,
+                  title: "Analytics",
+                  itemId: "/analytics",
+                  elemBefore: () => <FontAwesomeIcon icon={faChartColumn} />,
                 },
                 {
                   title: "Profile",
@@ -124,12 +120,6 @@ export const SideNav = ({ user }) => {
                   itemId: "/assignment",
                   elemBefore: () => <FontAwesomeIcon icon={faFile} />,
                 },
-
-                // {
-                //   title: "Contact",
-                //   itemId: "/contact",
-                //   elemBefore: () => <FontAwesomeIcon icon={faMessage} />,
-                // },
                 {
                   title: "Profile",
                   itemId: "/profile",

@@ -29,7 +29,6 @@ const Consultants = () => {
     try {
       if(searchTerm){
         const data = await axios.get(`http://localhost:3001/api/user/search/${searchTerm}`)
-        console.log(data.data);
         data.data.reverse()
       setConsultantsList(data.data);
       }else{
@@ -46,7 +45,6 @@ const Consultants = () => {
       const token = localStorage.getItem("token");
       if (token) {
         const data = await axios.get("http://localhost:3001/api/user/getAll");
-        console.log(data.data);
         setConsultantsList(data.data);
       }
     } catch (error) {
@@ -67,7 +65,6 @@ const Consultants = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);

@@ -51,7 +51,7 @@ const OneSupportMission = ({ mission,reload, setReload,missions}) => {
     </div>
     <div>
     <button className="button-Assign" onClick={handleOpenUpdate}>Assign</button>
-    <Assign mission={mission} open={openUpdate} handleClose={handleCloseUpdate} missions={missions} cars={options} setOptions={setOptions} />
+    <Assign mission={mission} open={openUpdate} handleClose={handleCloseUpdate} missions={missions} cars={options} setOptions={setOptions} reload={reload} setReload={setReload}  />
     </div>
   </div>
   )

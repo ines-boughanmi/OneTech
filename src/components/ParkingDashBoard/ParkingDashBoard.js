@@ -18,7 +18,6 @@ const ParkingDashBoard = ({user}) => {
     try {
       if(searchTerm){
         const data = await axios.get(`http://localhost:3001/api/car/search/${searchTerm}`)
-        console.log(data.data);
         data.data.reverse()
       setCarsList(data.data);
       }else{

@@ -95,7 +95,6 @@ const AddProject = () => {
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 7);
-    console.log(newDate);
     return newDate;
   };
 
@@ -130,7 +129,6 @@ const AddProject = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);

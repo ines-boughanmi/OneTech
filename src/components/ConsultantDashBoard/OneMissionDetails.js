@@ -25,7 +25,10 @@ const OneMissionDetails = () => {
 
   const [openUpdate, setOpenUpdate] = useState(false);
   const handleOpenUpdate = () => {
-    if (!car?.car_availability) {
+    if(!mission.carId){
+      setOpenUpdate(true);
+    }
+    else if (!car?.car_availability) {
       notifyCarReturnedError();
     } 
     else{
@@ -44,7 +47,6 @@ const OneMissionDetails = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +73,6 @@ const OneMissionDetails = () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        console.log(missionId.id);
         const data = await axios.get(
           `http://localhost:3001/api/mission/getOne/${missionId.id}`
         );
@@ -178,6 +179,16 @@ const OneMissionDetails = () => {
             setReload(!reload);
           }
         }
+        else {
+          const data = await axios.put(
+            `http://localhost:3001/api/mission/update/${missionId.id}`,
+            {
+              progress: "In Progress",
+            }
+          );
+          notifyMissionStarted();
+          setReload(!reload);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -205,6 +216,18 @@ const OneMissionDetails = () => {
             notifyMissionDone();
             setReload(!reload);
           }
+        }
+        else{
+          const data = await axios.put(
+            `http://localhost:3001/api/mission/update/${missionId.id}`,
+            {
+              progress: "Done",
+              file,
+              summary : description
+            }
+          );
+          notifyMissionDone();
+          setReload(!reload);
         }
       }
     } catch (error) {

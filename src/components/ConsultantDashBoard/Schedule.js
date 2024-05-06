@@ -59,7 +59,6 @@ const Schedule = () => {
                 userId : user.id
               })
               data.data.reverse();
-              console.log(removeDuplicatesByKey(data.data[0],'id'));
               setProjects(removeDuplicatesByKey(data.data[0],'id'))
             }
             else{
@@ -76,7 +75,6 @@ const Schedule = () => {
           const token = localStorage.getItem("token");
           if (token) {
             const data = await axios.get(`http://localhost:3001/api/project/getProjectsByUser/${user?.id}`)
-            console.log(data.data);
             setProjects(removeDuplicatesByKey(data.data,'id'));
           }
         } catch (error) {

@@ -15,6 +15,7 @@ import InformationProject from './components/ProjectDashboard/InformationProject
 import Schedule from './components/ConsultantDashBoard/Schedule';
 import OneMissionDetails from './components/ConsultantDashBoard/OneMissionDetails';
 import PrintPage from './components/PrintPage/PrintPage';
+import Analytics from './components/Analytics/Analytics';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <Route path='/profile' Component={Profile}/>
         <Route path='/consultants' Component={Consultants}/>
         <Route path='/add' Component={AddProject}/>
-        <Route path='/contact' Component={Contact}/>
+        <Route path='/analytics' Component={Analytics}/>
         <Route path='/update/:id' Component={UpdateProject}/>
         <Route path='/planning/:id' Component={Planning}/>
         <Route path='/assignment' Component={Assignment}/>

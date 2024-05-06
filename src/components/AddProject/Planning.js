@@ -45,7 +45,6 @@ const Planning = () => {
           },
         });
         setUser(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       console.log(error);
@@ -97,13 +96,11 @@ const Planning = () => {
   };
   const fetchMissions = async () => {
     try {
-      console.log(projectId);
       const token = localStorage.getItem("token");
       if (token) {
         const data = await axios.get(
           `http://localhost:3001/api/mission/getByProject/${projectId.id}`
         );
-        console.log(data.data);
         setMissions(data.data);
       }
     } catch (error) {

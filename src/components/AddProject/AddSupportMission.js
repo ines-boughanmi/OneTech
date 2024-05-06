@@ -57,7 +57,7 @@ const AddSupportMission = ({users}) => {
 
   const handleAddPartition = async (mission) => {
     selected.map( async (user)=>{
-      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id})
+      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id,end_date:endDate})
     })
 
   }
