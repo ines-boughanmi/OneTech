@@ -292,7 +292,7 @@ const UpdateProject = () => {
               />
             </div>
           </div>
-          <AddMission projectId={project.id} users={users} dates={dates} reload={reload} setReload={setReload}  />
+          <AddMission projectId={project.id} users={users} dates={dates} reload={reload} setReload={setReload} setDates={setDates}  />
 
           <div className="consultantTitle">
             <LowerPlanning start_date={startDate} reload={reload} setReload={reload} />

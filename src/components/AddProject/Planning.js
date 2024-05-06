@@ -161,6 +161,7 @@ const Planning = () => {
             dates={dates}
             reload={reload}
             setReload={setReload}
+            setDates={setDates}
           />
 
           <div className="consultantTitle">

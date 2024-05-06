@@ -21,7 +21,7 @@ const style = {
   p: 4,
   borderRadius: "10px",
 };
-const AddMission = ({projectId,users,dates,reload,setReload}) => {
+const AddMission = ({projectId,users,dates,reload,setReload , setDates}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const[id,setId] = useState(projectId);
@@ -34,6 +34,11 @@ const AddMission = ({projectId,users,dates,reload,setReload}) => {
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([])
   const [missions,setMissions] = useState([]);
+  const [dateToCut, setDateToCut] = useState({})
+  const [dateToCutEnd, setDateToCutEnd] = useState({})
+  const [index, setIndex] = useState(0)
+  const [indexEnd, setIndexEnd] = useState(dates.length)
+  const [permission,setPermission] = useState(true)
 
   const handleOpen = () => {
     setOpen(true);
@@ -232,6 +237,42 @@ const checkExistence = async (missions,options) => {
     }
   }
 
+  const handlePermission = () => {
+    if(dateToCut.value){
+      setPermission(false)
+    }
+  }
+
+  function compareObjects(obj1, obj2) {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+    for (let key of keys1) {
+        if (obj1[key] !== obj2[key]) {
+            return false;
+        }
+    }
+    return true;
+}
+  
+const extractIndex = ()=>{
+  dates.forEach((date , i)=>{
+      if(compareObjects(date,dateToCut)){
+          setIndex(i)
+      }
+  }) 
+}
+const extractIndexEnd = ()=>{
+  dates.forEach((date , i)=>{
+      if(compareObjects(date,dateToCutEnd)){
+          setIndexEnd(i+1)
+      }
+  }) 
+}
+
+
   useEffect(()=>{
     handleHumanResources();
     handleOptions(users)
@@ -288,10 +329,15 @@ const checkExistence = async (missions,options) => {
               <Select
                 closeMenuOnSelect={true}
                 components={animatedComponents}
-                options={dates}
+                options={dates.slice(0, indexEnd || dates.length)}
                 styles={{width: '100%'}}
                 onChange={(e)=>{
                   setStartDate(e.value);
+                  setDateToCut(e)
+                }}
+                onBlur={(e)=>{
+                  extractIndex()
+                  handlePermission()
                 }}
               />
             </div>
@@ -311,14 +357,17 @@ const checkExistence = async (missions,options) => {
               <Select
                 closeMenuOnSelect={true}
                 components={animatedComponents}
-                options={dates}
+                options={dates.slice(index,dates.length)}
                 styles={{width: '100%'}}
                 onChange={(e)=>{
                   setEndDate(e.value);
+                  setDateToCutEnd(e)
                 }}
                 onBlur={(e)=>{
                   checkExistence(missions,options)
+                  extractIndexEnd()
                 }}
+                isDisabled = {permission}
               />
             </div>
             <div className="missionLine">
