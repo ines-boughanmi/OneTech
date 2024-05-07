@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
-  faEye,
-  faEyeSlash,
-  faHourglass,
   faHourglass1,
   faPen,
   faTrash,
-  faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,14 +34,46 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
     }
   };
 
+  const notifyRequired = () => {
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const handleUpdate = async (id, body) => {
     try {
+      if (!body.name || !body.lastName || !body.email || !body.phone || !body.image || !body.location) {
+        notifyRequired();
+        return;
+      }
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.put(`http://localhost:3001/api/user/update/${id}`, body);
-        notifyConsultantUpdate();
-        setReload(!reload);
-        handleCloseUpdate();
+        if(body.password){
+          await axios.put(`http://localhost:3001/api/user/update/${id}`, body);
+          notifyConsultantUpdate();
+          setReload(!reload);
+          handleCloseUpdate();
+        }
+        else{
+          await axios.put(`http://localhost:3001/api/user/update/${id}`, {
+            name : body.name ,
+            lastName : body.lastName ,
+            email : body.email,
+            phone : body.phone ,
+            image : body.image,
+            location : body.location
+          });
+          notifyConsultantUpdate();
+          setReload(!reload);
+          handleCloseUpdate();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -58,6 +86,12 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
         await axios.put(`http://localhost:3001/api/user/update/${id}`, body);
         setReload(!reload);
         handleCloseUpdate();
+        if(body.validity){
+          notifyValidityUpdate();
+        }
+        else{
+          notifyValidityUpdate2();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -66,6 +100,31 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
 
   const notifyConsultantUpdate = () => {
     toast.success("Consultant Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const notifyValidityUpdate = () => {
+    toast.success("User is Now Valid", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const notifyValidityUpdate2 = () => {
+    toast.success("User is Now Not Valid", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,

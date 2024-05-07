@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../ParkingDashBoard/AddModal.css";
 import OneConsultantAssign from "./OneConsultantAssign";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { toast } from "react-toastify";
+import {toast } from "react-toastify";
 
 const animatedComponents = makeAnimated();
 
@@ -26,13 +24,8 @@ const style = {
 };
 
 const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reload ,setReload }) => {
-  const [title, setTitle] = useState(mission.title);
-  const [description, setDescription] = useState(mission.description);
-  const [startDate, setStartDate] = useState(mission.start_date);
-  const [endDate, setEndDate] = useState(mission.end_date);
-  const [transport, setTransport] = useState("bolt");
+  const [transport, setTransport] = useState("");
   const [consultant, setConsultant] = useState([]);
-  const [location, setLocation] = useState(mission.location);
   const [carId, setCarId] = useState(null);
 
   const formatDateValue = (dateString) => {
@@ -94,7 +87,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
       missions[0].start_date,
       missions[0].end_date
     );
-    let createdDates = extractRange(startDate, endDate);
+    let createdDates = extractRange(mission.start_date, mission.end_date);
     let filteredOptions = options
     let i = 0;
     while (i < datesToCheck.length) {
@@ -108,20 +101,8 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
     checkExistence(missions.slice(1), filteredOptions);
   };
 
-  const notifyRequired = () => {
-    toast.error("Please fill all required fields", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-  const notifyCarAssign = () => {
-    toast.success("Car Assigned", {
+  const notifyAssign = () => {
+    toast.success("Transport Assigned", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -151,26 +132,44 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
     }
   };
 
-
+  
+  const notifyRequired = () => { 
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
 
   const handleUpdate = async (body) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        if (transport === "bolt") {
+        if (transport === "Bolt") {
           await axios.put(
             `http://localhost:3001/api/mission/update/${mission.id}`,
             body
           );
           setReload(!reload);
+          notifyAssign();
           handleClose();
-        } else if (carId) {
-          await axios.put(
-            `http://localhost:3001/api/mission/update/${mission.id}`,
-            body
-          );
-          setReload(!reload);
-          handleClose();
+        } else if (transport === "Car") {
+          if(carId){
+            await axios.put(
+              `http://localhost:3001/api/mission/update/${mission.id}`,
+              body
+            );
+            setReload(!reload);
+            notifyAssign();
+            handleClose();
+          }else{
+            notifyRequired()
+          }
         } else {
           notifyRequired();
         }
@@ -196,7 +195,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
             <div className="missionLine">
               <p>Title</p>
             </div>
-            <input type="text" className="textInputs" value={title} disabled />
+            <input type="text" className="textInputs" value={mission.title} disabled />
 
             {mission.type === "normal" ? (
               <div className="DateLayout">
@@ -206,7 +205,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
                 <input
                   type="date"
                   className="textInputs"
-                  value={formatDateValue(startDate)}
+                  value={formatDateValue(mission.start_date)}
                   disabled
                 />
 
@@ -216,7 +215,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
                 <input
                   type="date"
                   className="textInputs"
-                  value={formatDateValue(endDate)}
+                  value={formatDateValue(mission.end_date)}
                   disabled
                 />
               </div>
@@ -230,7 +229,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
             <input
               type="text"
               className="textInputs"
-              value={location}
+              value={mission.location}
               disabled
             />
 
@@ -253,7 +252,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
                   onChange={(e) => {
                     setTransport(e.target.value);
                   }}
-                  value="bolt"
+                  value="Bolt"
                 />
                 <label htmlFor="radio2" className="radio-button__label">
                   <span className="radio-button__custom"></span>
@@ -270,7 +269,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
                     setTransport(e.target.value);
                     checkExistence(missions, cars);
                   }}
-                  value="car"
+                  value="Car"
                 />
                 <label htmlFor="radio1" className="radio-button__label">
                   <span className="radio-button__custom"></span>
@@ -278,7 +277,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
                 </label>
               </div>
             </div>
-            {transport === "bolt" ? (
+            {transport !== "Car" ? (
               <></>
             ) : (
               <div style={{ width: "100%" }}>

@@ -95,7 +95,7 @@ function Login() {
       <div className="line"></div>
       <form className="input-group">
         <div className="form-group">
-          <label for="email">Email</label>
+          <label htmlFor="email">Email</label>
           <div className="input-section">
             <input
               type="email"
@@ -108,7 +108,7 @@ function Login() {
         </div>
 
         <div className="form-group">
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <div className="input-section">
             <input
               type={show ? "text" : "password"}

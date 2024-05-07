@@ -1,14 +1,12 @@
-import { useNavigate, useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SideNav from "../SideNav/SideNav";
 import AddMission from "../AddProject/AddMission";
-import Planning from "../AddProject/Planning";
 import LowerPlanning from "../AddProject/LowerPlanning";
 
 const UpdateProject = () => {
@@ -16,16 +14,15 @@ const UpdateProject = () => {
 
   const location = useLocation();
   const project = location.state.project;
-  const[id,setId] = useState(project.projectId);
   const [title, setTitle] = useState(project.project_title);
   const [description, setDescription] = useState(project.description);
   const [budget, setBudget] = useState(project.budget);
   const [startDate, setStartDate] = useState(project.start_date);
-  const [dates,setDates] = useState([]);
+  const [dates, setDates] = useState([]);
   const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const [reload,setReload] = useState(false)
+  const [reload, setReload] = useState(false);
 
   const formatDateValue = (dateString) => {
     const date = new Date(dateString);
@@ -42,15 +39,15 @@ const UpdateProject = () => {
   };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    
+
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const formattedDay = day < 10 ? "0" + day : day;
     const formattedMonth = month < 10 ? "0" + month : month;
-    
+
     const formattedDate = formattedDay + "/" + formattedMonth + "/" + year;
-    
+
     return formattedDate;
   };
   const addDate = (date, amount) => {
@@ -68,7 +65,6 @@ const UpdateProject = () => {
     }
     setDates(dates);
   };
-
 
   useEffect(() => {
     getUser();
@@ -94,24 +90,10 @@ const UpdateProject = () => {
       const token = localStorage.getItem("token");
       if (token) {
         const res = await axios.get("http://localhost:3001/api/user/getAll");
-        setUsers(res.data)
+        setUsers(res.data);
       }
     } catch (error) {
       console.log(error);
-    }
-  }
-
-  const handleStartDateError = () => {
-    if (!startDate.length) {
-      setErrors({
-        ...errors,
-        startDateError: "Start Date is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        startDateError: "",
-      });
     }
   };
 
@@ -135,27 +117,8 @@ const UpdateProject = () => {
     return newDate;
   };
 
-  const handleUpdate = async (body) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        await axios.put(
-            `http://localhost:3001/api/project/update/${project.id}`,{
-                ...body,
-                finish_date: addWeekToDate(body.start_date),
-              });
-              notify();
-              navigate("/dash");
-
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const notifyError = () => {
-    toast.error("check your Credentials", {
+  const notifyRequired = () => {
+    toast.error("Please fill all required fields", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -166,6 +129,32 @@ const UpdateProject = () => {
       theme: "light",
     });
   };
+
+  const handleUpdate = async (body) => {
+    try {
+      if (!body.project_title || !body.description || !body.budget) {
+        notifyRequired();
+        return;
+      }
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.put(
+          `http://localhost:3001/api/project/update/${project.id}`,
+          {
+            ...body,
+            finish_date: addWeekToDate(body.start_date),
+          }
+        );
+        notify();
+        setTimeout(() => {
+          navigate("/dash");
+        }, 800);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const notify = () => {
     toast.success("Project Updated", {
       position: "top-center",
@@ -194,10 +183,9 @@ const UpdateProject = () => {
     }
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     fillDates();
-  },[])
+  },[]);
 
   return (
     <div className="addProject">
@@ -237,13 +225,11 @@ const UpdateProject = () => {
               </p>
               <input
                 type="date"
+                value={formatDateValue(startDate)}
                 onChange={(e) => {
                   setStartDate(e.target.value);
                 }}
-                value={formatDateValue(startDate)}
-                onBlur={(e) => {
-                  handleStartDateError();
-                }}
+                disabled
               />
               {errors.startDateError ? (
                 <small className="text-danger">{errors.startDateError}</small>
@@ -292,10 +278,21 @@ const UpdateProject = () => {
               />
             </div>
           </div>
-          <AddMission projectId={project.id} users={users} dates={dates} reload={reload} setReload={setReload} setDates={setDates}  />
+          <AddMission
+            projectId={project.id}
+            users={users}
+            dates={dates}
+            reload={reload}
+            setReload={setReload}
+            setDates={setDates}
+          />
 
           <div className="consultantTitle">
-            <LowerPlanning start_date={startDate} reload={reload} setReload={reload} />
+            <LowerPlanning
+              start_date={startDate}
+              reload={reload}
+              setReload={reload}
+            />
           </div>
         </div>
 
@@ -313,7 +310,7 @@ const UpdateProject = () => {
               });
             }}
           >
-        Update
+            Update
           </button>
         </div>
         <ToastContainer

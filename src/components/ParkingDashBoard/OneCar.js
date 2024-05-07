@@ -5,7 +5,7 @@ import axios from "axios";
 import ModalDelete from "./ModalDelete";
 import UpdateModal from "./UpdateModal";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const OneCar = ({ car, reload, setReload }) => {
   const [openDelete, setOpenDelete] = useState(false);
@@ -55,6 +55,21 @@ const OneCar = ({ car, reload, setReload }) => {
     });
   };
 
+
+  
+  const notify = () => {
+    toast.success("Car Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const handleUpdate = async (id, body) => {
     try {
       if (
@@ -75,6 +90,7 @@ const OneCar = ({ car, reload, setReload }) => {
       if (token) {
         await axios.put(`http://localhost:3001/api/car/update/${id}`, body);
         setReload(!reload);
+        notify();
         handleCloseUpdate();
       }
     } catch (error) {

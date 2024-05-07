@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import "./AddModal.css";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import add from "../../assets/4211763.png";
 
 const style = {
@@ -13,7 +13,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 520,
+  width: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -132,8 +132,11 @@ const AddModal = ({ reload, setReload }) => {
                   Car Brand
                 </option>
                 <option value="Hyundai">Hyundai</option>
+                <option value="Peugeot">Peugeot</option>
+                <option value="Fiat">Fiat</option>
                 <option value="Citroen">Citroen</option>
                 <option value="Toyota">Toyota</option>
+                <option value="Nissan">Nissan</option>
               </select>
             </div>
             <div className="label-left">
@@ -183,6 +186,7 @@ const AddModal = ({ reload, setReload }) => {
                 <option value="HatchBack">HatchBack</option>
                 <option value="SUV">SUV</option>
                 <option value="Truck">Truck</option>
+                <option value="Sedan">Sedan</option>
               </select>
             </div>
 

@@ -88,8 +88,11 @@ const UpdateModal = ({ handleClose, open, car, handleUpdate }) => {
                       Car Brand
                     </option>
                     <option value="Hyundai">Hyundai</option>
+                    <option value="Peugeot">Peugeot</option>
+                    <option value="Fiat">Fiat</option>
                     <option value="Citroen">Citroen</option>
                     <option value="Toyota">Toyota</option>
+                    <option value="Nissan">Nissan</option>
                   </select>
                 </div>
 
@@ -141,6 +144,7 @@ const UpdateModal = ({ handleClose, open, car, handleUpdate }) => {
                     <option value="HatchBack">HatchBack</option>
                     <option value="SUV">SUV</option>
                     <option value="Truck">Truck</option>
+                    <option value="Sedan">Sedan</option>
                   </select>
                 </div>
               </div>
@@ -213,7 +217,7 @@ const UpdateModal = ({ handleClose, open, car, handleUpdate }) => {
                 </div>{" "}
                 <div className="label-left">
                   <p>
-                  Available Seats<span>*</span>
+                    Available Seats<span>*</span>
                   </p>
                 </div>
                 <input

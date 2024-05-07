@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -33,7 +32,6 @@ const UpdateMission = ({
   const [startDate, setStartDate] = useState(mission.start_date);
   const [endDate, setEndDate] = useState(mission.end_date);
   const [location, setLocation] = useState(mission.location);
-  const [users, setUsers] = useState([]);
   const [errors, setErrors] = useState({});
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -56,10 +54,16 @@ const UpdateMission = ({
     arr.forEach((user) => {
       body[user.label] = user.value;
     });
+    body.endDate = endDate;
     return body;
   };
+
+
   const handleUpdateUsers = async () => {
     try {
+      if (!selected.length ) {
+        return;
+      }
       const body = prepBody(selected);
       const token = localStorage.getItem("token");
       if(token){
@@ -67,7 +71,6 @@ const UpdateMission = ({
           `http://localhost:3001/api/partition/updateUsers/${mission.id}`,
           body
         );
-        handleClose();
       }
     } catch (error) {
       console.log(error);
@@ -80,7 +83,7 @@ const UpdateMission = ({
       if (token) {
         const res = await axios.get("http://localhost:3001/api/user/getAll");
         handleOptions(res.data);
-        setUsers(res.data);
+
       }
     } catch (error) {
       console.log(error);
@@ -132,6 +135,34 @@ const UpdateMission = ({
     handleSelectedUsers();
   }, []);
 
+  const handleTitleError = () => {
+    if (!title.length) {
+      setErrors({
+        ...errors,
+        titleError: "Title is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        titleError: "",
+      });
+    }
+  };
+
+  const handleDescriptionError = () => {
+    if (!description.length) {
+      setErrors({
+       ...errors,
+        descriptionError: "Description is required",
+      });
+    } else {
+      setErrors({
+       ...errors,
+        descriptionError: "",
+      });
+    }
+  };
+
   return (
     <div className="place">
       <Modal
@@ -153,7 +184,9 @@ const UpdateMission = ({
                 setTitle(e.target.value);
               }}
               value={title}
-              onBlur={(e) => {}}
+              onBlur={(e) => {
+                handleTitleError();
+              }}
             />
             <div className="missionLine">
               {errors.titleError ? (
@@ -242,8 +275,18 @@ const UpdateMission = ({
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
+              onBlur={(e) => {
+                handleDescriptionError();
+              }}
               value={description}
             />
+             <div className="missionLine">
+              {errors.descriptionError ? (
+                <small className="text-danger">{errors.descriptionError}</small>
+              ) : (
+                <></>
+              )}
+            </div>
             <div className="missionLine">
               <p>
                 Location<span>*</span>
@@ -271,6 +314,7 @@ const UpdateMission = ({
                     start_date: startDate,
                     end_date: endDate,
                     location,
+                    users : selected.length
                   });
                   handleUpdateUsers()
                 }}

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./projectDashboard.css";
 import axios from "axios";
@@ -6,23 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
   faAngleUp,
-  faEdit,
-  faEye,
-  faEyeSlash,
-  faPen,
-  faTrash,
-  faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OneProject from "./OneProject";
-import AddMission from "../AddProject/AddMission";
 import AddSupportMission from "../AddProject/AddSupportMission";
 
 const ProjectDashBoard = () => {
-  const [project, setProject] = useState({});
   const [user, setUser] = useState({});
   const [projectsList, setProjectsList] = useState([]);
   const [reload, setReload] = useState(true);
@@ -71,7 +62,6 @@ const ProjectDashBoard = () => {
 
   useEffect(() => {
     getUser();
-    // getProject();
     fetchProjects();
     fetchUsers();
   }, [reload, length]);
@@ -188,7 +178,7 @@ const ProjectDashBoard = () => {
               >
                 Show More <FontAwesomeIcon icon={faAngleDown} />
               </h3>
-            ) : length < projectsList.length && length != 5 ? (
+            ) : length < projectsList.length && length !== 5 ? (
               <div style={{display :'flex' , flexDirection:'column' , gap :'1rem' , justifyContent :'center' , alignItems : 'center'}}>
                              <h3
                   onClick={(e) => {

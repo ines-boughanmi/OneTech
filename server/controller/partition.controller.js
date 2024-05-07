@@ -71,7 +71,11 @@ module.exports = {
         try {
            await db.Partition.destroy({ where: { missionId: req.params.id } });
            for ( key in req.body ) {
-             await db.Partition.create({   userId: req.body[key] , missionId: req.params.id});  
+            if(key === "endDate"){
+
+            }else{
+                await db.Partition.create({   userId: req.body[key] , missionId: req.params.id , end_date: req.body["endDate"]});  
+            }
           }
           res.status(200).send()
         } catch (error) {

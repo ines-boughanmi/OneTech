@@ -3,14 +3,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../ParkingDashBoard/AddModal.css";
 import add from "../../assets/4211763.png";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const style = {
@@ -19,6 +15,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
+  height: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -32,7 +29,6 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
   const [location, setLocation] = useState(consultant.location);
   const [phone, setPhone] = useState(consultant.phone);
   const [password, setPassword] = useState("");
-  const [validity, setValidity] = useState(consultant.validity);
   const [image, setImage] = useState(consultant.image);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -51,17 +47,74 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
       });
   };
 
-  const notifyConsultantUpdate = () => {
-    toast.success("Consultant Updated", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const handleEmailError = () => {
+    if (!email.length) {
+      setErrors({
+        ...errors,
+        emailError: "Email is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        emailError: "",
+      });
+    }
+  };
+
+  const handleNameError = () => {
+    if (!name.length) {
+      setErrors({
+        ...errors,
+        nameError: "Name is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        nameError: "",
+      });
+    }
+  };
+
+  const handleLastNameError = () => {
+    if (!lastName.length) {
+      setErrors({
+        ...errors,
+        lastNameError: "Last Name is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        lastNameError: "",
+      });
+    }
+  };
+
+  const handlePasswordError = () => {
+    if (!password.length) {
+      setErrors({
+        ...errors,
+        passwordError: "Password is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        passwordError: "",
+      });
+    }
+  };
+
+  const handlePhoneError = () => {
+    if (!phone.length) {
+      setErrors({
+        ...errors,
+        phoneError: "Phone is required",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        phoneError: "",
+      });
+    }
   };
 
   return (
@@ -93,10 +146,10 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
 
             <div className="formContent">
               <div className="formContainerLeft">
-              <div className="label-left">
-                <p>
-                  First Name<span>*</span>
-                </p>
+                <div className="label-left">
+                  <p>
+                    First Name<span>*</span>
+                  </p>
                 </div>
                 <input
                   type="text"
@@ -105,12 +158,22 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
+                  onBlur={(e) => {
+                    handleNameError();
+                  }}
                   value={name}
                 />
+                <div className="missionLine">
+                  {errors.nameError ? (
+                    <small className="text-danger">{errors.nameError}</small>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="label-left">
-                <p>
-                  Email<span>*</span>
-                </p>
+                  <p>
+                    Email<span>*</span>
+                  </p>
                 </div>
 
                 <input
@@ -120,12 +183,22 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  onBlur={(e) => {
+                    handleEmailError();
+                  }}
                   value={email}
                 />
+                <div className="missionLine">
+                  {errors.emailError ? (
+                    <small className="text-danger">{errors.emailError}</small>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="label-left">
-                <p>
-                  Phone<span>*</span>
-                </p>
+                  <p>
+                    Phone<span>*</span>
+                  </p>
                 </div>
                 <input
                   type="text"
@@ -134,8 +207,18 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   onChange={(e) => {
                     setPhone(e.target.value);
                   }}
+                  onBlur={(e) => {
+                    handlePhoneError();
+                  }}
                   value={phone}
                 />
+                <div className="missionLine">
+                  {errors.phoneError ? (
+                    <small className="text-danger">{errors.phoneError}</small>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
 
               <div className="formContainerRight">
@@ -151,8 +234,20 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   onChange={(e) => {
                     setLastName(e.target.value);
                   }}
+                  onBlur={(e) => {
+                    handleLastNameError();
+                  }}
                   value={lastName}
                 />
+                <div className="missionLine">
+                  {errors.lastNameError ? (
+                    <small className="text-danger">
+                      {errors.lastNameError}
+                    </small>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="label-left">
                   <p>
                     Password<span>*</span>
@@ -165,6 +260,9 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                     className="textInputs1"
                     onChange={(e) => {
                       setPassword(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      handlePasswordError();
                     }}
                     value={password}
                   />
@@ -182,10 +280,19 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                     />
                   )}
                 </div>
+                <div className="missionLine">
+                  {errors.passwordError ? (
+                    <small className="text-danger">
+                      {errors.passwordError}
+                    </small>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="label-left">
-                <p>
-                  Location<span>*</span>
-                </p>
+                  <p>
+                    Location<span>*</span>
+                  </p>
                 </div>
                 <input
                   type="text"
@@ -196,8 +303,6 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                   }}
                   value={location}
                 />
-
-
               </div>
             </div>
 
@@ -210,7 +315,15 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 onClick={(e) => {
                   e.preventDefault();
 
-                  handleUpdate(consultant.id, {name,lastName,password,email,phone,image,location});
+                  handleUpdate(consultant.id, {
+                    name,
+                    lastName,
+                    email,
+                    password,
+                    phone,
+                    image,
+                    location,
+                  });
                 }}
               >
                 Edit

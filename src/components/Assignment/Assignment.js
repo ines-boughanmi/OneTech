@@ -1,12 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import "./assignment.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SideNav from "../SideNav/SideNav";
 import OneNormalMission from "./OneNormalMission";
@@ -71,9 +69,6 @@ const Assignment = () => {
 
   const filtredNormalMissions = missionsList.filter((mission) => {
     return mission.type === "normal" && mission.progress === "To Do" && mission.transport === "None" ;
-  });
-  const filtredNormalMissionsToCheck = missionsList.filter((mission) => {
-    return mission.type === "normal"  ;
   });
 
   useEffect(() => {
@@ -173,6 +168,7 @@ const Assignment = () => {
             )}
           </div>
         </div>
+        <ToastContainer/>
       </div>
     </div>
   );

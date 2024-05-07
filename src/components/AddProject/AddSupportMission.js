@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -26,7 +26,6 @@ const AddSupportMission = ({users}) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("support");
   const [location, setLocation] = useState("");
   const [errors, setErrors] = useState({});
   const [options, setOptions] = useState([]);
@@ -43,7 +42,7 @@ const AddSupportMission = ({users}) => {
     
     const day = date.getDate();
     const month = date.getMonth() + 1;
-    const year = date.getFullYear();
+    const year = date.getFullYear()
     const formattedDay = day < 10 ? "0" + day : day;
     const formattedMonth = month < 10 ? "0" + month : month;
     
@@ -52,12 +51,9 @@ const AddSupportMission = ({users}) => {
     return formattedDate;
   };
   
-  const [startDate, setStartDate] = useState(formatDateValue(new Date()))
-  const [endDate, setEndDate] = useState(formatDateValue(new Date()))
-
   const handleAddPartition = async (mission) => {
     selected.map( async (user)=>{
-      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id,end_date:endDate})
+      await axios.post("http://localhost:3001/api/partition/create",{userId: user.value,missionId:mission.id,end_date:formatDateValue(new Date())})
     })
 
   }
@@ -108,7 +104,7 @@ const AddSupportMission = ({users}) => {
 
   const handleAdd = async (body) => {
     try {
-      if (!body.title || !body.description || !body.location) {
+      if (!body.title || !body.description || !body.location || !selected.length) {
         notifyRequired();
         return; 
       }
@@ -237,9 +233,9 @@ const AddSupportMission = ({users}) => {
                     title,
                     description,
                     location,
-                    type,
-                    start_date : startDate ,
-                    end_date : endDate
+                    type:"support",
+                    start_date : formatDateValue(new Date()),
+                    end_date : formatDateValue(new Date()),
                   });
                 }}
               >

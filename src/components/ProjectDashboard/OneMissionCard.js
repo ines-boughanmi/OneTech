@@ -1,9 +1,9 @@
 import React, {  useEffect,useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faFile, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {faFile, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./projectDashboard.css";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteMission from "./DeleteMission";
 import UpdateMission from "./UpdateMission";
@@ -11,7 +11,6 @@ import UpdateMission from "./UpdateMission";
 const OneMissionCard = ({ mission, reload, setReload,dates , project }) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
   const handleOpenUpdate = () => setOpenUpdate(true);
@@ -59,8 +58,25 @@ const OneMissionCard = ({ mission, reload, setReload,dates , project }) => {
     }
   };
 
+  const notifyRequired = () => {
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const handleUpdateMission = async (id, body) => {
     try {
+      if (!body.title || !body.description || !body.start_date || !body.end_date || !body.location || !body.users) {
+        notifyRequired();
+        return;
+      }
       const token = localStorage.getItem("token");
       if (token) {
         await axios.put(`http://localhost:3001/api/mission/update/${id}`, body);

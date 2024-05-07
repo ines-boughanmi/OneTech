@@ -2,8 +2,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./addProject.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +12,6 @@ import OneMission from "./OneMission";
 const Planning = () => {
   const [user, setUser] = useState({});
   const projectId = useParams();
-  const [errors, setErrors] = useState({});
   const [users, setUsers] = useState([]);
   const [missions, setMissions] = useState([]);
   const [reload, setReload] = useState(false);
@@ -51,18 +48,6 @@ const Planning = () => {
     }
   };
 
-  const notifyError = () => {
-    toast.error("check your Credentials", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
   const notify = () => {
     toast.success("Project Created Successfully", {
       position: "top-center",
@@ -166,7 +151,7 @@ const Planning = () => {
 
           <div className="consultantTitle">
             <h2>Planning</h2>
-            <table class="table table-bordered">
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th scope="col">Missions</th>
@@ -230,7 +215,10 @@ const Planning = () => {
             className="button-addProject"
             onClick={(e) => {
               e.preventDefault();
-              navigate("/dash");
+              notify();
+              setTimeout(() => {
+                navigate("/dash");          
+              }, 800);
             }}
           >
             Done
