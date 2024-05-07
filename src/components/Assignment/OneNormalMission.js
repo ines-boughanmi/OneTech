@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Assign from "./Assign";
 
 const OneNormalMission = ({ mission,reload, setReload,missions }) => {
-  const [openDelete,setOpenDelete] = useState(false)
   const [openUpdate,setOpenUpdate] = useState(false)
-  const [cars,setCars] = useState([])
   const [options, setOptions] = useState([])
 
   const handleOpenUpdate = ()=> setOpenUpdate(true)

@@ -1,19 +1,4 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faEye,
-  faEyeSlash,
-  faHourglass,
-  faHourglass1,
-  faPen,
-  faTrash,
-  faUserPen,
-} from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import UpdateConsultant from "../Consultants/UpdateConsultant";
+import React from "react";
 
 const OneConsultantAssign = ({consultant}) => {
   return (

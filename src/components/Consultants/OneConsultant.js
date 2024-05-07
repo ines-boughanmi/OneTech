@@ -68,7 +68,7 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
             email : body.email,
             phone : body.phone ,
             image : body.image,
-            location : body.location
+            location : body.location.label
           });
           notifyConsultantUpdate();
           setReload(!reload);

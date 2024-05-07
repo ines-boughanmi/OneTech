@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCar,
   faCircleInfo,
   faEdit,
-  faInfo,
-  faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import DeleteProject from "./DeleteProject";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Chart, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -245,6 +242,7 @@ const OneProject = ({ project, reload, setReload }) => {
                   reload={reload}
                   setReload={setReload}
                   dates={dates}
+                  missions={missionsList}
                 />
               ))}
             </div>
@@ -259,6 +257,7 @@ const OneProject = ({ project, reload, setReload }) => {
                 setReload={setReload}
                 dates={dates}
                 project={project}
+                missions={missionsList}
               />
             ))}
           </div>
@@ -271,6 +270,7 @@ const OneProject = ({ project, reload, setReload }) => {
                 reload={reload}
                 setReload={setReload}
                 dates={dates}
+                missions={missionsList}
               />
             ))}
           </div>

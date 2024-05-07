@@ -1,19 +1,10 @@
-import { useNavigate } from "react-router-dom";
+
 import "./consultants.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEye,
-  faEyeSlash,
-  faPen,
-  faTrash,
-  faUserPen,
-} from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import SideNav from "../SideNav/SideNav";
 import OneConsultant from "./OneConsultant";
 

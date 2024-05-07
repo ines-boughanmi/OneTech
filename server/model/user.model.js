@@ -19,7 +19,7 @@ module.exports =(connection,DataTypes)=>{
         phone:DataTypes.STRING,
         validity:{
             type:DataTypes.BOOLEAN,
-            defaultValue:false 
+            defaultValue:false
         },
         image:{
             type:DataTypes.STRING,
