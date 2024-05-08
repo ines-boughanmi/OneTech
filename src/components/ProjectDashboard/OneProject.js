@@ -89,10 +89,17 @@ const OneProject = ({ project, reload, setReload }) => {
         doneMissions++
       }
     }
-    if(doneMissions === missions.length  && doneMissions !== 0){
+    if(doneMissions !== missions.length  && project.status !=="In Progress"){
+      await axios.put(`http://localhost:3001/api/project/update/${project.id}`, {
+        status : "In Progress"
+      })
+      setReload(!reload);
+    }
+    if(doneMissions === missions.length  && doneMissions !== 0 && project.status !=="Done"){
       await axios.put(`http://localhost:3001/api/project/update/${project.id}`, {
         status : "Done"
       })
+      setReload(!reload);
     }
   }
 

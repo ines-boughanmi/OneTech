@@ -80,3 +80,11 @@ th{
     align-items: center;
     justify-content: center;
 }
+
+.monthSelect{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 60%;
+}

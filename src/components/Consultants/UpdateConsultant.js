@@ -164,7 +164,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
   const [name, setName] = useState(consultant.name);
   const [lastName, setLastName] = useState(consultant.lastname);
   const [email, setEmail] = useState(consultant.email);
-  const [location, setLocation] = useState(consultant.location);
+  const [location, setLocation] = useState({label : consultant.location , value : consultant.location.split(',')[1].slice(1)});
   const [phone, setPhone] = useState(consultant.phone);
   const [password, setPassword] = useState("");
   const [image, setImage] = useState(consultant.image);
@@ -441,6 +441,7 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
                 onChange={(e)=>{
                   setLocation(e);
                 }}
+                value={location}
               />
             </div>
 

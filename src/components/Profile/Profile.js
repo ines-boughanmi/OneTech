@@ -245,7 +245,7 @@ const Profile = () => {
         setName(data.data.name);
         setLastName(data.data.lastname);
         setEmail(data.data.email);
-        setLocation(data.data.location);
+        setLocation({label : data.data.location , value : data.data.location.split(',')[1].slice(1)});
         setPhone(data.data.phone);
         setImage(data.data.image);
       }
@@ -541,6 +541,7 @@ const Profile = () => {
                 onChange={(e)=>{
                   setLocation(e);
                 }}
+                value={location}
               />
             </div>
               {errors.locationError ? (

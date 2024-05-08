@@ -181,5 +181,33 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    prepUserStat : async (req,res) => {
+        try {
+            let stat = []
+            const users = await db.User.findAll({where:{ role : "CONSULTANT" , validity : true}})
+            if(req.body.month){
+                for(let user of users) {
+                    let length = 0
+                    const partitions = await db.Partition.findAll({where : {userId : user.id}})
+                    for(let partition of partitions) {
+                        console.log(String(partition.end_date));
+                        if(String(partition.end_date).split(" ")[1] === req.body.month){
+                            length++
+                        }
+                    }
+                    stat.push({user : user.name + " " + user.lastname , stats : length})
+                }
+            }
+            else{
+                for(let user of users) {
+                    const partitions = await db.Partition.findAll({where : {userId : user.id}})
+                    stat.push({user : user.name + " " + user.lastname , stats : partitions.length})
+                }
+            }
+            res.json(stat)
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
