@@ -10,6 +10,9 @@ import axios from "axios";
 const ParkingDashBoard = ({user}) => {
   const [carsList,setCarsList] = useState([])
   const [search,setSearch] = useState('')
+  const [all,setAll] = useState(0)
+  const [availableCars,setAvailableCars] = useState(0)
+  const [unavailableCars,setUnavailableCars] = useState(0)
   const [reload,setReload] = useState(true)
 
 
@@ -28,6 +31,17 @@ const ParkingDashBoard = ({user}) => {
     }
   };
 
+  const handleFilter = async (filter) => {
+    try {
+      const data = await axios.post('http://localhost:3001/api/car/filterCar',{
+        available : filter
+      })
+      setCarsList(data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   const fetchCars = async () => {
     try {
@@ -35,6 +49,9 @@ const ParkingDashBoard = ({user}) => {
       if(token){
         const data = await axios.get("http://localhost:3001/api/car/getAll");
         setCarsList(data.data)
+        setAll(data.data.length)
+        setAvailableCars(data.data.filter(car=>car.car_availability).length)
+        setUnavailableCars(data.data.filter(car=>!car.car_availability).length)
       }
     } catch (error) {
       console.log(error);
@@ -84,24 +101,33 @@ const ParkingDashBoard = ({user}) => {
         </div>
       </div>
     <div className="card-container">
-      <div className="card">
+      <div className="card" onClick={(e)=>{
+        e.preventDefault();
+        setReload(!reload)
+      }}>
         <p>Total Cars</p>
         <div className="counter">
-          <p>100</p>
+          <p>{all}</p>
           <FontAwesomeIcon icon={faCar} />
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={(e)=>{
+        e.preventDefault();
+        handleFilter(true)
+      }}>
         <p>Available Cars</p>
         <div className="counter">
-          <p>100</p>
+          <p>{availableCars}</p>
           <FontAwesomeIcon icon={faCar} />
         </div>
       </div>
-      <div className="card">
+      <div className="card" onClick={(e)=>{
+        e.preventDefault();
+        handleFilter(false)
+      }}>
         <p>Unavailable Cars</p>
         <div className="counter">
-          <p>100</p>
+          <p>{unavailableCars}</p>
           <FontAwesomeIcon icon={faCar} />
         </div>
       </div>

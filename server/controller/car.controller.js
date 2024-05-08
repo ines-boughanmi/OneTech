@@ -63,5 +63,13 @@ module.exports = {
         } catch (error) {
             console.log(error)
         }
+    },
+    filterCars : async (req,res) => {
+        try {
+            const car = await db.Car.findAll({where : { car_availability : req.body.available}})
+            res.json(car)
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
