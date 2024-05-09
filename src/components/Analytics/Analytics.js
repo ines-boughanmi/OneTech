@@ -194,9 +194,11 @@ const Analytics = () => {
             <h3>Projects Progress</h3>
             <div className="one-progress">
               <ProgressBar
-                completed={(
+                completed={isNaN(
                   filteredDoneProjects.length / projectsList.length
-                ).toFixed(2)*100}
+                ) ? 0 : (
+                  filteredDoneProjects.length / projectsList.length
+                ).toFixed(2)*100  }
                 bgColor="#44A5C2"
                 className="progress-bars"
               />
