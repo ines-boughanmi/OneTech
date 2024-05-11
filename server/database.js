@@ -21,7 +21,6 @@ connection.authenticate()
 const Project = require("./model/project.model")(connection,DataTypes)
 const Car = require("./model/car.model")(connection,DataTypes)
 const User = require("./model/user.model")(connection,DataTypes)
-const Parking = require("./model/parking.model")(connection,DataTypes)
 const Mission = require("./model/mission.model")(connection,DataTypes)
 const Partition = require("./model/partition.model")(connection,DataTypes)
 
@@ -29,15 +28,12 @@ const Partition = require("./model/partition.model")(connection,DataTypes)
 const db = {}
 db.Partition = Partition
 db.Mission = Mission
-db.Parking = Parking
 db.Project = Project
 db.Car = Car
 db.User = User
 
 
 
-Parking.hasMany(Car)
-Car.belongsTo(Parking)
 
 Car.belongsTo(Mission)
 Mission.belongsTo(Car)

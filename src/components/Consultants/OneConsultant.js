@@ -56,7 +56,15 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
       const token = localStorage.getItem("token");
       if (token) {
         if(body.password){
-          await axios.put(`http://localhost:3001/api/user/update/${id}`, body);
+          await axios.put(`http://localhost:3001/api/user/update/${id}`, {
+            name : body.name ,
+            lastname : body.lastName ,
+            email : body.email,
+            phone : body.phone ,
+            image : body.image,
+            location : body.location.label,
+            password:body.password
+          });
           notifyConsultantUpdate();
           setReload(!reload);
           handleCloseUpdate();
@@ -64,7 +72,7 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
         else{
           await axios.put(`http://localhost:3001/api/user/update/${id}`, {
             name : body.name ,
-            lastName : body.lastName ,
+            lastname : body.lastName ,
             email : body.email,
             phone : body.phone ,
             image : body.image,

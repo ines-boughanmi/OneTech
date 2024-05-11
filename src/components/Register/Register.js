@@ -319,7 +319,15 @@ const notifyRequired = () => {
         notifyRequired();
         return; 
       }
-      await axios.post("http://localhost:3001/api/user/register", body);
+      await axios.post("http://localhost:3001/api/user/register", {
+        name:body.name,
+        lastname:body.lastname,
+        email:body.email,
+        password:body.password,
+        phone:body.phone,
+        location:body.location.label,
+
+      });
       notify()
       setTimeout(() => {
         navigate("/");

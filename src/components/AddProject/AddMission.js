@@ -183,6 +183,11 @@ const AddMission = ({projectId,users,dates,reload,setReload }) => {
     setStartDate("");
     setEndDate("");
     setLocation("");
+    setDateToCut({});
+    setDateToCutEnd({});
+    setIndex(0);
+    setIndexEnd(dates.length);
+    setPermission(true);
   };
 
   const notifyMissionAdd = () => {
