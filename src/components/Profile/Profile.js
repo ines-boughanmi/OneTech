@@ -11,9 +11,6 @@ import SideNav from "../SideNav/SideNav";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-
-
-
 const animatedComponents = makeAnimated();
 
 const municipalities = [
@@ -28,7 +25,10 @@ const municipalities = [
   { label: "Ariana , Mnihla", value: "Mnihla" },
   { label: "Ariana , Kalaat El Andalous", value: "Kalaat El Andalous" },
   { label: "Ariana , La Soukra", value: "La Soukra" },
-  { label: "Ben Arous , Bou Mhel el-Bassatine", value: "Bou Mhel el-Bassatine" },
+  {
+    label: "Ben Arous , Bou Mhel el-Bassatine",
+    value: "Bou Mhel el-Bassatine",
+  },
   { label: "Ben Arous , El Mourouj", value: "El Mourouj" },
   { label: "Ben Arous , Hammam Lif", value: "Hammam Lif" },
   { label: "Ben Arous , Borj El Amri", value: "Borj El Amri" },
@@ -74,7 +74,10 @@ const municipalities = [
   { label: "Monastir , Monastir", value: "Monastir" },
   { label: "Monastir , Moknine", value: "Moknine" },
   { label: "Monastir , Téboulba", value: "Téboulba" },
-  { label: "Monastir , Sayada-Lamta-Bou Hajar", value: "Sayada-Lamta-Bou Hajar" },
+  {
+    label: "Monastir , Sayada-Lamta-Bou Hajar",
+    value: "Sayada-Lamta-Bou Hajar",
+  },
   { label: "Mahdia , Mahdia", value: "Mahdia" },
   { label: "Mahdia , Chebba", value: "Chebba" },
   { label: "Mahdia , Rejiche", value: "Rejiche" },
@@ -143,9 +146,8 @@ const municipalities = [
   { label: "Kebili , Douz", value: "Douz" },
   { label: "Kebili , Souk Lahad", value: "Souk Lahad" },
   { label: "Kebili , El Golâa", value: "El Golâa" },
-  { label: "Kebili , Faouar", value: "Faouar" }
+  { label: "Kebili , Faouar", value: "Faouar" },
 ];
-
 
 const Profile = () => {
   useEffect(() => {
@@ -245,7 +247,10 @@ const Profile = () => {
         setName(data.data.name);
         setLastName(data.data.lastname);
         setEmail(data.data.email);
-        setLocation({label : data.data.location , value : data.data.location.split(',')[1].slice(1)});
+        setLocation({
+          label: data.data.location,
+          value: data.data.location.split(",")[1].slice(1),
+        });
         setPhone(data.data.phone);
         setImage(data.data.image);
       }
@@ -254,7 +259,23 @@ const Profile = () => {
     }
   };
 
-  const handleEmailError = () => {
+  const checkEmailExistence = async (email) => {
+    try {
+      const users = await axios.get("http://localhost:3001/api/user/getAll");
+      for (let userToCheck of users.data) {
+        if (userToCheck.id !== user.id) {
+          if (userToCheck.email === email) {
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEmailError = async () => {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!email.length) {
       setErrors({
@@ -266,6 +287,11 @@ const Profile = () => {
         ...errors,
         emailError: "Email is not a valid email",
       });
+    } else if (await checkEmailExistence(email)) {
+      setErrors({
+        ...errors,
+        emailError: "Email already exists",
+      });
     } else {
       setErrors({
         ...errors,
@@ -274,10 +300,16 @@ const Profile = () => {
     }
   };
   const handlePhoneError = () => {
+    let regex = /^\d+$/;
     if (!phone.length) {
       setErrors({
         ...errors,
         phoneError: "Phone is required",
+      });
+    } else if (!regex.test(phone)) {
+      setErrors({
+        ...errors,
+        phoneError: "Phone is not a valid phone number",
       });
     } else {
       setErrors({
@@ -287,25 +319,16 @@ const Profile = () => {
     }
   };
 
-  const handleLocationError = () => {
-    if (!location.length) {
-      setErrors({
-        ...errors,
-        locationError: "Location is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        locationError: "",
-      });
-    }
-  };
-
   const handleLastNameError = () => {
     if (!lastName.length) {
       setErrors({
         ...errors,
         lastNameError: "Last Name is required",
+      });
+    } else if (lastName.length < 3) {
+      setErrors({
+        ...errors,
+        lastNameError: "Last Name must be at least 3 characters",
       });
     } else {
       setErrors({
@@ -320,6 +343,11 @@ const Profile = () => {
       setErrors({
         ...errors,
         nameError: "Name is required",
+      });
+    } else if (name.length < 3) {
+      setErrors({
+        ...errors,
+        nameError: "Name must be at least 3 characters",
       });
     } else {
       setErrors({
@@ -357,48 +385,134 @@ const Profile = () => {
   };
 
   const notifyRequired = () => {
-    toast.error("Please fill all required fields", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    if (!name || !lastName || !email || !location.label || !phone) {
+      toast.error("Please fill all required fields", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.nameError) {
+      toast.error(errors.nameError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.lastNameError) {
+      toast.error(errors.lastNameError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.emailError) {
+      toast.error(errors.emailError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.phoneError) {
+      toast.error(errors.phoneError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.passwordError) {
+      toast.error(errors.passwordError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.newPasswordError) {
+      toast.error(errors.newPasswordError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.confirmPasswordError) {
+      toast.error(errors.confirmPasswordError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleEdit = async (body) => {
-    try {      if (
-      !body.name ||
-      !body.lastName ||
-      !body.email ||
-      !body.location
-    ){
-      notifyRequired();
-      return;
-    }
-        if (newPassword.length) {
-          if (newPassword !== confirmPassword) {
-            notifyPassError();
-          } else {
-            await axios.put(
-              `http://localhost:3001/api/user/update/${user.id}`,
-              {
-                ...body,
-                password: newPassword,
-              }
-            );
+    try {
+      if (!body.name || !body.lastName || !body.email || !body.location.label) {
+        notifyRequired();
+        return;
+      }
+      else if (Object.keys(errors).length){
+        notifyRequired();
+      }
+      if (newPassword.length) {
+        if (newPassword !== confirmPassword) {
+          notifyRequired()
+        } else {
+          if(!errors.nameError && !errors.emailError && !errors.phoneError && !errors.confirmPassword && !errors.newPasswordError && !errors.lastNameError && !errors.passwordError){
+            await axios.put(`http://localhost:3001/api/user/update/${user.id}`, {
+              name: body.name,
+              lastname: body.lastName,
+              email: body.email,
+              location: body.location.label,
+              phone: body.phone,
+              password: newPassword,
+            });
             notify();
           }
-        } else {
-          await axios.put(
-            `http://localhost:3001/api/user/update/${user.id}`,
-            body
-          );
+        }
+      } else {
+        if(!errors.nameError && !errors.emailError && !errors.phoneError && !errors.confirmPassword && !errors.newPasswordError && !errors.lastNameError && !errors.passwordError){
+          await axios.put(`http://localhost:3001/api/user/update/${user.id}`, {
+            name: body.name,
+            lastname: body.lastName,
+            email: body.email,
+            location: body.location.label,
+            phone: body.phone,
+          });
           notify();
         }
+      }
     } catch (error) {
       console.log(error);
       notifyError();
@@ -430,7 +544,7 @@ const Profile = () => {
           <div className="changeImage">
             <p style={{ color: "#00396b", fontWeight: "bold" }}>{user.role}</p>
             <label for="file-upload" class="custom-file-upload">
-              <i class="fas fa-cloud-upload-alt"></i> Choose File
+              <i class="fas fa-cloud-upload-alt"></i> Change Image
               <input
                 id="file-upload"
                 type="file"
@@ -527,23 +641,23 @@ const Profile = () => {
 
           <div className="inputLineLocation">
             <div className="inputItemLocation">
-            <div className="missionLine">
-              <p>
-                Location<span>*</span>
-              </p>
-            </div>
-            <div style={{width : '100%'}}>
-              <Select
-                closeMenuOnSelect={true}
-                components={animatedComponents}
-                options={municipalities}
-                styles={{width: '100%'}}
-                onChange={(e)=>{
-                  setLocation(e);
-                }}
-                value={location}
-              />
-            </div>
+              <div className="missionLine">
+                <p>
+                  Location<span>*</span>
+                </p>
+              </div>
+              <div style={{ width: "100%" }}>
+                <Select
+                  closeMenuOnSelect={true}
+                  components={animatedComponents}
+                  options={municipalities}
+                  styles={{ width: "100%" }}
+                  onChange={(e) => {
+                    setLocation(e);
+                  }}
+                  value={location}
+                />
+              </div>
               {errors.locationError ? (
                 <small className="text-danger">{errors.locationError}</small>
               ) : (
