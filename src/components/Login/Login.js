@@ -28,8 +28,20 @@ function Login() {
     });
   };
 
-  const notifyError = () => {
-    toast.error("Email or Password are Wrong", {
+  const notifyEmailError = () => {
+    toast.error("Email is Wrong", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const notifyPasswordError = () => {
+    toast.error("Password is Wrong", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -60,6 +72,10 @@ function Login() {
         "http://localhost:3001/api/user/getByEmail",
         body
       );
+      if(!user.data){
+        notifyEmailError()
+        return;
+      }
       if (user.data.validity) {
         const data = await axios.post(
           "http://localhost:3001/api/user/login",
@@ -75,7 +91,7 @@ function Login() {
       }
     } catch (error) {
       console.log(error);
-      notifyError();
+      notifyPasswordError();
     }
   };
 

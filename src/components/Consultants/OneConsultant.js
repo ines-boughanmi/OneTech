@@ -199,10 +199,8 @@ const OneConsultant = ({ consultant, reload, setReload }) => {
             open={openUpdate}
             handleClose={handleCloseUpdate}
             handleUpdate={handleUpdate}
-          />
-          <ToastContainer
-            bodyClassName="toast-container"
-            progressClassName="progress-toast"
+            reload={reload}
+            setReload={setReload}
           />
         </div>
       ) : (

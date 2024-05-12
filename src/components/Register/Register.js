@@ -160,7 +160,21 @@ function Register() {
   const [show2, setShow2] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailError = () => {
+  const checkEmailExistence = async (email) => {
+    try {
+      const users = await axios.get("http://localhost:3001/api/user/getAll")
+      for (let user of users.data) {
+        if (user.email === email) {
+          return true;
+        }
+      }
+      return false
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleEmailError = async () => {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!email.length) {
       setErrors({
@@ -172,7 +186,13 @@ function Register() {
         ...errors,
         emailError: "Email is not a valid email",
       });
-    } else {
+    } else if (await checkEmailExistence(email)) {
+      setErrors({
+       ...errors,
+        emailError: "Email already exists",
+      });
+    }    
+    else {
       setErrors({
         ...errors,
         emailError: "",
@@ -180,12 +200,19 @@ function Register() {
     }
   };
   const handlePhoneError = () => {
+    let regex = /^\d+$/
     if (!phone.length) {
       setErrors({
         ...errors,
         phoneError: "Phone is required",
       });
-    } else {
+    } else if (!regex.test(phone)){
+      setErrors({
+        ...errors,
+        phoneError: "Phone is not a valid phone number",
+      });
+    }  
+    else {
       setErrors({
         ...errors,
         phoneError: "",
@@ -194,7 +221,7 @@ function Register() {
   };
 
   const handleLocationError = () => {
-    if (!location.length) {
+    if (!location.label) {
       setErrors({
         ...errors,
         locationError: "Location is required",
@@ -213,7 +240,13 @@ function Register() {
         ...errors,
         lastNameError: "Last Name is required",
       });
-    } else {
+    } else if (lastName.length <3){
+      setErrors({
+        ...errors,
+        lastNameError: "Last Name must be at least 3 characters",
+      });
+    }
+     else {
       setErrors({
         ...errors,
         lastNameError: "",
@@ -227,7 +260,13 @@ function Register() {
         ...errors,
         nameError: "Name is required",
       });
-    } else {
+    } else if(name.length < 3){
+      setErrors({
+        ...errors,
+        nameError: "Name must be at least 3 characters",
+      });
+    } 
+    else {
       setErrors({
         ...errors,
         nameError: "",
@@ -300,17 +339,102 @@ function Register() {
 }
 
 const notifyRequired = () => { 
-  toast.error("Please fill all required fields", {
-    position: "top-center",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-
+  if(!name || !lastName || !email || !location.label || !phone || !password || !confirmPassword){
+    toast.error("Please fill all required fields", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.nameError) {
+    toast.error(errors.nameError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.lastNameError) {
+    toast.error(errors.lastNameError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.emailError){
+    toast.error(errors.emailError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.locationError){
+    toast.error(errors.locationError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.phoneError){
+    toast.error(errors.phoneError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.passwordError){
+    toast.error(errors.passwordError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+  else if (errors.confirmPasswordError){
+    toast.error(errors.confirmPasswordError, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
 }
 
   const handleRegister = async (body) => {
@@ -319,15 +443,11 @@ const notifyRequired = () => {
         notifyRequired();
         return; 
       }
-      await axios.post("http://localhost:3001/api/user/register", {
-        name:body.name,
-        lastname:body.lastname,
-        email:body.email,
-        password:body.password,
-        phone:body.phone,
-        location:body.location.label,
-
-      });
+      else if (Object.keys(errors).length) {
+        notifyRequired();
+        return; 
+      }
+      await axios.post("http://localhost:3001/api/user/register", body);
       notify()
       setTimeout(() => {
         navigate("/");
@@ -337,6 +457,7 @@ const notifyRequired = () => {
       notifyError()
     }
   };
+
 
   return (
     <div className="registerContainer">
@@ -421,6 +542,9 @@ const notifyRequired = () => {
                 styles={{width: '100%'}}
                 onChange={(e)=>{
                   setLocation(e);
+                }}
+                onBlur={()=>{
+                  handleLocationError();
                 }}
               />
             </div>

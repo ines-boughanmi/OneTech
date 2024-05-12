@@ -10,6 +10,7 @@ import add from "../../assets/4211763.png";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { toast } from "react-toastify";
 
 
 
@@ -160,7 +161,7 @@ const municipalities = [
 ];
 
 
-const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
+const UpdateConsultant = ({ handleClose, open, consultant , reload ,setReload }) => {
   const [name, setName] = useState(consultant.name);
   const [lastName, setLastName] = useState(consultant.lastname);
   const [email, setEmail] = useState(consultant.email);
@@ -185,30 +186,92 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
       });
   };
 
-  const handleEmailError = () => {
+  const checkEmailExistence = async (email) => {
+    try {
+      const users = await axios.get("http://localhost:3001/api/user/getAll")
+      for (let user of users.data) {
+        if(user.id !== consultant.id){
+          if (user.email === email) {
+            return true;
+          }
+        }
+      }
+      return false
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handlePasswordError = () => {
+ if (password.length < 6) {
+      setErrors({
+        ...errors,
+        passwordError: "Password should be at least 6 charachters",
+      });
+    } else {
+      setErrors({
+        ...errors,
+        passwordError: "",
+      });
+    }
+  };
+
+  const handleEmailError = async () => {
+    let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!email.length) {
       setErrors({
         ...errors,
         emailError: "Email is required",
       });
-    } else {
+    } else if (!regex.test(email)) {
+      setErrors({
+        ...errors,
+        emailError: "Email is not a valid email",
+      });
+    } else if (await checkEmailExistence(email)) {
+      setErrors({
+       ...errors,
+        emailError: "Email already exists",
+      });
+    }    
+    else {
       setErrors({
         ...errors,
         emailError: "",
       });
     }
   };
-
-  const handleNameError = () => {
-    if (!name.length) {
+  const handlePhoneError = () => {
+    let regex = /^\d+$/
+    if (!phone.length) {
       setErrors({
         ...errors,
-        nameError: "Name is required",
+        phoneError: "Phone is required",
+      });
+    } else if (!regex.test(phone)){
+      setErrors({
+        ...errors,
+        phoneError: "Phone is not a valid phone number",
+      });
+    }  
+    else {
+      setErrors({
+        ...errors,
+        phoneError: "",
+      });
+    }
+  };
+
+  const handleLocationError = () => {
+    if (!location.label) {
+      setErrors({
+        ...errors,
+        locationError: "Location is required",
       });
     } else {
       setErrors({
         ...errors,
-        nameError: "",
+        locationError: "",
       });
     }
   };
@@ -219,7 +282,13 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
         ...errors,
         lastNameError: "Last Name is required",
       });
-    } else {
+    } else if (lastName.length <3){
+      setErrors({
+        ...errors,
+        lastNameError: "Last Name must be at least 3 characters",
+      });
+    }
+     else {
       setErrors({
         ...errors,
         lastNameError: "",
@@ -227,31 +296,179 @@ const UpdateConsultant = ({ handleClose, open, consultant, handleUpdate }) => {
     }
   };
 
-  const handlePasswordError = () => {
-    if (!password.length) {
+  const handleNameError = () => {
+    if (!name.length) {
       setErrors({
         ...errors,
-        passwordError: "Password is required",
+        nameError: "Name is required",
       });
-    } else {
+    } else if(name.length < 3){
       setErrors({
         ...errors,
-        passwordError: "",
+        nameError: "Name must be at least 3 characters",
+      });
+    } 
+    else {
+      setErrors({
+        ...errors,
+        nameError: "",
       });
     }
   };
+  const notifyRequired = () => { 
+    if(!name || !lastName || !email || !location.label || !phone  ){
+      toast.error("Please fill all required fields", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.nameError) {
+      toast.error(errors.nameError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.lastNameError) {
+      toast.error(errors.lastNameError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.emailError){
+      toast.error(errors.emailError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.locationError){
+      toast.error(errors.locationError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.phoneError){
+      toast.error(errors.phoneError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.passwordError){
+      toast.error(errors.passwordError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.confirmPasswordError){
+      toast.error(errors.confirmPasswordError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+  const notifyConsultantUpdate = () => {
+    toast.success("Consultant Updated", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
-  const handlePhoneError = () => {
-    if (!phone.length) {
-      setErrors({
-        ...errors,
-        phoneError: "Phone is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        phoneError: "",
-      });
+  const handleUpdate = async (id, body) => {
+    try {
+      if (!body.name || !body.lastName || !body.email || !body.phone || !body.image || !body.location) {
+        notifyRequired();
+        return;
+      }
+      else if (Object.keys(errors).length) {
+        notifyRequired();
+      }
+      if(!errors.nameError && !errors.lastNameError && !errors.passwordError && !errors.emailError && !errors.locationError && !errors.phoneError ){
+        const token = localStorage.getItem("token");
+        if (token) {
+          if(body.password){
+            await axios.put(`http://localhost:3001/api/user/update/${id}`, {
+              name : body.name ,
+              lastname : body.lastName ,
+              email : body.email,
+              phone : body.phone ,
+              image : body.image,
+              location : body.location.label,
+              password:body.password
+            });
+            notifyConsultantUpdate();
+            setReload(!reload);
+            handleClose();
+          }
+          else{
+            await axios.put(`http://localhost:3001/api/user/update/${id}`, {
+              name : body.name ,
+              lastname : body.lastName ,
+              email : body.email,
+              phone : body.phone ,
+              image : body.image,
+              location : body.location.label
+            });
+            notifyConsultantUpdate();
+            setReload(!reload);
+            handleClose();
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

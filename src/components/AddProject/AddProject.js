@@ -42,7 +42,13 @@ const AddProject = () => {
         ...errors,
         titleError: "Title is required",
       });
-    } else {
+    } else if (title.length < 3){
+      setErrors({
+       ...errors,
+        titleError: "Title must be at least 3 characters long",
+      });
+    } 
+    else {
       setErrors({
         ...errors,
         titleError: "",
@@ -70,7 +76,19 @@ const AddProject = () => {
         ...errors,
          budgetError: "Budget is required",
       });
-    } else {
+    } else if (isNaN(Number(budget))){
+      setErrors({
+       ...errors,
+         budgetError: "Budget must be a number",
+      });
+    } 
+    else if (!(Number(budget) < 20000 && Number(budget) > 5000)){
+      setErrors({
+       ...errors,
+         budgetError: "Budget must be between 5000 and 20000",
+      });
+    }
+    else {
       setErrors({
         ...errors,
          budgetError: "",
@@ -78,18 +96,68 @@ const AddProject = () => {
     }
   }
 
+  const handleDescriptionError = () => {
+    if (!description.length) {
+      setErrors({
+       ...errors,
+        descriptionError: "Description is required",
+      });
+    } else {
+      setErrors({
+       ...errors,
+        descriptionError: "",
+      });
+    }
+  }
+
   const notifyRequired = () => { 
-    toast.error("Please fill all required fields", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  
+    if(!title || !description || !budget || !startDate){
+      toast.error("Please fill all required fields", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.titleError){
+      toast.error(errors.titleError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.budgetError){
+      toast.error(errors.budgetError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.descriptionError){
+      toast.error(errors.descriptionError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
 
   const addWeekToDate = (date) => {
@@ -104,18 +172,23 @@ const AddProject = () => {
         notifyRequired();
         return; 
       }
-      const token = localStorage.getItem("token");
-      if (token) {
-        await axios.post("http://localhost:3001/api/project/create", {
-          ...body,
-          finish_date: addWeekToDate(body.start_date),
-        });
-        notify();
-        navigate(`/planning/${projectId}`,{state : {start_date : startDate}});
-        
+      else if (Object.keys(errors).length){
+        notifyRequired();
+      }
+      if(!errors.titleError && !errors.descriptionError && !errors.startDateError && !errors.budgetError){
+        const token = localStorage.getItem("token");
+        if (token) {
+          await axios.post("http://localhost:3001/api/project/create", {
+            ...body,
+            finish_date: addWeekToDate(body.start_date),
+          });
+          notify();
+          navigate(`/planning/${projectId}`,{state : {start_date : startDate}});
+        }
       }
     } catch (error) {
       console.log(error);
+      notifyRequired()
     }
   };
 
@@ -135,18 +208,7 @@ const AddProject = () => {
     }
   };
 
-  const notifyError = () => {
-    toast.error("check your Credentials", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+
   const notify = () => {
     toast.success("Project Created Successfully", {
       position: "top-center",
@@ -187,6 +249,7 @@ const AddProject = () => {
                 onBlur={(e) => {
                   handleTitleError();
                 }}
+
               />
               {errors.titleError ? (
                 <small className="text-danger">{errors.titleError}</small>
@@ -233,6 +296,7 @@ const AddProject = () => {
                   onBlur={(e) => {
                     handleBudgetError();
                   }}
+                  placeholder="5000 - 20000"
                 />
                 <h4>TND</h4>
               </div>
@@ -255,7 +319,15 @@ const AddProject = () => {
                   setDescription(e.target.value);
                 }}
                 value={description}
+                onBlur={()=>{
+                  handleDescriptionError();
+                }}
               />
+              {errors.descriptionError ? (
+                <small className="text-danger">{errors.descriptionError}</small>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

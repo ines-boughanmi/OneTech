@@ -7,6 +7,7 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import "react-inputs-validation/lib/react-inputs-validation.min.css";
 import SideNav from "../SideNav/SideNav";
 import OneConsultant from "./OneConsultant";
+import { ToastContainer } from "react-toastify";
 
 const Consultants = () => {
   const [user, setUser] = useState({});
@@ -128,6 +129,10 @@ const Consultants = () => {
           </div>
         )}
       </div>
+      <ToastContainer
+            bodyClassName="toast-container"
+            progressClassName="progress-toast"
+          />
     </div>
   );
 };

@@ -71,19 +71,7 @@ const UpdateProject = () => {
     fetchUsers();
   }, [reload]);
 
-  const handleTitleError = () => {
-    if (!title.length) {
-      setErrors({
-        ...errors,
-        titleError: "Title is required",
-      });
-    } else {
-      setErrors({
-        ...errors,
-        titleError: "",
-      });
-    }
-  };
+
 
   const fetchUsers = async () => {
     try {
@@ -97,19 +85,79 @@ const UpdateProject = () => {
     }
   };
 
-  const handleBudgetError = () => {
-    if (!budget.length) {
+  const handleTitleError = () => {
+    if (!title.length) {
       setErrors({
         ...errors,
-        budgetError: "Budget is required",
+        titleError: "Title is required",
+      });
+    } else if (title.length < 3){
+      setErrors({
+       ...errors,
+        titleError: "Title must be at least 3 characters long",
+      });
+    } 
+    else {
+      setErrors({
+        ...errors,
+        titleError: "",
+      });
+    }
+  };
+
+  const handleStartDateError = () => {
+    if (!startDate.length) {
+      setErrors({
+        ...errors,
+        startDateError: "Start Date is required",
       });
     } else {
       setErrors({
         ...errors,
-        budgetError: "",
+        startDateError: "",
       });
     }
   };
+
+  const handleBudgetError = () =>{
+    if (!budget.length) {
+      setErrors({
+        ...errors,
+         budgetError: "Budget is required",
+      });
+    } else if (isNaN(Number(budget))){
+      setErrors({
+       ...errors,
+         budgetError: "Budget must be a number",
+      });
+    } 
+    else if (!(Number(budget) < 20000 && Number(budget) > 5000)){
+      setErrors({
+       ...errors,
+         budgetError: "Budget must be between 5000 and 20000",
+      });
+    }
+    else {
+      setErrors({
+        ...errors,
+         budgetError: "",
+      });
+    }
+  }
+
+  const handleDescriptionError = () => {
+    if (!description.length) {
+      setErrors({
+       ...errors,
+        descriptionError: "Description is required",
+      });
+    } else {
+      setErrors({
+       ...errors,
+        descriptionError: "",
+      });
+    }
+  }
 
   const addWeekToDate = (date) => {
     const newDate = new Date(date);
@@ -117,18 +165,55 @@ const UpdateProject = () => {
     return newDate;
   };
 
-  const notifyRequired = () => {
-    toast.error("Please fill all required fields", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+  const notifyRequired = () => { 
+    if(!title || !description || !budget || !startDate){
+      toast.error("Please fill all required fields", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (errors.titleError){
+      toast.error(errors.titleError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.budgetError){
+      toast.error(errors.budgetError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    else if (errors.descriptionError){
+      toast.error(errors.descriptionError, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
 
   const handleUpdate = async (body) => {
     try {
@@ -136,19 +221,24 @@ const UpdateProject = () => {
         notifyRequired();
         return;
       }
-      const token = localStorage.getItem("token");
-      if (token) {
-        await axios.put(
-          `http://localhost:3001/api/project/update/${project.id}`,
-          {
-            ...body,
-            finish_date: addWeekToDate(body.start_date),
-          }
-        );
-        notify();
-        setTimeout(() => {
-          navigate("/dash");
-        }, 800);
+      else if (Object.keys(errors).length){
+        notifyRequired();
+      }
+      if(!errors.titleError && !errors.descriptionError && !errors.startDateError && !errors.budgetError){
+        const token = localStorage.getItem("token");
+        if (token) {
+          await axios.put(
+            `http://localhost:3001/api/project/update/${project.id}`,
+            {
+              ...body,
+              finish_date: addWeekToDate(body.start_date),
+            }
+          );
+          notify();
+          setTimeout(() => {
+            navigate("/dash");
+          }, 800);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -229,6 +319,9 @@ const UpdateProject = () => {
                 onChange={(e) => {
                   setStartDate(e.target.value);
                 }}
+                onBlur={()=>{
+                  handleStartDateError()
+                }}
                 disabled
               />
               {errors.startDateError ? (
@@ -253,6 +346,7 @@ const UpdateProject = () => {
                   onBlur={(e) => {
                     handleBudgetError();
                   }}
+                  placeholder="5000 - 20000"
                 />
                 <h4>TND</h4>
               </div>
@@ -275,6 +369,9 @@ const UpdateProject = () => {
                   setDescription(e.target.value);
                 }}
                 value={description}
+                onBlur={()=>{
+                  handleBudgetError()
+                }}
               />
             </div>
           </div>

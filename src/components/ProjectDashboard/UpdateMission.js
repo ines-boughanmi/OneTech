@@ -400,7 +400,6 @@ useEffect(()=>{
   extractIndex()
   extractIndexEnd()
   checkExistence(missions,options)
-  console.log(mission.location.split(',')[1].slice(1));
 },[])
 
   return (
