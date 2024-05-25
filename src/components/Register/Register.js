@@ -439,19 +439,29 @@ const notifyRequired = () => {
 
   const handleRegister = async (body) => {
     try {
-      if (!body.name || !body.lastname || !body.email || !body.location || !body.phone || !body.password || !body.confirmPassword) {
+      if (!body.name || !body.lastname || !body.email || !body.location.label || !body.phone || !body.password || !body.confirmPassword) {
         notifyRequired();
+        console.log("hello");
         return; 
       }
       else if (Object.keys(errors).length) {
         notifyRequired();
-        return; 
       }
-      await axios.post("http://localhost:3001/api/user/register", body);
-      notify()
-      setTimeout(() => {
-        navigate("/");
-      }, 1200);
+      if (!errors.nameError && !errors.lastNameError && !errors.locationError && !errors.phoneError && !errors.passwordError && !errors.emailError && !errors.confirmPasswordError) {
+        console.log("heelo");
+        await axios.post("http://localhost:3001/api/user/register", {
+          name: body.name,
+          lastname: body.lastname,
+          email: body.email,
+          location: body.location.label,
+          phone: body.phone,
+          password:  body.password,
+        });
+        notify()
+        setTimeout(() => {
+          navigate("/");
+        }, 1200);
+      }
     } catch (error) {
       console.log(error);
       notifyError()
@@ -563,7 +573,6 @@ const notifyRequired = () => {
               type="text"
               className="form-control"
               id="phone"
-              placeholder="+216 ********"
               onChange={(e) => setPhone(e.target.value)}
               onBlur={(e) => handlePhoneError()}
               value={phone}
@@ -582,6 +591,7 @@ const notifyRequired = () => {
             <input
               type={show ? "text" : "password"}
               className="form-control"
+              placeholder="********"
               id="password"
               onBlur={(e) => {
                 handlePasswordError();
@@ -613,6 +623,7 @@ const notifyRequired = () => {
             <input
               type={show2 ? "text" : "password"}
               className="form-control"
+              placeholder="********"
               id="confirmPassword"
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={(e) => handlePasswordConfirm()}

@@ -73,13 +73,20 @@ const OneMissionCard = ({ mission, reload, setReload,dates , project , missions 
 
   const handleUpdateMission = async (id, body) => {
     try {
-      if (!body.title || !body.description || !body.start_date || !body.end_date || !body.location || !body.users) {
+      if (!body.title || !body.description || !body.start_date || !body.end_date || !body.location.label || !body.users) {
         notifyRequired();
         return;
       }
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.put(`http://localhost:3001/api/mission/update/${id}`, body);
+        await axios.put(`http://localhost:3001/api/mission/update/${id}`, {
+          title: body.title,
+          description: body.description,
+          start_date: body.start_date,
+          end_date: body.end_date,
+          location: body.location.label,
+          users: body.users,
+        });
         notifyUpdate();
         setReload(!reload);
         handleCloseUpdate();

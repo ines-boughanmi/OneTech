@@ -235,7 +235,7 @@ const Analytics = () => {
                   data: values,
                 },
               ]}
-              width={800}
+              width={1200}
               height={400}
               colors={["#00396b"]}
               axisHighlight={{
