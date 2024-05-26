@@ -93,7 +93,7 @@ const Assign = ({ handleClose, open, mission, cars, missions, setOptions , reloa
     while (i < datesToCheck.length) {
       if (createdDates.includes(datesToCheck[i])) {
         filteredOptions = filteredOptions.filter((option) => {
-          return option.value !== missions[0].carId;
+          return option.value !== missions[0].carId 
         });
       }
       i++;

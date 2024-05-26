@@ -156,10 +156,10 @@ const Analytics = () => {
                       <span>0%</span>
                     ) : (
                       <span>
-                        {(
+                        {((
                           filtredNormalMissionsDone.length /
                           filtredNormalMissions.length
-                        ).toFixed(2) * 100}
+                        ) * 100).toFixed(2)}
                         %
                       </span>
                     )}
@@ -176,10 +176,10 @@ const Analytics = () => {
                       <span>0%</span>
                     ) : (
                       <span>
-                        {(
+                        {((
                           filtredSupportMissionsDone.length /
                           filtredSupportMissions.length
-                        ).toFixed(2) * 100}
+                        )* 100).toFixed(2) }
                         %
                       </span>
                     )}

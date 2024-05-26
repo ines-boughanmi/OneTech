@@ -352,6 +352,7 @@ const addDate = (date, amount) => {
           const partitions = await axios.get(`http://localhost:3001/api/partition/getPartitionsByMission/${missions[0].id}`).then((partitions)=>{
             partitions.data.forEach((partition)=>{
                filteredOptions = options.filter((option)=>{
+                console.log("heelo");
                 return option.value !== partition.userId
               })
             })

@@ -28,7 +28,10 @@ const OneNormalMission = ({ mission,reload, setReload,missions }) => {
       const token = localStorage.getItem("token");
       if(token){
         const data = await axios.get("http://localhost:3001/api/car/getAll");
-        handleOptions(data.data)
+        const filter = data.data.filter((car)=>{
+          return car.car_condition === "In service"
+        })
+        handleOptions(filter)
       }
     } catch (error) {
       console.log(error);
